@@ -570,23 +570,17 @@
         });
 
         // ============================================
-        // API CALL - Replace with your actual backend
+        // API CALL - n8n webhook
         // ============================================
         async function callEnhanceAPI(userText) {
             const platform = document.getElementById('platform').value;
             const tone = document.getElementById('tone').value;
             const showTitle = document.getElementById('showTitle').value;
             
-            // FOR DEMO: Simulate API call
-            // In production, replace this with actual fetch to your backend
-            
-            /* 
-            // PRODUCTION CODE:
-            const response = await fetch(CONFIG.apiEndpoint, {
+            const response = await fetch('https://steveyoung.app.n8n.cloud/webhook-test/postcreate', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + getAuthToken()
+                    'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
                     text: userText,
@@ -603,21 +597,6 @@
             
             const data = await response.json();
             return data.enhancedText;
-            */
-            
-            // DEMO: Simulate enhancement with a delay
-            await new Promise(resolve => setTimeout(resolve, 1500));
-            
-            // Demo enhanced text based on tone
-            const toneStyles = {
-                'enthusiastic': `🔥 Just finished ${showTitle || 'an amazing show'} and WOW! ${userText}\n\nSeriously, if you haven't watched this yet, what are you waiting for? Drop everything and start it tonight! Who else has seen it? 👇`,
-                'casual': `So I just watched ${showTitle || 'something great'} and honestly? ${userText}\n\nPretty solid recommendation if you're looking for something new. Anyone else seen it?`,
-                'informative': `Quick recommendation: ${showTitle || 'This show'}\n\n${userText}\n\nGenre-wise, it fits well if you enjoyed similar titles. Runtime is manageable for a weekend binge. Worth adding to your list.`,
-                'humorous': `Me before ${showTitle || 'this show'}: "I'll just watch one episode"\nMe at 3am: 👁️👄👁️\n\n${userText}\n\nMy sleep schedule is ruined but my taste is immaculate. You're welcome.`,
-                'thoughtful': `Been reflecting on ${showTitle || 'what I just watched'}...\n\n${userText}\n\nThere's something about stories like this that stay with you. Would love to hear others' interpretations.`
-            };
-            
-            return toneStyles[tone] || toneStyles['casual'];
         }
 
         // ============================================
