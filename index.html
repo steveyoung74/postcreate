@@ -596,7 +596,9 @@
             }
             
             const data = await response.json();
-            return data.enhancedText;
+            // n8n returns an array, so get the first item
+            const result = Array.isArray(data) ? data[0] : data;
+            return result.enhancedText;
         }
 
         // ============================================
