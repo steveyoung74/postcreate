@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Post Creator</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        
+        body {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #1a1a2e;
+            color: #eee;
+            min-height: 100vh;
+        }
+        
+        h1 {
+            text-align: center;
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #888;
+            font-size: 14px;
+            margin-bottom: 25px;
+        }
+        
+        .tokens-display {
+            text-align: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 14px;
+            margin-bottom: 25px;
+            display: inline-block;
+            width: 100%;
+        }
+        
+        .settings-section {
+            background: #16213e;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .settings-section h3 {
+            margin: 0 0 12px 0;
+            font-size: 14px;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            font-size: 14px;
+        }
+        
+        select, input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 12px;
+            border-radius: 8px;
+            border: 1px solid #333;
+            background: #0f0f23;
+            color: #eee;
+            font-size: 16px;
+        }
+        
+        select:focus, input[type="text"]:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .record-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 30px 0;
+        }
+        
+        .record-btn {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: 4px solid #667eea;
+            background: transparent;
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .record-btn:active {
+            transform: scale(0.95);
+        }
+        
+        .record-btn.recording {
+            background: #e74c3c;
+            border-color: #e74c3c;
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(231, 76, 60, 0.7); }
+            50% { transform: scale(1.05); box-shadow: 0 0 0 20px rgba(231, 76, 60, 0); }
+        }
+        
+        .status {
+            text-align: center;
+            color: #888;
+            font-size: 14px;
+            margin-top: 15px;
+        }
+        
+        .content-box {
+            background: #16213e;
+            border-radius: 12px;
+            padding: 15px;
+            margin: 15px 0;
+            min-height: 80px;
+        }
+        
+        .content-box h3 {
+            margin: 0 0 10px 0;
+            font-size: 12px;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .content-box p {
+            margin: 0;
+            line-height: 1.6;
+            white-space: pre-wrap;
+        }
+        
+        .content-box.result {
+            background: linear-gradient(135deg, #1a472a 0%, #16213e 100%);
+            border: 1px solid #27ae60;
+        }
+        
+        .placeholder-text {
+            color: #555;
+            font-style: italic;
+        }
+        
+        .action-btn {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: all 0.2s ease;
+        }
+        
+        .action-btn:active {
+            transform: scale(0.98);
+        }
+        
+        .enhance-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .enhance-btn:disabled {
+            background: #333;
+            color: #666;
+            cursor: not-allowed;
+        }
+        
+        .copy-btn {
+            background: #27ae60;
+            color: white;
+        }
+        
+        .clear-btn {
+            background: transparent;
+            border: 1px solid #444;
+            color: #888;
+        }
+        
+        .button-row {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .button-row .action-btn {
+            flex: 1;
+        }
+        
+        .error-message {
+            background: #5c1a1a;
+            border: 1px solid #e74c3c;
+            color: #ff6b6b;
+            padding: 12px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-size: 14px;
+            display: none;
+        }
+        
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #ffffff33;
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s linear infinite;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Modal for buying tokens */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.8);
+            z-index: 100;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-overlay.active {
+            display: flex;
+        }
+        
+        .modal {
+            background: #16213e;
+            border-radius: 16px;
+            padding: 25px;
+            max-width: 350px;
+            width: 90%;
+        }
+        
+        .modal h2 {
+            margin: 0 0 20px 0;
+            text-align: center;
+        }
+        
+        .token-option {
+            background: #0f0f23;
+            border: 2px solid #333;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .token-option:hover {
+            border-color: #667eea;
+        }
+        
+        .token-option .amount {
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        .token-option .price {
+            color: #27ae60;
+            font-size: 14px;
+        }
+        
+        .token-option .savings {
+            color: #667eea;
+            font-size: 12px;
+        }
+        
+        .modal-close {
+            width: 100%;
+            padding: 12px;
+            background: transparent;
+            border: 1px solid #444;
+            color: #888;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>✨ Post Creator</h1>
+    <p class="subtitle">Turn your thoughts into engaging posts</p>
+    
+    <div class="tokens-display">
+        🪙 <span id="tokenCount">3</span> tokens remaining
+        <span style="margin-left: 10px; cursor: pointer;" onclick="showBuyTokens()">+ Buy more</span>
+    </div>
+    
+    <div class="settings-section">
+        <h3>Post Settings</h3>
+        
+        <label for="platform">Platform</label>
+        <select id="platform">
+            <option value="facebook-group">Facebook Group</option>
+            <option value="facebook-page">Facebook Page</option>
+            <option value="twitter">Twitter/X</option>
+            <option value="linkedin">LinkedIn</option>
+            <option value="instagram">Instagram</option>
+        </select>
+        
+        <label for="tone">Tone</label>
+        <select id="tone">
+            <option value="enthusiastic">Enthusiastic & Excited</option>
+            <option value="casual">Casual & Friendly</option>
+            <option value="informative">Informative & Helpful</option>
+            <option value="humorous">Humorous & Fun</option>
+            <option value="thoughtful">Thoughtful & Reflective</option>
+        </select>
+        
+        <label for="showTitle">Show/Movie Title (optional)</label>
+        <input type="text" id="showTitle" placeholder="e.g., Wednesday, The Bear, Squid Game">
+    </div>
+    
+    <div class="record-container">
+        <button class="record-btn" id="recordBtn">
+            <span>Start<br>Talking</span>
+        </button>
+        <p class="status" id="status">Tap to start speaking</p>
+    </div>
+    
+    <div class="content-box" id="transcriptBox">
+        <h3>What you said</h3>
+        <p id="transcript" class="placeholder-text">Your speech will appear here...</p>
+    </div>
+    
+    <div class="error-message" id="errorMessage"></div>
+    
+    <button class="action-btn enhance-btn" id="enhanceBtn" disabled>
+        ✨ Enhance Post (1 token)
+    </button>
+    
+    <div class="content-box result" id="resultBox" style="display: none;">
+        <h3>Your enhanced post</h3>
+        <p id="enhancedPost"></p>
+    </div>
+    
+    <div class="button-row" id="resultButtons" style="display: none;">
+        <button class="action-btn copy-btn" id="copyBtn">📋 Copy</button>
+        <button class="action-btn clear-btn" id="clearBtn">🔄 New Post</button>
+    </div>
+    
+    <!-- Buy Tokens Modal -->
+    <div class="modal-overlay" id="buyModal">
+        <div class="modal">
+            <h2>🪙 Buy Tokens</h2>
+            
+            <div class="token-option" onclick="buyTokens(10, 2.99)">
+                <div class="amount">10 Tokens</div>
+                <div class="price">£2.99</div>
+            </div>
+            
+            <div class="token-option" onclick="buyTokens(30, 6.99)">
+                <div class="amount">30 Tokens</div>
+                <div class="price">£6.99</div>
+                <div class="savings">Save 22% + Auto-replenish available</div>
+            </div>
+            
+            <div class="token-option" onclick="buyTokens(100, 19.99)">
+                <div class="amount">100 Tokens</div>
+                <div class="price">£19.99</div>
+                <div class="savings">Save 33% - Best value!</div>
+            </div>
+            
+            <button class="modal-close" onclick="hideBuyTokens()">Cancel</button>
+        </div>
+    </div>
+
+    <script>
+        // ============================================
+        // CONFIGURATION - Update these for production
+        // ============================================
+        const CONFIG = {
+            apiEndpoint: '/api/enhance', // Your backend endpoint
+            // Group rules that posts must follow
+            groupRules: [
+                'Must mention a show you have actually watched',
+                'Include what you liked or found interesting about it',
+                'No generic "looking for recommendations" posts without giving one first'
+            ]
+        };
+
+        // ============================================
+        // STATE MANAGEMENT
+        // ============================================
+        let state = {
+            tokens: parseInt(localStorage.getItem('tokens') || '3'),
+            isRecording: false,
+            finalTranscript: ''
+        };
+
+        // Update token display
+        function updateTokenDisplay() {
+            document.getElementById('tokenCount').textContent = state.tokens;
+            localStorage.setItem('tokens', state.tokens.toString());
+        }
+
+        // ============================================
+        // SPEECH RECOGNITION SETUP
+        // ============================================
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        let recognition = null;
+
+        if (!SpeechRecognition) {
+            document.getElementById('status').textContent = 'Speech recognition not supported. Try Chrome or Safari.';
+            document.getElementById('recordBtn').disabled = true;
+        } else {
+            recognition = new SpeechRecognition();
+            recognition.continuous = true;
+            recognition.interimResults = true;
+            recognition.lang = 'en-GB';
+
+            recognition.onresult = (event) => {
+                let interimTranscript = '';
+                
+                for (let i = event.resultIndex; i < event.results.length; i++) {
+                    const result = event.results[i];
+                    if (result.isFinal) {
+                        state.finalTranscript += result[0].transcript + ' ';
+                    } else {
+                        interimTranscript += result[0].transcript;
+                    }
+                }
+                
+                const transcriptEl = document.getElementById('transcript');
+                transcriptEl.textContent = state.finalTranscript + interimTranscript;
+                transcriptEl.classList.remove('placeholder-text');
+                
+                document.getElementById('enhanceBtn').disabled = state.finalTranscript.trim().length === 0;
+            };
+
+            recognition.onerror = (event) => {
+                console.error('Speech recognition error:', event.error);
+                showError(`Speech error: ${event.error}. Please try again.`);
+                stopRecording();
+            };
+
+            recognition.onend = () => {
+                if (state.isRecording) {
+                    // Restart if user is still holding button
+                    try {
+                        recognition.start();
+                    } catch (e) {
+                        console.log('Recognition restart failed:', e);
+                    }
+                }
+            };
+        }
+
+        // ============================================
+        // RECORDING CONTROLS
+        // ============================================
+        function startRecording() {
+            if (!recognition) return;
+            
+            state.isRecording = true;
+            state.finalTranscript = '';
+            
+            const transcriptEl = document.getElementById('transcript');
+            transcriptEl.textContent = '';
+            transcriptEl.classList.add('placeholder-text');
+            
+            const btn = document.getElementById('recordBtn');
+            btn.classList.add('recording');
+            btn.innerHTML = '<span>Done</span>';
+            
+            document.getElementById('status').textContent = 'Listening... Tap Done when finished';
+            hideError();
+            
+            try {
+                recognition.start();
+            } catch (e) {
+                console.log('Recognition start failed:', e);
+            }
+        }
+
+        function stopRecording() {
+            if (!recognition) return;
+            
+            state.isRecording = false;
+            
+            const btn = document.getElementById('recordBtn');
+            btn.classList.remove('recording');
+            btn.innerHTML = '<span>Start<br>Talking</span>';
+            
+            document.getElementById('status').textContent = 'Tap to start speaking';
+            
+            try {
+                recognition.stop();
+            } catch (e) {
+                console.log('Recognition stop failed:', e);
+            }
+        }
+
+        function toggleRecording() {
+            if (state.isRecording) {
+                stopRecording();
+            } else {
+                startRecording();
+            }
+        }
+
+        // Record button event listeners
+        const recordBtn = document.getElementById('recordBtn');
+
+        // ============================================
+        // ENHANCE POST FUNCTIONALITY
+        // ============================================
+        document.getElementById('enhanceBtn').addEventListener('click', async () => {
+            const userText = state.finalTranscript.trim();
+            if (!userText) return;
+            
+            if (state.tokens <= 0) {
+                showBuyTokens();
+                return;
+            }
+            
+            const enhanceBtn = document.getElementById('enhanceBtn');
+            enhanceBtn.disabled = true;
+            enhanceBtn.innerHTML = '<span class="loading"></span> Enhancing...';
+            hideError();
+            
+            try {
+                const enhancedText = await callEnhanceAPI(userText);
+                
+                // Deduct token
+                state.tokens--;
+                updateTokenDisplay();
+                
+                // Show result
+                document.getElementById('enhancedPost').textContent = enhancedText;
+                document.getElementById('resultBox').style.display = 'block';
+                document.getElementById('resultButtons').style.display = 'flex';
+                
+                enhanceBtn.innerHTML = '✨ Enhance Post (1 token)';
+                enhanceBtn.disabled = false;
+                
+            } catch (error) {
+                console.error('Enhancement error:', error);
+                showError('Enhancement failed. Please try again.');
+                enhanceBtn.innerHTML = '✨ Enhance Post (1 token)';
+                enhanceBtn.disabled = false;
+            }
+        });
+
+        // ============================================
+        // API CALL - Replace with your actual backend
+        // ============================================
+        async function callEnhanceAPI(userText) {
+            const platform = document.getElementById('platform').value;
+            const tone = document.getElementById('tone').value;
+            const showTitle = document.getElementById('showTitle').value;
+            
+            // FOR DEMO: Simulate API call
+            // In production, replace this with actual fetch to your backend
+            
+            /* 
+            // PRODUCTION CODE:
+            const response = await fetch(CONFIG.apiEndpoint, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + getAuthToken()
+                },
+                body: JSON.stringify({
+                    text: userText,
+                    platform: platform,
+                    tone: tone,
+                    showTitle: showTitle,
+                    groupRules: CONFIG.groupRules
+                })
+            });
+            
+            if (!response.ok) {
+                throw new Error('API request failed');
+            }
+            
+            const data = await response.json();
+            return data.enhancedText;
+            */
+            
+            // DEMO: Simulate enhancement with a delay
+            await new Promise(resolve => setTimeout(resolve, 1500));
+            
+            // Demo enhanced text based on tone
+            const toneStyles = {
+                'enthusiastic': `🔥 Just finished ${showTitle || 'an amazing show'} and WOW! ${userText}\n\nSeriously, if you haven't watched this yet, what are you waiting for? Drop everything and start it tonight! Who else has seen it? 👇`,
+                'casual': `So I just watched ${showTitle || 'something great'} and honestly? ${userText}\n\nPretty solid recommendation if you're looking for something new. Anyone else seen it?`,
+                'informative': `Quick recommendation: ${showTitle || 'This show'}\n\n${userText}\n\nGenre-wise, it fits well if you enjoyed similar titles. Runtime is manageable for a weekend binge. Worth adding to your list.`,
+                'humorous': `Me before ${showTitle || 'this show'}: "I'll just watch one episode"\nMe at 3am: 👁️👄👁️\n\n${userText}\n\nMy sleep schedule is ruined but my taste is immaculate. You're welcome.`,
+                'thoughtful': `Been reflecting on ${showTitle || 'what I just watched'}...\n\n${userText}\n\nThere's something about stories like this that stay with you. Would love to hear others' interpretations.`
+            };
+            
+            return toneStyles[tone] || toneStyles['casual'];
+        }
+
+        // ============================================
+        // COPY & CLEAR FUNCTIONALITY
+        // ============================================
+        document.getElementById('copyBtn').addEventListener('click', async () => {
+            const text = document.getElementById('enhancedPost').textContent;
+            const copyBtn = document.getElementById('copyBtn');
+            
+            try {
+                await navigator.clipboard.writeText(text);
+                copyBtn.textContent = '✅ Copied!';
+                setTimeout(() => {
+                    copyBtn.textContent = '📋 Copy';
+                }, 2000);
+            } catch (err) {
+                // Fallback for older browsers
+                const textArea = document.createElement('textarea');
+                textArea.value = text;
+                textArea.style.position = 'fixed';
+                textArea.style.opacity = '0';
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                copyBtn.textContent = '✅ Copied!';
+                setTimeout(() => {
+                    copyBtn.textContent = '📋 Copy';
+                }, 2000);
+            }
+        });
+
+        document.getElementById('clearBtn').addEventListener('click', () => {
+            state.finalTranscript = '';
+            document.getElementById('transcript').textContent = 'Your speech will appear here...';
+            document.getElementById('transcript').classList.add('placeholder-text');
+            document.getElementById('resultBox').style.display = 'none';
+            document.getElementById('resultButtons').style.display = 'none';
+            document.getElementById('enhanceBtn').disabled = true;
+            document.getElementById('showTitle').value = '';
+        });
+
+        // ============================================
+        // TOKEN PURCHASE MODAL
+        // ============================================
+        function showBuyTokens() {
+            document.getElementById('buyModal').classList.add('active');
+        }
+
+        function hideBuyTokens() {
+            document.getElementById('buyModal').classList.remove('active');
+        }
+
+        function buyTokens(amount, price) {
+            // In production, this would integrate with Stripe or similar
+            alert(`This would open payment for ${amount} tokens at £${price}\n\nPayment integration needed for production.`);
+            
+            // Demo: Just add the tokens
+            state.tokens += amount;
+            updateTokenDisplay();
+            hideBuyTokens();
+        }
+
+        // ============================================
+        // ERROR HANDLING
+        // ============================================
+        function showError(message) {
+            const errorEl = document.getElementById('errorMessage');
+            errorEl.textContent = message;
+            errorEl.style.display = 'block';
+        }
+
+        function hideError() {
+            document.getElementById('errorMessage').style.display = 'none';
+        }
+
+        // ============================================
+        // MICROPHONE PERMISSION - Request upfront
+        // ============================================
+        async function requestMicrophonePermission() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                // Permission granted - stop the stream immediately (we just needed permission)
+                stream.getTracks().forEach(track => track.stop());
+                document.getElementById('status').textContent = 'Tap to start speaking';
+                return true;
+            } catch (err) {
+                console.error('Microphone permission denied:', err);
+                document.getElementById('status').textContent = 'Microphone access needed. Tap the button to allow.';
+                return false;
+            }
+        }
+
+        // Check permission on first interaction with record button
+        let micPermissionGranted = false;
+        
+        async function handleRecordClick() {
+            if (!micPermissionGranted) {
+                const btn = document.getElementById('recordBtn');
+                btn.innerHTML = '<span>Allow<br>Mic</span>';
+                
+                micPermissionGranted = await requestMicrophonePermission();
+                
+                if (micPermissionGranted) {
+                    btn.innerHTML = '<span>Start<br>Talking</span>';
+                    // Now start recording since they wanted to talk
+                    startRecording();
+                } else {
+                    btn.innerHTML = '<span>Mic<br>Blocked</span>';
+                }
+            } else {
+                toggleRecording();
+            }
+        }
+
+        // Single click/tap handler for toggle
+        recordBtn.addEventListener('click', handleRecordClick);
+
+        // ============================================
+        // INITIALIZATION
+        // ============================================
+        updateTokenDisplay();
+        
+        // Try to get permission status on load (won't prompt, just checks)
+        if (navigator.permissions && navigator.permissions.query) {
+            navigator.permissions.query({ name: 'microphone' }).then(result => {
+                if (result.state === 'granted') {
+                    micPermissionGranted = true;
+                }
+            }).catch(() => {
+                // Some browsers don't support this query, that's fine
+            });
+        }
+    </script>
+</body>
+</html>
