@@ -1478,7 +1478,8 @@
             
             try { recognition.stop(); } catch (e) {}
             
-            const transcript = state.finalTranscript.trim();
+            // Use BOTH final and interim transcripts
+            const transcript = (state.finalTranscript + state.interimTranscript).trim();
             if (transcript) {
                 await enhancePost(transcript);
             } else {
