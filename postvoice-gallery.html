@@ -970,11 +970,383 @@
             border: 1px solid #ff4444;
             color: #ff4444;
         }
+        
+        /* Left Sidebar - Hidden on mobile */
+        .left-sidebar {
+            display: none;
+        }
+        
+        /* Desktop Create Header - Hidden on mobile */
+        .desktop-create-header {
+            display: none;
+        }
+        
+        /* Category Tabs - Hidden on mobile */
+        .category-tabs {
+            display: none;
+        }
+        
+        /* ============================================
+           DESKTOP STYLES (768px and up)
+           ============================================ */
+        @media (min-width: 768px) {
+            /* Hide mobile elements */
+            .header {
+                display: none;
+            }
+            
+            .bottom-nav {
+                display: none;
+            }
+            
+            /* App layout */
+            .app {
+                flex-direction: row;
+            }
+            
+            /* Left Sidebar */
+            .left-sidebar {
+                display: flex;
+                flex-direction: column;
+                width: 72px;
+                min-height: 100vh;
+                background: var(--bg-primary);
+                border-right: 1px solid var(--border);
+                position: fixed;
+                left: 0;
+                top: 0;
+                bottom: 0;
+                z-index: 100;
+                padding: 16px 0;
+            }
+            
+            .sidebar-logo {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 8px;
+                margin-bottom: 20px;
+            }
+            
+            .sidebar-logo-icon {
+                width: 40px;
+                height: 40px;
+                background: var(--accent);
+                border-radius: 10px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            
+            .sidebar-logo-icon svg {
+                width: 22px;
+                height: 22px;
+                fill: white;
+            }
+            
+            .sidebar-nav {
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                gap: 4px;
+                padding: 0 12px;
+            }
+            
+            .sidebar-nav-item {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 48px;
+                height: 48px;
+                border-radius: 12px;
+                background: transparent;
+                border: none;
+                cursor: pointer;
+                color: var(--text-muted);
+                transition: all 0.2s;
+                margin: 0 auto;
+            }
+            
+            .sidebar-nav-item:hover {
+                background: var(--bg-elevated);
+                color: var(--text-secondary);
+            }
+            
+            .sidebar-nav-item.active {
+                background: var(--bg-elevated);
+                color: var(--text-primary);
+            }
+            
+            .sidebar-nav-item svg {
+                width: 26px;
+                height: 26px;
+                fill: currentColor;
+            }
+            
+            .sidebar-nav-item.create-item {
+                background: var(--accent);
+                color: white;
+                margin-top: 8px;
+                margin-bottom: 8px;
+            }
+            
+            .sidebar-nav-item.create-item:hover {
+                background: var(--accent-hover);
+                color: white;
+            }
+            
+            .sidebar-bottom {
+                padding: 0 12px;
+                display: flex;
+                flex-direction: column;
+                gap: 4px;
+            }
+            
+            /* Main Content adjustments */
+            .main-content {
+                margin-left: 72px;
+                padding-top: 0;
+                padding-bottom: 40px;
+                width: calc(100% - 72px);
+            }
+            
+            /* Desktop Create Header */
+            .desktop-create-header {
+                display: block;
+                padding: 40px 40px 30px;
+                text-align: center;
+            }
+            
+            .desktop-create-title {
+                font-size: 32px;
+                font-weight: 700;
+                margin-bottom: 24px;
+            }
+            
+            .desktop-create-box {
+                max-width: 700px;
+                margin: 0 auto;
+                background: var(--bg-secondary);
+                border: 1px solid var(--border);
+                border-radius: 16px;
+                padding: 16px 20px;
+                display: flex;
+                align-items: center;
+                gap: 16px;
+            }
+            
+            .desktop-create-placeholder {
+                flex: 1;
+                color: var(--text-muted);
+                font-size: 16px;
+                text-align: left;
+            }
+            
+            .desktop-create-btn {
+                background: var(--accent);
+                color: white;
+                border: none;
+                padding: 12px 28px;
+                border-radius: 10px;
+                font-size: 15px;
+                font-weight: 600;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                transition: all 0.2s;
+            }
+            
+            .desktop-create-btn:hover {
+                background: var(--accent-hover);
+                transform: translateY(-1px);
+            }
+            
+            .desktop-create-btn svg {
+                width: 20px;
+                height: 20px;
+                fill: white;
+            }
+            
+            /* Category Tabs */
+            .category-tabs {
+                display: flex;
+                gap: 8px;
+                padding: 0 40px 20px;
+                border-bottom: 1px solid var(--border);
+                overflow-x: auto;
+            }
+            
+            .category-tab {
+                padding: 8px 16px;
+                background: transparent;
+                border: none;
+                border-radius: 20px;
+                color: var(--text-secondary);
+                font-size: 14px;
+                font-weight: 500;
+                cursor: pointer;
+                white-space: nowrap;
+                transition: all 0.2s;
+            }
+            
+            .category-tab:hover {
+                background: var(--bg-elevated);
+            }
+            
+            .category-tab.active {
+                background: var(--bg-elevated);
+                color: var(--text-primary);
+            }
+            
+            /* Gallery adjustments */
+            .gallery-container {
+                padding: 20px 40px;
+            }
+            
+            .gallery-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 16px;
+            }
+            
+            .gallery-item {
+                border-radius: 16px;
+            }
+            
+            .gallery-item img {
+                aspect-ratio: auto;
+                min-height: 200px;
+                max-height: 400px;
+            }
+            
+            /* Empty state desktop */
+            .empty-state {
+                min-height: 400px;
+                padding: 80px 40px;
+            }
+            
+            .empty-icon {
+                width: 100px;
+                height: 100px;
+            }
+            
+            .empty-icon svg {
+                width: 50px;
+                height: 50px;
+            }
+            
+            .empty-state h2 {
+                font-size: 28px;
+            }
+            
+            .empty-state p {
+                font-size: 16px;
+                max-width: 400px;
+            }
+            
+            /* Profile desktop */
+            .profile-container {
+                max-width: 600px;
+                margin: 0 auto;
+                padding: 40px;
+            }
+            
+            /* Modals desktop */
+            .post-modal,
+            .recording-modal,
+            .settings-modal {
+                background: rgba(0,0,0,0.8);
+                backdrop-filter: blur(10px);
+            }
+            
+            .post-modal-content,
+            .recording-modal > *,
+            .settings-content {
+                max-width: 600px;
+                margin: 0 auto;
+            }
+            
+            .recording-modal {
+                display: none;
+                padding: 40px;
+            }
+            
+            .recording-modal.visible {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+            }
+            
+            .recording-modal > * {
+                width: 100%;
+            }
+            
+            .settings-modal.visible {
+                display: flex;
+                flex-direction: column;
+            }
+            
+            .settings-header {
+                max-width: 600px;
+                margin: 0 auto;
+                width: 100%;
+                background: transparent;
+            }
+            
+            .toast {
+                left: 50%;
+                right: auto;
+                transform: translateX(-50%);
+                min-width: 300px;
+            }
+        }
+        
+        /* Large desktop (1200px and up) */
+        @media (min-width: 1200px) {
+            .gallery-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+        
+        /* Extra large (1600px and up) */
+        @media (min-width: 1600px) {
+            .gallery-grid {
+                grid-template-columns: repeat(5, 1fr);
+            }
+        }
     </style>
 </head>
 <body>
     <div class="app">
-        <!-- Header -->
+        <!-- Left Sidebar (Desktop) -->
+        <aside class="left-sidebar">
+            <div class="sidebar-logo">
+                <div class="sidebar-logo-icon">
+                    <svg viewBox="0 0 24 24"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/><path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/></svg>
+                </div>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <button class="sidebar-nav-item active" data-tab="home" title="Home">
+                    <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+                </button>
+                <button class="sidebar-nav-item create-item" id="sidebarCreateBtn" title="Create">
+                    <svg viewBox="0 0 24 24"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/><path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/></svg>
+                </button>
+                <button class="sidebar-nav-item" data-tab="profile" title="Profile">
+                    <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                </button>
+            </nav>
+            
+            <div class="sidebar-bottom">
+                <button class="sidebar-nav-item" id="sidebarSettingsBtn" title="Settings">
+                    <svg viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.31.06-.63.06-.94 0-.31-.02-.63-.06-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.04.31-.06.63-.06.94s.02.63.06.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
+                </button>
+            </div>
+        </aside>
+        
+        <!-- Header (Mobile) -->
         <header class="header">
             <div class="logo">
                 <div class="logo-icon">
@@ -991,6 +1363,27 @@
         <main class="main-content">
             <!-- Home Tab -->
             <div class="tab-content active" id="homeTab">
+                <!-- Desktop Create Header -->
+                <div class="desktop-create-header">
+                    <h1 class="desktop-create-title">What will you share?</h1>
+                    <div class="desktop-create-box">
+                        <span class="desktop-create-placeholder">Speak your thoughts about a show...</span>
+                        <button class="desktop-create-btn" id="desktopCreateBtn">
+                            <svg viewBox="0 0 24 24"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/><path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/></svg>
+                            Record
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Category Tabs (Desktop) -->
+                <div class="category-tabs">
+                    <button class="category-tab active">My Posts</button>
+                    <button class="category-tab">Quick Recs</button>
+                    <button class="category-tab">Reviews</button>
+                    <button class="category-tab">Binge Reports</button>
+                    <button class="category-tab">Hidden Gems</button>
+                </div>
+                
                 <div class="gallery-container">
                     <!-- Empty State (shown when no posts) -->
                     <div class="empty-state" id="emptyState">
@@ -1218,7 +1611,7 @@
         // CONFIG
         // ============================================
         const CONFIG = {
-            webhookUrl: 'https://steveyoung.app.n8n.cloud/webhook/postcreate',
+            webhookUrl: 'https://steveyoung.app.n8n.cloud/webhook-test/postcreate',
             maxRecordingTime: 60,
             styles: {
                 quick: { name: 'Quick Rec', prompt: 'Short, punchy recommendation under 100 words' },
@@ -1798,9 +2191,30 @@
             item.addEventListener('click', () => switchTab(item.dataset.tab));
         });
         
-        // Create
+        // Sidebar navigation (desktop)
+        document.querySelectorAll('.sidebar-nav-item[data-tab]').forEach(item => {
+            item.addEventListener('click', () => {
+                switchTab(item.dataset.tab);
+                // Update sidebar active states
+                document.querySelectorAll('.sidebar-nav-item[data-tab]').forEach(i => {
+                    i.classList.toggle('active', i.dataset.tab === item.dataset.tab);
+                });
+            });
+        });
+        
+        // Create buttons (all variations)
         elements.createBtn.addEventListener('click', startRecording);
         elements.emptyCreateBtn.addEventListener('click', startRecording);
+        document.getElementById('desktopCreateBtn')?.addEventListener('click', startRecording);
+        document.getElementById('sidebarCreateBtn')?.addEventListener('click', startRecording);
+        
+        // Settings buttons
+        elements.settingsBtn.addEventListener('click', () => {
+            elements.settingsModal.classList.add('visible');
+        });
+        document.getElementById('sidebarSettingsBtn')?.addEventListener('click', () => {
+            elements.settingsModal.classList.add('visible');
+        });
         
         // Recording
         elements.recordingClose.addEventListener('click', cancelRecording);
@@ -1815,11 +2229,6 @@
         elements.modalInstagramBtn.addEventListener('click', shareToInstagram);
         elements.downloadPostBtn.addEventListener('click', downloadCurrentImage);
         elements.deletePostBtn.addEventListener('click', deleteCurrentPost);
-        
-        // Settings
-        elements.settingsBtn.addEventListener('click', () => {
-            elements.settingsModal.classList.add('visible');
-        });
         elements.settingsClose.addEventListener('click', () => {
             elements.settingsModal.classList.remove('visible');
         });
