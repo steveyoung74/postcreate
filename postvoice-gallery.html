@@ -1631,7 +1631,7 @@
                             <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
                         </div>
                         <div class="profile-name" id="profileUserName">User</div>
-                        <div class="profile-email" id="profileUserEmail">user@example.com</div>
+                        <div class="profile-email" id="profileUserEmail"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="afdadccaddefcad7cec2dfc3ca81ccc0c2">[email&#160;protected]</a></div>
                     </div>
                     
                     <div class="profile-stats">
@@ -1859,7 +1859,7 @@
     <!-- Toast -->
     <div class="toast" id="toast"></div>
 
-    <script>
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
         // ============================================
         // CONFIG
         // ============================================
@@ -1885,7 +1885,7 @@
         // ============================================
         // SUPABASE INIT
         // ============================================
-        const supabase = window.supabase.createClient(CONFIG.supabaseUrl, CONFIG.supabaseKey);
+        const supabaseClient = window.supabase.createClient(CONFIG.supabaseUrl, CONFIG.supabaseKey);
 
         // ============================================
         // STATE
@@ -1913,7 +1913,7 @@
                 if (state.user) {
                     // Load from Supabase
                     try {
-                        const { data, error } = await supabase
+                        const { data, error } = await supabaseClient
                             .from('posts')
                             .select('*')
                             .order('created_at', { ascending: false });
@@ -1955,7 +1955,7 @@
                 if (state.user) {
                     // Save to Supabase
                     try {
-                        const { data, error } = await supabase
+                        const { data, error } = await supabaseClient
                             .from('posts')
                             .insert({
                                 user_id: state.user.id,
@@ -1989,7 +1989,7 @@
                 if (state.user) {
                     // Delete from Supabase
                     try {
-                        const { error } = await supabase
+                        const { error } = await supabaseClient
                             .from('posts')
                             .delete()
                             .eq('id', id);
@@ -2025,7 +2025,7 @@
                         created_at: p.createdAt
                     }));
                     
-                    const { error } = await supabase
+                    const { error } = await supabaseClient
                         .from('posts')
                         .insert(postsToInsert);
                     
@@ -2045,7 +2045,7 @@
         // ============================================
         const Auth = {
             async signUp(email, password) {
-                const { data, error } = await supabase.auth.signUp({
+                const { data, error } = await supabaseClient.auth.signUp({
                     email,
                     password
                 });
@@ -2055,7 +2055,7 @@
             },
             
             async signIn(email, password) {
-                const { data, error } = await supabase.auth.signInWithPassword({
+                const { data, error } = await supabaseClient.auth.signInWithPassword({
                     email,
                     password
                 });
@@ -2065,7 +2065,7 @@
             },
             
             async signInWithGoogle() {
-                const { data, error } = await supabase.auth.signInWithOAuth({
+                const { data, error } = await supabaseClient.auth.signInWithOAuth({
                     provider: 'google',
                     options: {
                         redirectTo: window.location.href
@@ -2077,12 +2077,12 @@
             },
             
             async signOut() {
-                const { error } = await supabase.auth.signOut();
+                const { error } = await supabaseClient.auth.signOut();
                 if (error) throw error;
             },
             
             async getSession() {
-                const { data: { session } } = await supabase.auth.getSession();
+                const { data: { session } } = await supabaseClient.auth.getSession();
                 return session;
             }
         };
@@ -2864,7 +2864,7 @@
             }
             
             // Listen for auth changes
-            supabase.auth.onAuthStateChange(async (event, session) => {
+            supabaseClient.auth.onAuthStateChange(async (event, session) => {
                 state.user = session?.user || null;
                 updateProfileUI();
                 
@@ -2873,16 +2873,4 @@
                     await renderGallery();
                 } else if (event === 'SIGNED_OUT') {
                     state.posts = [];
-                    await renderGallery();
-                }
-            });
-            
-            // Load posts
-            await renderGallery();
-        }
-        
-        // Start the app
-        init();
-    </script>
-</body>
-</html>
+              
