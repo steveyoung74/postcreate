@@ -1885,7 +1885,17 @@
         // ============================================
         // SUPABASE INIT
         // ============================================
-        const supabaseClient = window.supabase.createClient(CONFIG.supabaseUrl, CONFIG.supabaseKey);
+        let supabaseClient = null;
+        try {
+            if (window.supabase) {
+                supabaseClient = window.supabase.createClient(CONFIG.supabaseUrl, CONFIG.supabaseKey);
+                console.log('Supabase initialized successfully');
+            } else {
+                console.warn('Supabase library not loaded - running in offline mode');
+            }
+        } catch (e) {
+            console.error('Failed to initialize Supabase:', e);
+        }
 
         // ============================================
         // STATE
@@ -1910,7 +1920,7 @@
         // ============================================
         const Storage = {
             async loadPosts() {
-                if (state.user) {
+                if (state.user && supabaseClient) {
                     // Load from Supabase
                     try {
                         const { data, error } = await supabaseClient
@@ -1952,7 +1962,7 @@
             },
             
             async addPost(post) {
-                if (state.user) {
+                if (state.user && supabaseClient) {
                     // Save to Supabase
                     try {
                         const { data, error } = await supabaseClient
@@ -1986,7 +1996,7 @@
             },
             
             async deletePost(id) {
-                if (state.user) {
+                if (state.user && supabaseClient) {
                     // Delete from Supabase
                     try {
                         const { error } = await supabaseClient
@@ -2012,6 +2022,8 @@
             
             async migrateLocalToCloud() {
                 // Migrate local posts to Supabase when user signs in
+                if (!supabaseClient) return;
+                
                 const localPosts = this.loadLocalPosts();
                 if (localPosts.length === 0 || !state.user) return;
                 
@@ -2045,6 +2057,7 @@
         // ============================================
         const Auth = {
             async signUp(email, password) {
+                if (!supabaseClient) throw new Error('Auth not available offline');
                 const { data, error } = await supabaseClient.auth.signUp({
                     email,
                     password
@@ -2055,6 +2068,7 @@
             },
             
             async signIn(email, password) {
+                if (!supabaseClient) throw new Error('Auth not available offline');
                 const { data, error } = await supabaseClient.auth.signInWithPassword({
                     email,
                     password
@@ -2065,6 +2079,7 @@
             },
             
             async signInWithGoogle() {
+                if (!supabaseClient) throw new Error('Auth not available offline');
                 const { data, error } = await supabaseClient.auth.signInWithOAuth({
                     provider: 'google',
                     options: {
@@ -2077,13 +2092,20 @@
             },
             
             async signOut() {
+                if (!supabaseClient) throw new Error('Auth not available offline');
                 const { error } = await supabaseClient.auth.signOut();
                 if (error) throw error;
             },
             
             async getSession() {
-                const { data: { session } } = await supabaseClient.auth.getSession();
-                return session;
+                if (!supabaseClient) return null;
+                try {
+                    const { data: { session } } = await supabaseClient.auth.getSession();
+                    return session;
+                } catch (e) {
+                    console.error('Error getting session:', e);
+                    return null;
+                }
             }
         };
 
@@ -2852,25 +2874,45 @@
         // INIT
         // ============================================
         async function init() {
-            // Check for existing session
-            const session = await Auth.getSession();
-            
-            if (session) {
-                state.user = session.user;
-                updateProfileUI();
+            try {
+                // Check for existing session
+                const session = await Auth.getSession();
                 
-                // Migrate local posts to cloud
-                await Storage.migrateLocalToCloud();
-            }
-            
-            // Listen for auth changes
-            supabaseClient.auth.onAuthStateChange(async (event, session) => {
-                state.user = session?.user || null;
-                updateProfileUI();
-                
-                if (event === 'SIGNED_IN') {
+                if (session) {
+                    state.user = session.user;
+                    updateProfileUI();
+                    
+                    // Migrate local posts to cloud
                     await Storage.migrateLocalToCloud();
-                    await renderGallery();
-                } else if (event === 'SIGNED_OUT') {
-                    state.posts = [];
-              
+                }
+                
+                // Listen for auth changes (only if Supabase is available)
+                if (supabaseClient) {
+                    supabaseClient.auth.onAuthStateChange(async (event, session) => {
+                        state.user = session?.user || null;
+                        updateProfileUI();
+                        
+                        if (event === 'SIGNED_IN') {
+                            await Storage.migrateLocalToCloud();
+                            await renderGallery();
+                        } else if (event === 'SIGNED_OUT') {
+                            state.posts = [];
+                            await renderGallery();
+                        }
+                    });
+                }
+                
+                // Load posts
+                await renderGallery();
+            } catch (e) {
+                console.error('Init error:', e);
+                // Still try to load posts even if auth fails
+                await renderGallery();
+            }
+        }
+        
+        // Start the app
+        init();
+    </script>
+</body>
+</html>
