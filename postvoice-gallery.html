@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>PostVoice</title>
+    <title>PostVoice v0.1.0</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         * {
@@ -292,6 +292,17 @@
             width: 18px;
             height: 18px;
             fill: white;
+        }
+        
+        .version-badge {
+            font-size: 10px;
+            font-weight: 500;
+            color: var(--text-muted);
+            background: var(--bg-elevated);
+            padding: 2px 6px;
+            border-radius: 4px;
+            margin-left: 6px;
+            vertical-align: middle;
         }
         
         .header-btn {
@@ -1559,7 +1570,7 @@
                 <div class="logo-icon">
                     <svg viewBox="0 0 24 24"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/><path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/></svg>
                 </div>
-                PostVoice
+                PostVoice <span class="version-badge">v0.1.0</span>
             </div>
             <button class="header-btn" id="settingsBtn">
                 <svg viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.31.06-.63.06-.94 0-.31-.02-.63-.06-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.04.31-.06.63-.06.94s.02.63.06.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
@@ -1864,6 +1875,7 @@
         // CONFIG
         // ============================================
         const CONFIG = {
+            version: '0.1.0',
             webhookUrl: 'https://steveyoung.app.n8n.cloud/webhook/postcreate',
             maxRecordingTime: 60,
             supabaseUrl: 'https://oiahkbvqyfjumnqsefxw.supabase.co',
@@ -2874,6 +2886,8 @@
         // INIT
         // ============================================
         async function init() {
+            console.log(`PostVoice v${CONFIG.version} starting...`);
+            
             try {
                 // Check for existing session
                 const session = await Auth.getSession();
