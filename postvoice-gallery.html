@@ -2138,19 +2138,74 @@
             }
         }
 
-        function shareToFacebook() {
+        async function shareToFacebook() {
+            const post = state.posts.find(p => p.id === state.currentPostId);
+            if (!post) return;
+            
+            // Try native share first (works great on mobile)
+            if (navigator.share && navigator.canShare) {
+                try {
+                    // Fetch image and convert to file
+                    const response = await fetch(post.imageUrl);
+                    const blob = await response.blob();
+                    const file = new File([blob], 'postvoice.png', { type: 'image/png' });
+                    
+                    const shareData = {
+                        text: post.enhancedText,
+                        files: [file]
+                    };
+                    
+                    if (navigator.canShare(shareData)) {
+                        await navigator.share(shareData);
+                        showToast('Shared!', 'success');
+                        return;
+                    }
+                } catch (err) {
+                    if (err.name === 'AbortError') return; // User cancelled
+                    console.log('Native share failed, falling back', err);
+                }
+            }
+            
+            // Fallback for desktop: copy + download + open Facebook group
             copyCurrentPost();
             setTimeout(() => downloadCurrentImage(), 500);
             setTimeout(() => {
-                window.open('https://www.facebook.com/', '_blank');
+                window.open('https://www.facebook.com/groups/netflixrecommendations/', '_blank');
+                showToast('Text copied & image downloaded. Paste in Facebook!', 'success');
             }, 1000);
         }
 
-        function shareToInstagram() {
+        async function shareToInstagram() {
+            const post = state.posts.find(p => p.id === state.currentPostId);
+            if (!post) return;
+            
+            // Try native share first
+            if (navigator.share && navigator.canShare) {
+                try {
+                    const response = await fetch(post.imageUrl);
+                    const blob = await response.blob();
+                    const file = new File([blob], 'postvoice.png', { type: 'image/png' });
+                    
+                    const shareData = { files: [file] };
+                    
+                    if (navigator.canShare(shareData)) {
+                        // Copy caption since Instagram doesn't accept text in share
+                        await navigator.clipboard.writeText(post.enhancedText);
+                        await navigator.share(shareData);
+                        showToast('Caption copied! Paste it in Instagram.', 'success');
+                        return;
+                    }
+                } catch (err) {
+                    if (err.name === 'AbortError') return;
+                    console.log('Native share failed, falling back', err);
+                }
+            }
+            
+            // Fallback
             copyCurrentPost();
             setTimeout(() => {
                 downloadCurrentImage();
-                showToast('Image downloaded! Open Instagram to post.', 'success');
+                showToast('Caption copied & image downloaded!', 'success');
             }, 500);
         }
 
