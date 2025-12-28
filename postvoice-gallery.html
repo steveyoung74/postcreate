@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>PostVoice v0.1.0</title>
+    <title>PostVoice v0.2.0</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         * {
@@ -1570,7 +1570,7 @@
                 <div class="logo-icon">
                     <svg viewBox="0 0 24 24"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/><path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/></svg>
                 </div>
-                PostVoice <span class="version-badge">v0.1.0</span>
+                PostVoice <span class="version-badge">v0.2.0</span>
             </div>
             <button class="header-btn" id="settingsBtn">
                 <svg viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.31.06-.63.06-.94 0-.31-.02-.63-.06-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.04.31-.06.63-.06.94s.02.63.06.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
@@ -1875,7 +1875,7 @@
         // CONFIG
         // ============================================
         const CONFIG = {
-            version: '0.1.0',
+            version: '0.2.0',
             webhookUrl: 'https://steveyoung.app.n8n.cloud/webhook/postcreate',
             maxRecordingTime: 60,
             supabaseUrl: 'https://oiahkbvqyfjumnqsefxw.supabase.co',
@@ -1931,6 +1931,58 @@
         // STORAGE (Supabase when logged in, localStorage as fallback)
         // ============================================
         const Storage = {
+            async uploadImage(imageUrl, postId) {
+                // Download image from Recraft and upload to Supabase Storage
+                if (!supabaseClient || !state.user) {
+                    return imageUrl; // Return original URL if not logged in
+                }
+                
+                try {
+                    // Fetch the image from Recraft
+                    const response = await fetch(imageUrl);
+                    if (!response.ok) throw new Error('Failed to fetch image');
+                    
+                    const blob = await response.blob();
+                    const fileName = `${state.user.id}/${postId}.png`;
+                    
+                    // Upload to Supabase Storage
+                    const { data, error } = await supabaseClient.storage
+                        .from('post-images')
+                        .upload(fileName, blob, {
+                            contentType: 'image/png',
+                            upsert: true
+                        });
+                    
+                    if (error) throw error;
+                    
+                    // Get public URL
+                    const { data: urlData } = supabaseClient.storage
+                        .from('post-images')
+                        .getPublicUrl(fileName);
+                    
+                    console.log('Image uploaded to Supabase:', urlData.publicUrl);
+                    return urlData.publicUrl;
+                    
+                } catch (e) {
+                    console.error('Error uploading image to Supabase:', e);
+                    return imageUrl; // Fall back to Recraft URL
+                }
+            },
+            
+            async deleteImage(postId) {
+                // Delete image from Supabase Storage
+                if (!supabaseClient || !state.user) return;
+                
+                try {
+                    const fileName = `${state.user.id}/${postId}.png`;
+                    await supabaseClient.storage
+                        .from('post-images')
+                        .remove([fileName]);
+                } catch (e) {
+                    console.error('Error deleting image:', e);
+                }
+            },
+            
             async loadPosts() {
                 if (state.user && supabaseClient) {
                     // Load from Supabase
@@ -2011,6 +2063,10 @@
                 if (state.user && supabaseClient) {
                     // Delete from Supabase
                     try {
+                        // Delete image from storage first
+                        await this.deleteImage(id);
+                        
+                        // Delete post from database
                         const { error } = await supabaseClient
                             .from('posts')
                             .delete()
@@ -2040,14 +2096,23 @@
                 if (localPosts.length === 0 || !state.user) return;
                 
                 try {
-                    const postsToInsert = localPosts.map(p => ({
-                        user_id: state.user.id,
-                        enhanced_text: p.enhancedText,
-                        original_text: p.originalText,
-                        image_url: p.imageUrl,
-                        style: p.style || 'quick',
-                        created_at: p.createdAt
-                    }));
+                    showToast(`Syncing ${localPosts.length} posts to cloud...`, 'success');
+                    
+                    // Process each post - upload images and prepare for database
+                    const postsToInsert = [];
+                    for (const p of localPosts) {
+                        // Upload image to Supabase Storage
+                        const permanentUrl = await this.uploadImage(p.imageUrl, p.id);
+                        
+                        postsToInsert.push({
+                            user_id: state.user.id,
+                            enhanced_text: p.enhancedText,
+                            original_text: p.originalText,
+                            image_url: permanentUrl,
+                            style: p.style || 'quick',
+                            created_at: p.createdAt
+                        });
+                    }
                     
                     const { error } = await supabaseClient
                         .from('posts')
@@ -2060,6 +2125,7 @@
                     showToast(`${localPosts.length} posts synced to cloud!`, 'success');
                 } catch (e) {
                     console.error('Error migrating posts:', e);
+                    showToast('Some posts failed to sync', 'error');
                 }
             }
         };
@@ -2457,11 +2523,20 @@
                 const result = Array.isArray(data) ? data[0] : data;
                 
                 const enhancedText = result.enhancedPost || result.enhancedText || result.text;
-                const imageUrl = result.imageURL || result.imageUrl || result.image;
+                let imageUrl = result.imageURL || result.imageUrl || result.image;
+                
+                // Generate post ID
+                const postId = Date.now().toString();
+                
+                // Upload image to Supabase Storage (if logged in)
+                if (state.user && supabaseClient) {
+                    const permanentUrl = await Storage.uploadImage(imageUrl, postId);
+                    imageUrl = permanentUrl;
+                }
                 
                 // Create post object
                 const post = {
-                    id: Date.now().toString(),
+                    id: postId,
                     enhancedText,
                     originalText: transcript,
                     imageUrl,
