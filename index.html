@@ -2,736 +2,1196 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Post Creator</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Echoes — Turn your voice into share-ready posts</title>
+    <meta name="description" content="Speak your thoughts about shows and movies. Get polished posts with stunning graphics. Share everywhere.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         * {
             box-sizing: border-box;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        
+        :root {
+            --midnight-void: #0C0F14;
+            --soft-ivory: #F3F3EE;
+            --resonant-coral: #FF4F5E;
+            --echo-violet: #7A6CFF;
+            --neon-whisper: #2DE2E6;
+            --bg-card: #161a22;
+            --bg-elevated: #1e232d;
+            --text-secondary: #9ca3af;
+            --text-muted: #6b7280;
+        }
+        
+        html {
+            scroll-behavior: smooth;
         }
         
         body {
-            max-width: 500px;
-            margin: 0 auto;
-            padding: 20px;
-            background: #1a1a2e;
-            color: #eee;
-            min-height: 100vh;
-        }
-        
-        h1 {
-            text-align: center;
-            font-size: 24px;
-            margin-bottom: 5px;
-        }
-        
-        .subtitle {
-            text-align: center;
-            color: #888;
-            font-size: 14px;
-            margin-bottom: 25px;
-        }
-        
-        .tokens-display {
-            text-align: center;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 10px 20px;
-            border-radius: 20px;
-            font-size: 14px;
-            margin-bottom: 25px;
-            display: inline-block;
-            width: 100%;
-        }
-        
-        .settings-section {
-            background: #16213e;
-            border-radius: 12px;
-            padding: 15px;
-            margin-bottom: 20px;
-        }
-        
-        .settings-section h3 {
-            margin: 0 0 12px 0;
-            font-size: 14px;
-            color: #888;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-            font-size: 14px;
-        }
-        
-        select, input[type="text"] {
-            width: 100%;
-            padding: 12px;
-            margin-bottom: 12px;
-            border-radius: 8px;
-            border: 1px solid #333;
-            background: #0f0f23;
-            color: #eee;
-            font-size: 16px;
-        }
-        
-        select:focus, input[type="text"]:focus {
-            outline: none;
-            border-color: #667eea;
-        }
-        
-        .record-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin: 30px 0;
-        }
-        
-        .record-btn {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            border: 4px solid #667eea;
-            background: transparent;
-            color: white;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .record-btn:active {
-            transform: scale(0.95);
-        }
-        
-        .record-btn.recording {
-            background: #e74c3c;
-            border-color: #e74c3c;
-            animation: pulse 1.5s infinite;
-        }
-        
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(231, 76, 60, 0.7); }
-            50% { transform: scale(1.05); box-shadow: 0 0 0 20px rgba(231, 76, 60, 0); }
-        }
-        
-        .status {
-            text-align: center;
-            color: #888;
-            font-size: 14px;
-            margin-top: 15px;
-        }
-        
-        .content-box {
-            background: #16213e;
-            border-radius: 12px;
-            padding: 15px;
-            margin: 15px 0;
-            min-height: 80px;
-        }
-        
-        .content-box h3 {
-            margin: 0 0 10px 0;
-            font-size: 12px;
-            color: #888;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        
-        .content-box p {
-            margin: 0;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--midnight-void);
+            color: var(--soft-ivory);
             line-height: 1.6;
-            white-space: pre-wrap;
+            overflow-x: hidden;
         }
         
-        .content-box.result {
-            background: linear-gradient(135deg, #1a472a 0%, #16213e 100%);
-            border: 1px solid #27ae60;
-        }
-        
-        .placeholder-text {
-            color: #555;
-            font-style: italic;
-        }
-        
-        .action-btn {
-            width: 100%;
-            padding: 16px;
-            border: none;
-            border-radius: 12px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            margin-top: 10px;
-            transition: all 0.2s ease;
-        }
-        
-        .action-btn:active {
-            transform: scale(0.98);
-        }
-        
-        .enhance-btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-        }
-        
-        .enhance-btn:disabled {
-            background: #333;
-            color: #666;
-            cursor: not-allowed;
-        }
-        
-        .copy-btn {
-            background: #27ae60;
-            color: white;
-        }
-        
-        .clear-btn {
-            background: transparent;
-            border: 1px solid #444;
-            color: #888;
-        }
-        
-        .button-row {
-            display: flex;
-            gap: 10px;
-        }
-        
-        .button-row .action-btn {
-            flex: 1;
-        }
-        
-        .error-message {
-            background: #5c1a1a;
-            border: 1px solid #e74c3c;
-            color: #ff6b6b;
-            padding: 12px;
-            border-radius: 8px;
-            margin: 15px 0;
-            font-size: 14px;
-            display: none;
-        }
-        
-        .loading {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 2px solid #ffffff33;
-            border-radius: 50%;
-            border-top-color: #fff;
-            animation: spin 1s linear infinite;
-            margin-right: 8px;
-            vertical-align: middle;
-        }
-        
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-        
-        /* Modal for buying tokens */
-        .modal-overlay {
-            display: none;
+        /* Navigation */
+        nav {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
-            bottom: 0;
-            background: rgba(0,0,0,0.8);
             z-index: 100;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .modal-overlay.active {
+            padding: 20px 40px;
             display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(12, 15, 20, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
         }
         
-        .modal {
-            background: #16213e;
-            border-radius: 16px;
-            padding: 25px;
-            max-width: 350px;
-            width: 90%;
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 700;
+            font-size: 20px;
+            text-decoration: none;
+            color: var(--soft-ivory);
         }
         
-        .modal h2 {
-            margin: 0 0 20px 0;
-            text-align: center;
+        .nav-logo svg {
+            width: 32px;
+            height: 32px;
         }
         
-        .token-option {
-            background: #0f0f23;
-            border: 2px solid #333;
-            border-radius: 12px;
-            padding: 15px;
-            margin-bottom: 10px;
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            align-items: center;
+        }
+        
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        
+        .nav-links a:hover {
+            color: var(--soft-ivory);
+        }
+        
+        .nav-cta {
+            background: var(--resonant-coral);
+            color: white !important;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .nav-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(255, 79, 94, 0.3);
+        }
+        
+        .nav-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--soft-ivory);
+            font-size: 24px;
             cursor: pointer;
-            transition: all 0.2s ease;
         }
         
-        .token-option:hover {
-            border-color: #667eea;
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 120px 20px 80px;
+            position: relative;
+            overflow: hidden;
         }
         
-        .token-option .amount {
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 30% 20%, rgba(122, 108, 255, 0.15) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 80%, rgba(255, 79, 94, 0.1) 0%, transparent 50%);
+            animation: float 20s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            50% { transform: translate(-20px, -20px) rotate(5deg); }
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 900px;
+        }
+        
+        .hero h1 {
+            font-size: clamp(40px, 8vw, 72px);
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 24px;
+            letter-spacing: -0.02em;
+        }
+        
+        .hero h1 span {
+            display: block;
+        }
+        
+        .hero-rotating {
+            background: linear-gradient(135deg, var(--resonant-coral), var(--echo-violet));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .hero-subtitle {
+            font-size: clamp(18px, 3vw, 24px);
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .hero-tagline {
+            font-size: 18px;
+            color: var(--echo-violet);
+            margin-bottom: 40px;
+            font-weight: 500;
+        }
+        
+        .hero-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: linear-gradient(135deg, var(--resonant-coral), var(--echo-violet));
+            color: white;
+            padding: 16px 32px;
+            border-radius: 12px;
             font-size: 18px;
             font-weight: 600;
+            text-decoration: none;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 10px 40px rgba(255, 79, 94, 0.3);
         }
         
-        .token-option .price {
-            color: #27ae60;
+        .hero-cta:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 50px rgba(255, 79, 94, 0.4);
+        }
+        
+        .hero-cta svg {
+            width: 20px;
+            height: 20px;
+        }
+        
+        .hero-platforms {
+            display: flex;
+            gap: 24px;
+            justify-content: center;
+            margin-top: 24px;
+            color: var(--text-muted);
             font-size: 14px;
         }
         
-        .token-option .savings {
-            color: #667eea;
-            font-size: 12px;
+        .hero-stats {
+            display: flex;
+            gap: 48px;
+            justify-content: center;
+            margin-top: 60px;
+            padding-top: 40px;
+            border-top: 1px solid rgba(255,255,255,0.1);
         }
         
-        .modal-close {
+        .hero-stat {
+            text-align: center;
+        }
+        
+        .hero-stat-value {
+            font-size: 32px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--resonant-coral), var(--echo-violet));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .hero-stat-label {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+        
+        /* Sections */
+        section {
+            padding: 100px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .section-label {
+            text-transform: uppercase;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            color: var(--echo-violet);
+            margin-bottom: 16px;
+        }
+        
+        .section-title {
+            font-size: clamp(32px, 5vw, 48px);
+            font-weight: 700;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+        
+        .section-subtitle {
+            font-size: 18px;
+            color: var(--text-secondary);
+            max-width: 600px;
+        }
+        
+        /* How it Works */
+        .how-it-works {
+            text-align: center;
+            overflow: visible;
+        }
+        
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            margin-top: 60px;
+            align-items: start;
             width: 100%;
-            padding: 12px;
-            background: transparent;
-            border: 1px solid #444;
-            color: #888;
-            border-radius: 8px;
-            cursor: pointer;
-            margin-top: 10px;
+        }
+        
+        .step {
+            position: relative;
+            width: 100%;
+        }
+        
+        .step-number {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--resonant-coral), var(--echo-violet));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 20px;
+            margin: 0 auto 20px;
+        }
+        
+        .step-visual {
+            width: 100%;
+            height: 220px;
+            background: var(--bg-card);
+            border-radius: 16px;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(255,255,255,0.05);
+            overflow: hidden;
+        }
+        
+        .step-visual-content {
+            padding: 24px;
+            text-align: left;
+            width: 100%;
+        }
+        
+        .step-visual-voice {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .voice-wave {
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 3px;
+        }
+        
+        .voice-wave span {
+            width: 4px;
+            background: linear-gradient(to top, var(--resonant-coral), var(--echo-violet));
+            border-radius: 2px;
+            animation: wave 1s ease-in-out infinite;
+        }
+        
+        .voice-wave span:nth-child(1) { height: 20px; animation-delay: 0s; }
+        .voice-wave span:nth-child(2) { height: 35px; animation-delay: 0.1s; }
+        .voice-wave span:nth-child(3) { height: 25px; animation-delay: 0.2s; }
+        .voice-wave span:nth-child(4) { height: 40px; animation-delay: 0.3s; }
+        .voice-wave span:nth-child(5) { height: 30px; animation-delay: 0.4s; }
+        .voice-wave span:nth-child(6) { height: 35px; animation-delay: 0.5s; }
+        .voice-wave span:nth-child(7) { height: 20px; animation-delay: 0.6s; }
+        
+        @keyframes wave {
+            0%, 100% { transform: scaleY(1); }
+            50% { transform: scaleY(0.5); }
+        }
+        
+        .voice-text {
+            font-size: 14px;
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+        
+        .step-visual-magic {
+            font-size: 48px;
+        }
+        
+        .step-visual-result {
+            background: linear-gradient(135deg, #1a1520 0%, #151020 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: 20px;
+        }
+        
+        .result-image {
+            width: 60%;
+            max-width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, #2a1a2e, #1a1525);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 12px;
+            border: 1px solid rgba(122, 108, 255, 0.3);
+        }
+        
+        .result-image-text {
+            font-size: 24px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--resonant-coral), var(--echo-violet));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .result-post {
+            font-size: 11px;
+            color: var(--text-secondary);
+            text-align: center;
+            line-height: 1.4;
+        }
+        
+        .step h3 {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+        
+        .step p {
+            color: var(--text-secondary);
+            font-size: 15px;
+            text-align: center;
+        }
+        
+        /* Use Cases */
+        .use-cases {
+            background: var(--bg-card);
+            border-radius: 24px;
+            padding: 80px 60px;
+            margin: 0 20px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 0;
+            position: relative;
+            z-index: 2;
+            clear: both;
+        }
+        
+        .use-cases-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 40px;
+            margin-top: 60px;
+        }
+        
+        .use-case {
+            background: var(--midnight-void);
+            border-radius: 16px;
+            padding: 32px;
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: transform 0.3s, border-color 0.3s;
+        }
+        
+        .use-case:hover {
+            transform: translateY(-5px);
+            border-color: rgba(122, 108, 255, 0.3);
+        }
+        
+        .use-case-icon {
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, rgba(255, 79, 94, 0.2), rgba(122, 108, 255, 0.2));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+        
+        .use-case h3 {
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .use-case-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+        
+        .use-case-tag {
+            background: var(--bg-elevated);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+        
+        .use-case p {
+            color: var(--text-secondary);
+            font-size: 15px;
+            line-height: 1.6;
+        }
+        
+        /* Features */
+        .features {
+            text-align: center;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin-top: 60px;
+        }
+        
+        .feature {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 32px 24px;
+            text-align: left;
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: border-color 0.3s;
+        }
+        
+        .feature:hover {
+            border-color: rgba(122, 108, 255, 0.3);
+        }
+        
+        .feature-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--bg-elevated);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-bottom: 16px;
+        }
+        
+        .feature h3 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .feature p {
+            color: var(--text-secondary);
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        
+        /* Styles Preview */
+        .styles-section {
+            text-align: center;
+        }
+        
+        .styles-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+            margin-top: 40px;
+        }
+        
+        .style-tag {
+            background: var(--bg-card);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 12px 24px;
+            border-radius: 100px;
+            font-size: 15px;
+            font-weight: 500;
+            transition: all 0.3s;
+            cursor: default;
+        }
+        
+        .style-tag:hover {
+            border-color: var(--echo-violet);
+            background: rgba(122, 108, 255, 0.1);
+        }
+        
+        .style-tag.highlight {
+            background: linear-gradient(135deg, var(--resonant-coral), var(--echo-violet));
+            border-color: transparent;
+        }
+        
+        /* Reviews */
+        .reviews {
+            text-align: center;
+        }
+        
+        .reviews-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin-top: 60px;
+        }
+        
+        .review {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 32px;
+            text-align: left;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        
+        .review-stars {
+            color: #fbbf24;
+            font-size: 18px;
+            margin-bottom: 16px;
+        }
+        
+        .review-text {
+            font-size: 15px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        
+        .review-author {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .review-avatar {
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, var(--resonant-coral), var(--echo-violet));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 16px;
+        }
+        
+        .review-name {
+            font-weight: 600;
+            font-size: 15px;
+        }
+        
+        .review-handle {
+            color: var(--text-muted);
+            font-size: 13px;
+        }
+        
+        /* Final CTA */
+        .final-cta {
+            text-align: center;
+            padding: 120px 20px;
+            position: relative;
+        }
+        
+        .final-cta::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(122, 108, 255, 0.15) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        
+        .final-cta h2 {
+            font-size: clamp(36px, 6vw, 56px);
+            font-weight: 700;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        .final-cta p {
+            font-size: 20px;
+            color: var(--text-secondary);
+            margin-bottom: 40px;
+            position: relative;
+        }
+        
+        .final-cta .hero-cta {
+            position: relative;
+        }
+        
+        /* Footer */
+        footer {
+            background: var(--bg-card);
+            padding: 60px 20px 40px;
+            margin-top: 40px;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 60px;
+        }
+        
+        .footer-brand {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 700;
+            font-size: 20px;
+        }
+        
+        .footer-logo svg {
+            width: 32px;
+            height: 32px;
+        }
+        
+        .footer-tagline {
+            color: var(--text-secondary);
+            font-size: 14px;
+            max-width: 280px;
+        }
+        
+        .footer-column h4 {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .footer-column a {
+            display: block;
+            color: var(--soft-ivory);
+            text-decoration: none;
+            font-size: 15px;
+            margin-bottom: 12px;
+            transition: color 0.2s;
+        }
+        
+        .footer-column a:hover {
+            color: var(--resonant-coral);
+        }
+        
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 40px auto 0;
+            padding-top: 24px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+        
+        .footer-social {
+            display: flex;
+            gap: 16px;
+        }
+        
+        .footer-social a {
+            color: var(--text-secondary);
+            transition: color 0.2s;
+        }
+        
+        .footer-social a:hover {
+            color: var(--soft-ivory);
+        }
+        
+        /* Mobile Responsive */
+        @media (max-width: 1100px) {
+            .steps {
+                gap: 24px;
+            }
+            
+            .step-visual {
+                height: 180px;
+            }
+        }
+        
+        @media (max-width: 900px) {
+            nav {
+                padding: 16px 20px;
+            }
+            
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: var(--midnight-void);
+                flex-direction: column;
+                padding: 20px;
+                gap: 16px;
+                border-bottom: 1px solid rgba(255,255,255,0.05);
+            }
+            
+            .nav-links.open {
+                display: flex;
+            }
+            
+            .nav-menu-btn {
+                display: block;
+            }
+            
+            .steps {
+                grid-template-columns: 1fr;
+                gap: 60px;
+            }
+            
+            .step-visual {
+                height: 200px;
+            }
+            
+            .use-cases {
+                padding: 40px 24px;
+                margin: 0 10px;
+            }
+            
+            .use-cases-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .reviews-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .hero-stats {
+                flex-direction: column;
+                gap: 24px;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr 1fr;
+                gap: 40px;
+            }
+            
+            .footer-brand {
+                grid-column: span 2;
+            }
+            
+            .footer-bottom {
+                flex-direction: column;
+                gap: 16px;
+                text-align: center;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-brand {
+                grid-column: span 1;
+            }
         }
     </style>
 </head>
 <body>
-    <h1>✨ Post Creator v1.0</h1>
-    <p class="subtitle">Turn your thoughts into engaging posts</p>
-    
-    <div class="tokens-display">
-        🪙 <span id="tokenCount">3</span> tokens remaining
-        <span style="margin-left: 10px; cursor: pointer;" onclick="showBuyTokens()">+ Buy more</span>
-    </div>
-    
-    <div class="settings-section">
-        <h3>Post Settings</h3>
+    <!-- Navigation -->
+    <nav>
+        <a href="/" class="nav-logo">
+            <svg viewBox="0 0 40 40" fill="none">
+                <defs>
+                    <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#FF4F5E"/>
+                        <stop offset="100%" stop-color="#7A6CFF"/>
+                    </linearGradient>
+                </defs>
+                <path d="M20 8C13.4 8 8 13.4 8 20s5.4 12 12 12" stroke="url(#logoGradient)" stroke-width="3" stroke-linecap="round" fill="none"/>
+                <path d="M20 13c-3.9 0-7 3.1-7 7s3.1 7 7 7" stroke="url(#logoGradient)" stroke-width="3" stroke-linecap="round" fill="none"/>
+                <path d="M20 18c-1.1 0-2 .9-2 2s.9 2 2 2" stroke="url(#logoGradient)" stroke-width="3" stroke-linecap="round" fill="none"/>
+            </svg>
+            Echoes
+        </a>
         
-        <label for="platform">Platform</label>
-        <select id="platform">
-            <option value="facebook-group">Facebook Group</option>
-            <option value="facebook-page">Facebook Page</option>
-            <option value="twitter">Twitter/X</option>
-            <option value="linkedin">LinkedIn</option>
-            <option value="instagram">Instagram</option>
-        </select>
-        
-        <label for="tone">Tone</label>
-        <select id="tone">
-            <option value="enthusiastic">Enthusiastic & Excited</option>
-            <option value="casual">Casual & Friendly</option>
-            <option value="informative">Informative & Helpful</option>
-            <option value="humorous">Humorous & Fun</option>
-            <option value="thoughtful">Thoughtful & Reflective</option>
-        </select>
-        
-        <label for="showTitle">Show/Movie Title (optional)</label>
-        <input type="text" id="showTitle" placeholder="e.g., Wednesday, The Bear, Squid Game">
-    </div>
-    
-    <div class="record-container">
-        <button class="record-btn" id="recordBtn">
-            <span>Start<br>Talking</span>
-        </button>
-        <p class="status" id="status">Tap to start speaking</p>
-    </div>
-    
-    <div class="content-box" id="transcriptBox">
-        <h3>What you said</h3>
-        <p id="transcript" class="placeholder-text">Your speech will appear here...</p>
-    </div>
-    
-    <div class="error-message" id="errorMessage"></div>
-    
-    <button class="action-btn enhance-btn" id="enhanceBtn" disabled>
-        ✨ Enhance Post (1 token)
-    </button>
-    
-    <div class="content-box result" id="resultBox" style="display: none;">
-        <h3>Your enhanced post</h3>
-        <p id="enhancedPost"></p>
-    </div>
-    
-    <div class="button-row" id="resultButtons" style="display: none;">
-        <button class="action-btn copy-btn" id="copyBtn">📋 Copy</button>
-        <button class="action-btn clear-btn" id="clearBtn">🔄 New Post</button>
-    </div>
-    
-    <!-- Buy Tokens Modal -->
-    <div class="modal-overlay" id="buyModal">
-        <div class="modal">
-            <h2>🪙 Buy Tokens</h2>
-            
-            <div class="token-option" onclick="buyTokens(10, 2.99)">
-                <div class="amount">10 Tokens</div>
-                <div class="price">£2.99</div>
-            </div>
-            
-            <div class="token-option" onclick="buyTokens(30, 6.99)">
-                <div class="amount">30 Tokens</div>
-                <div class="price">£6.99</div>
-                <div class="savings">Save 22% + Auto-replenish available</div>
-            </div>
-            
-            <div class="token-option" onclick="buyTokens(100, 19.99)">
-                <div class="amount">100 Tokens</div>
-                <div class="price">£19.99</div>
-                <div class="savings">Save 33% - Best value!</div>
-            </div>
-            
-            <button class="modal-close" onclick="hideBuyTokens()">Cancel</button>
+        <div class="nav-links" id="navLinks">
+            <a href="#how">How it works</a>
+            <a href="#use-cases">Use cases</a>
+            <a href="#features">Features</a>
+            <a href="#reviews">Reviews</a>
+            <a href="echoes.html" class="nav-cta">Try it free</a>
         </div>
-    </div>
-
-    <script>
-        // ============================================
-        // CONFIGURATION - Update these for production
-        // ============================================
-        const CONFIG = {
-            apiEndpoint: '/api/enhance', // Your backend endpoint
-            // Group rules that posts must follow
-            groupRules: [
-                'Must mention a show you have actually watched',
-                'Include what you liked or found interesting about it',
-                'No generic "looking for recommendations" posts without giving one first'
-            ]
-        };
-
-        // ============================================
-        // STATE MANAGEMENT
-        // ============================================
-        let state = {
-            tokens: parseInt(localStorage.getItem('tokens') || '3'),
-            isRecording: false,
-            finalTranscript: ''
-        };
-
-        // Update token display
-        function updateTokenDisplay() {
-            document.getElementById('tokenCount').textContent = state.tokens;
-            localStorage.setItem('tokens', state.tokens.toString());
-        }
-
-        // ============================================
-        // SPEECH RECOGNITION SETUP
-        // ============================================
-        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-        let recognition = null;
-
-        if (!SpeechRecognition) {
-            document.getElementById('status').textContent = 'Speech recognition not supported. Try Chrome or Safari.';
-            document.getElementById('recordBtn').disabled = true;
-        } else {
-            recognition = new SpeechRecognition();
-            recognition.continuous = true;
-            recognition.interimResults = true;
-            recognition.lang = 'en-GB';
-
-            recognition.onresult = (event) => {
-                let interimTranscript = '';
-                
-                for (let i = event.resultIndex; i < event.results.length; i++) {
-                    const result = event.results[i];
-                    if (result.isFinal) {
-                        state.finalTranscript += result[0].transcript + ' ';
-                    } else {
-                        interimTranscript += result[0].transcript;
-                    }
-                }
-                
-                const transcriptEl = document.getElementById('transcript');
-                transcriptEl.textContent = state.finalTranscript + interimTranscript;
-                transcriptEl.classList.remove('placeholder-text');
-                
-                document.getElementById('enhanceBtn').disabled = state.finalTranscript.trim().length === 0;
-            };
-
-            recognition.onerror = (event) => {
-                console.error('Speech recognition error:', event.error);
-                showError(`Speech error: ${event.error}. Please try again.`);
-                stopRecording();
-            };
-
-            recognition.onend = () => {
-                if (state.isRecording) {
-                    // Restart if user is still holding button
-                    try {
-                        recognition.start();
-                    } catch (e) {
-                        console.log('Recognition restart failed:', e);
-                    }
-                }
-            };
-        }
-
-        // ============================================
-        // RECORDING CONTROLS
-        // ============================================
-        function startRecording() {
-            if (!recognition) return;
-            
-            state.isRecording = true;
-            state.finalTranscript = '';
-            
-            const transcriptEl = document.getElementById('transcript');
-            transcriptEl.textContent = '';
-            transcriptEl.classList.add('placeholder-text');
-            
-            const btn = document.getElementById('recordBtn');
-            btn.classList.add('recording');
-            btn.innerHTML = '<span>Done</span>';
-            
-            document.getElementById('status').textContent = 'Listening... Tap Done when finished';
-            hideError();
-            
-            try {
-                recognition.start();
-            } catch (e) {
-                console.log('Recognition start failed:', e);
-            }
-        }
-
-        function stopRecording() {
-            if (!recognition) return;
-            
-            state.isRecording = false;
-            
-            const btn = document.getElementById('recordBtn');
-            btn.classList.remove('recording');
-            btn.innerHTML = '<span>Start<br>Talking</span>';
-            
-            document.getElementById('status').textContent = 'Tap to start speaking';
-            
-            try {
-                recognition.stop();
-            } catch (e) {
-                console.log('Recognition stop failed:', e);
-            }
-        }
-
-        function toggleRecording() {
-            if (state.isRecording) {
-                stopRecording();
-            } else {
-                startRecording();
-            }
-        }
-
-        // Record button event listeners
-        const recordBtn = document.getElementById('recordBtn');
-
-        // ============================================
-        // ENHANCE POST FUNCTIONALITY
-        // ============================================
-        document.getElementById('enhanceBtn').addEventListener('click', async () => {
-            const userText = state.finalTranscript.trim();
-            if (!userText) return;
-            
-            if (state.tokens <= 0) {
-                showBuyTokens();
-                return;
-            }
-            
-            const enhanceBtn = document.getElementById('enhanceBtn');
-            enhanceBtn.disabled = true;
-            enhanceBtn.innerHTML = '<span class="loading"></span> Enhancing...';
-            hideError();
-            
-            try {
-                const enhancedText = await callEnhanceAPI(userText);
-                
-                // Deduct token
-                state.tokens--;
-                updateTokenDisplay();
-                
-                // Show result
-                document.getElementById('enhancedPost').textContent = enhancedText;
-                document.getElementById('resultBox').style.display = 'block';
-                document.getElementById('resultButtons').style.display = 'flex';
-                
-                enhanceBtn.innerHTML = '✨ Enhance Post (1 token)';
-                enhanceBtn.disabled = false;
-                
-            } catch (error) {
-                console.error('Enhancement error:', error);
-                showError('Enhancement failed. Please try again.');
-                enhanceBtn.innerHTML = '✨ Enhance Post (1 token)';
-                enhanceBtn.disabled = false;
-            }
-        });
-
-        // ============================================
-        // API CALL - n8n webhook
-        // ============================================
-        async function callEnhanceAPI(userText) {
-            const platform = document.getElementById('platform').value;
-            const tone = document.getElementById('tone').value;
-            const showTitle = document.getElementById('showTitle').value;
-            
-            const response = await fetch('https://steveyoung.app.n8n.cloud/webhook-test/postcreate', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    text: userText,
-                    platform: platform,
-                    tone: tone,
-                    showTitle: showTitle,
-                    groupRules: CONFIG.groupRules
-                })
-            });
-            
-            if (!response.ok) {
-                throw new Error('API request failed');
-            }
-            
-            const data = await response.json();
-            // n8n returns an array, so get the first item
-            const result = Array.isArray(data) ? data[0] : data;
-            return result.enhancedText;
-        }
-
-        // ============================================
-        // COPY & CLEAR FUNCTIONALITY
-        // ============================================
-        document.getElementById('copyBtn').addEventListener('click', async () => {
-            const text = document.getElementById('enhancedPost').textContent;
-            const copyBtn = document.getElementById('copyBtn');
-            
-            try {
-                await navigator.clipboard.writeText(text);
-                copyBtn.textContent = '✅ Copied!';
-                setTimeout(() => {
-                    copyBtn.textContent = '📋 Copy';
-                }, 2000);
-            } catch (err) {
-                // Fallback for older browsers
-                const textArea = document.createElement('textarea');
-                textArea.value = text;
-                textArea.style.position = 'fixed';
-                textArea.style.opacity = '0';
-                document.body.appendChild(textArea);
-                textArea.select();
-                document.execCommand('copy');
-                document.body.removeChild(textArea);
-                copyBtn.textContent = '✅ Copied!';
-                setTimeout(() => {
-                    copyBtn.textContent = '📋 Copy';
-                }, 2000);
-            }
-        });
-
-        document.getElementById('clearBtn').addEventListener('click', () => {
-            state.finalTranscript = '';
-            document.getElementById('transcript').textContent = 'Your speech will appear here...';
-            document.getElementById('transcript').classList.add('placeholder-text');
-            document.getElementById('resultBox').style.display = 'none';
-            document.getElementById('resultButtons').style.display = 'none';
-            document.getElementById('enhanceBtn').disabled = true;
-            document.getElementById('showTitle').value = '';
-        });
-
-        // ============================================
-        // TOKEN PURCHASE MODAL
-        // ============================================
-        function showBuyTokens() {
-            document.getElementById('buyModal').classList.add('active');
-        }
-
-        function hideBuyTokens() {
-            document.getElementById('buyModal').classList.remove('active');
-        }
-
-        function buyTokens(amount, price) {
-            // In production, this would integrate with Stripe or similar
-            alert(`This would open payment for ${amount} tokens at £${price}\n\nPayment integration needed for production.`);
-            
-            // Demo: Just add the tokens
-            state.tokens += amount;
-            updateTokenDisplay();
-            hideBuyTokens();
-        }
-
-        // ============================================
-        // ERROR HANDLING
-        // ============================================
-        function showError(message) {
-            const errorEl = document.getElementById('errorMessage');
-            errorEl.textContent = message;
-            errorEl.style.display = 'block';
-        }
-
-        function hideError() {
-            document.getElementById('errorMessage').style.display = 'none';
-        }
-
-        // ============================================
-        // MICROPHONE PERMISSION - Request upfront
-        // ============================================
-        async function requestMicrophonePermission() {
-            try {
-                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-                // Permission granted - stop the stream immediately (we just needed permission)
-                stream.getTracks().forEach(track => track.stop());
-                document.getElementById('status').textContent = 'Tap to start speaking';
-                return true;
-            } catch (err) {
-                console.error('Microphone permission denied:', err);
-                document.getElementById('status').textContent = 'Microphone access needed. Tap the button to allow.';
-                return false;
-            }
-        }
-
-        // Check permission on first interaction with record button
-        let micPermissionGranted = false;
         
-        async function handleRecordClick() {
-            if (!micPermissionGranted) {
-                const btn = document.getElementById('recordBtn');
-                btn.innerHTML = '<span>Allow<br>Mic</span>';
-                
-                micPermissionGranted = await requestMicrophonePermission();
-                
-                if (micPermissionGranted) {
-                    btn.innerHTML = '<span>Start<br>Talking</span>';
-                    // Now start recording since they wanted to talk
-                    startRecording();
-                } else {
-                    btn.innerHTML = '<span>Mic<br>Blocked</span>';
-                }
-            } else {
-                toggleRecording();
-            }
-        }
-
-        // Single click/tap handler for toggle
-        recordBtn.addEventListener('click', handleRecordClick);
-
-        // ============================================
-        // INITIALIZATION
-        // ============================================
-        updateTokenDisplay();
+        <button class="nav-menu-btn" id="menuBtn" onclick="document.getElementById('navLinks').classList.toggle('open')">☰</button>
+    </nav>
+    
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>
+                <span>Turn your voice into</span>
+                <span class="hero-rotating">share-ready posts</span>
+            </h1>
+            <p class="hero-subtitle">
+                Speak your thoughts about shows and movies. Get polished text and stunning graphics. Share everywhere.
+            </p>
+            <p class="hero-tagline">✨ Still you. Just clearer.</p>
+            
+            <a href="echoes.html" class="hero-cta">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/><path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/></svg>
+                Start for free
+            </a>
+            
+            <div class="hero-platforms">
+                <span>📱 iOS</span>
+                <span>🤖 Android</span>
+                <span>🌐 Web</span>
+            </div>
+            
+            <div class="hero-stats">
+                <div class="hero-stat">
+                    <div class="hero-stat-value">5.1M+</div>
+                    <div class="hero-stat-label">Community members</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="hero-stat-value">10K+</div>
+                    <div class="hero-stat-label">Posts created</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="hero-stat-value">4.9★</div>
+                    <div class="hero-stat-label">User rating</div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- How it Works -->
+    <section class="how-it-works" id="how">
+        <p class="section-label">How it works</p>
+        <h2 class="section-title">From thought to post in seconds</h2>
+        <p class="section-subtitle" style="margin: 0 auto;">No writing. No designing. Just speak naturally about what you watched.</p>
         
-        // Try to get permission status on load (won't prompt, just checks)
-        if (navigator.permissions && navigator.permissions.query) {
-            navigator.permissions.query({ name: 'microphone' }).then(result => {
-                if (result.state === 'granted') {
-                    micPermissionGranted = true;
-                }
-            }).catch(() => {
-                // Some browsers don't support this query, that's fine
-            });
-        }
-    </script>
-</body>
-</html>
+        <div class="steps">
+            <div class="step">
+                <div class="step-number">1</div>
+                <div class="step-visual">
+                    <div class="step-visual-content">
+                        <div class="step-visual-voice">
+                            <div class="voice-wave">
+                                <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+                            </div>
+                            <p class="voice-text">"Just finished Wednesday and honestly it was so good, the dark humor is perfect and Jenna Ortega absolutely killed it..."</p>
+                        </div>
+                    </div>
+                </div>
+                <h3>Speak your mind</h3>
+                <p>Tap record and talk naturally about what you watched. No script needed.</p>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">2</div>
+                <div class="step-visual">
+                    <div class="step-visual-magic">✨🎬</div>
+                </div>
+                <h3>Watch the magic</h3>
+                <p>We polish your words and create a matching typographic graphic.</p>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">3</div>
+                <div class="step-visual step-visual-result">
+                    <div class="result-image">
+                        <span class="result-image-text">OBSESSED</span>
+                    </div>
+                    <p class="result-post">Just binged Wednesday and I'm completely hooked! 🖤 The dark humor is *chef's kiss*...</p>
+                </div>
+                <h3>Share everywhere</h3>
+                <p>Post to Facebook groups, Instagram, X, or anywhere you want.</p>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Use Cases -->
+    <section class="use-cases" id="use-cases">
+        <p class="section-label">Use cases</p>
+        <h2 class="section-title">For every kind of recommendation</h2>
+        <p class="section-subtitle">Whether you just finished a binge or discovered a hidden gem, Echoes has you covered.</p>
+        
+        <div class="use-cases-grid">
+            <div class="use-case">
+                <div class="use-case-icon">⚡</div>
+                <h3>Quick Recommendations</h3>
+                <div class="use-case-tags">
+                    <span class="use-case-tag">fast</span>
+                    <span class="use-case-tag">punchy</span>
+                    <span class="use-case-tag">shareable</span>
+                </div>
+                <p>Perfect for those "you HAVE to watch this" moments. Short, energetic posts that grab attention.</p>
+            </div>
+            
+            <div class="use-case">
+                <div class="use-case-icon">📝</div>
+                <h3>Full Reviews</h3>
+                <div class="use-case-tags">
+                    <span class="use-case-tag">detailed</span>
+                    <span class="use-case-tag">structured</span>
+                    <span class="use-case-tag">thoughtful</span>
+                </div>
+                <p>Share your complete thoughts with what you loved, who should watch it, and why. No spoilers.</p>
+            </div>
+            
+            <div class="use-case">
+                <div class="use-case-icon">🔥</div>
+                <h3>Binge Reports</h3>
+                <div class="use-case-tags">
+                    <span class="use-case-tag">just finished</span>
+                    <span class="use-case-tag">emotions</span>
+                    <span class="use-case-tag">reactions</span>
+                </div>
+                <p>"Just finished and I need to talk about it!" Capture that immediate post-binge energy.</p>
+            </div>
+            
+            <div class="use-case">
+                <div class="use-case-icon">💎</div>
+                <h3>Hidden Gems</h3>
+                <div class="use-case-tags">
+                    <span class="use-case-tag">underseen</span>
+                    <span class="use-case-tag">underrated</span>
+                    <span class="use-case-tag">discovery</span>
+                </div>
+                <p>Found something amazing that nobody's talking about? Help others discover it.</p>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Style Variety -->
+    <section class="styles-section">
+        <p class="section-label">Visual styles</p>
+        <h2 class="section-title">Graphics that match the vibe</h2>
+        <p class="section-subtitle" style="margin: 0 auto;">Each graphic is uniquely styled to match what you're talking about.</p>
+        
+        <div class="styles-grid">
+            <span class="style-tag">🎃 Gothic Dark</span>
+            <span class="style-tag">🌴 Bright Comedy</span>
+            <span class="style-tag highlight">🔮 Neon Synthwave</span>
+            <span class="style-tag">💎 Prestige Drama</span>
+            <span class="style-tag">💕 Romance</span>
+            <span class="style-tag">🚀 Sci-Fi</span>
+            <span class="style-tag">🎬 Action Thriller</span>
+            <span class="style-tag">🍳 Kitchen Drama</span>
+            <span class="style-tag highlight">🎭 Quirky Wes Anderson</span>
+            <span class="style-tag">📺 True Crime</span>
+            <span class="style-tag">☕ Cozy Comfort</span>
+            <span class="style-tag">🌈 Animated</span>
+        </div>
+    </section>
+    
+    <!-- Features -->
+    <section class="features" id="features">
+        <p class="section-label">Features</p>
+        <h2 class="section-title">Everything you need to share</h2>
+        
+        <div class="features-grid">
+            <div class="feature">
+                <div class="feature-icon">🎤</div>
+                <h3>Voice-first</h3>
+                <p>Just talk naturally. No typing, no writer's block. Your authentic voice, polished.</p>
+            </div>
+            
+            <div class="feature">
+                <div class="feature-icon">🎨</div>
+                <h3>Auto-generated graphics</h3>
+                <p>Every post gets a unique, scroll-stopping typographic image that matches the vibe.</p>
+            </div>
+            
+            <div class="feature">
+                <div class="feature-icon">📱</div>
+                <h3>One-tap sharing</h3>
+                <p>Share directly to Facebook groups, Instagram, X, or download for anywhere else.</p>
+            </div>
+            
+            <div class="feature">
+                <div class="feature-icon">☁️</div>
+                <h3>Cloud sync</h3>
+                <p>Your posts sync across all your devices. Start on phone, continue on desktop.</p>
+            </div>
+            
+            <div class="feature">
+                <div class="feature-icon">✨</div>
+                <h3>Smart enhancement</h3>
+                <p>We improve your words while keeping your authentic voice. Still you, just clearer.</p>
+            </div>
+            
+            <div class="feature">
+                <div class="feature-icon">🌙</div>
+                <h3>Dark mode</h3>
+                <p>Beautiful dark interface that's easy on the eyes for late-night browsing.</p>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Reviews -->
+    <section class="reviews" id="reviews">
+        <p class="section-label">Reviews</p>
+        <h2 class="section-title">Loved by entertainment fans</h2>
+        
+        <div class="reviews-grid">
+            <div class="review">
+                <div class="review-stars">★★★★★</div>
+                <p class="review-text">"I used to spend 15 minutes writing a post about a show. Now I just talk for 30 seconds and get something even better. Game changer!"</p>
+                <div class="review-author">
+                    <div class="review-avatar">S</div>
+                    <div>
+                        <div class="review-name">Sarah M.</div>
+                        <div class="review-handle">Netflix group admin</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="review">
+                <div class="review-stars">★★★★★</div>
+                <p class="review-text">"The graphics are incredible. My posts actually get noticed now instead of getting lost in the feed. The Wednesday-style graphic was perfect!"</p>
+                <div class="review-author">
+                    <div class="review-avatar">J</div>
+                    <div>
+                        <div class="review-name">James T.</div>
+                        <div class="review-handle">TV enthusiast</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="review">
+                <div class="review-stars">★★★★★</div>
+                <p class="review-text">"Finally an app that gets it. I have opinions but hate writing. Now I just ramble and it comes out polished. Love the surprise of seeing what graphic I get!"</p>
+                <div class="review-author">
+                    <div class="review-avatar">M</div>
+                    <div>
+                        <div class="review-name">Michelle R.</div>
+                        <div class="review-handle">Binge watcher</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Final CTA -->
+    <section class="final-cta">
+        <h2>Every opinion deserves<br>to be heard.</h2>
+        <p>Start sharing what you love. It's free.</p>
+        <a href="echoes.html" class="hero-cta">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/><path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/></svg>
+            Let it echo ✨
+        </a>
+    </section>
+    
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-brand">
+                <div class="footer-logo">
+                    <svg viewBox="0 0 40 40" fill="none">
+                        <defs>
+                            <linearGradient id="footerLogoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#FF4F5E"/>
+                                <stop offset="100%" stop-color="#7A6CFF"/>
+                            </linearGradient>
+                        </defs>
+                        <path d="M20 8C13.4 8 8 13.4 8 20s5.4 12 12 12" stroke="url(#footerLogoGradient)" stroke-width="3" stroke-linecap="round" fill="none"/>
+                        <path d="M20 13c-3.9 0-7 3.1-7 7s3.1 7 7 7" stroke="url(#footerLogoGradient)" stroke-width="3" stroke-linecap="round" fill="none"/>
+                        <path d="M20 18c-1.1 0-2 .9-2 2s.9 2 2 2" stroke="url(#footerLogoGradient)" stroke-width="3" stroke-linecap="round" fill="none"/>
+                    </svg>
+                    Echoes
+                </div>
+                <p class="footer-tagline">Turn your voice into share-ready posts about the shows and movies you love.</p>
+            </div>
+            
+            <div class="footer-column">
+                <h4>Product</h4>
+                <a href="#how">How it works</a>
+                <a href="#features">Features</a>
+                <a href="#reviews">Reviews</a>
+                <a href="echoes.html">Try it free</a>
+            </div>
+            
+            <div class="footer-column">
+                <h4>Resources</h4>
+                <a href="#">Support</a>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+            </div>
+            
+            <div class="footer-column">
+                <h4>Get in touch</h4>
+                <a href="/cdn-cgi/l/email-protection#bfd7dad3d3d0ffdadcd7d0dacc91decfcf"><span class="__cf_email__" data-cfemail="90f8f5fcfcffd0f5f3f8fff5e3bef1e0e0">[email&#160;protected]</span></a>
+                <a href="#">Discord</a>
+                <a href="#">Twitter/X</a>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <span>© 2025 Echoes. All rights reserved.</span>
+            <div class="footer-social">
+                <a href="#">𝕏</a>
+                <
