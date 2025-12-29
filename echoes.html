@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Echoes v0.4.0</title>
+    <title>Echoes v0.4.1</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -778,23 +778,10 @@
             font-size: 24px;
         }
         
-        .style-selector {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            background: var(--bg-elevated);
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 14px;
-            cursor: pointer;
-            border: 1px solid var(--border);
+        .recording-title {
+            font-size: 16px;
+            font-weight: 600;
             color: var(--text-primary);
-        }
-        
-        .style-selector svg {
-            width: 16px;
-            height: 16px;
-            fill: var(--text-secondary);
         }
         
         /* Recording box */
@@ -1032,35 +1019,6 @@
             font-size: 14px;
             color: var(--text-secondary);
             margin-bottom: 16px;
-        }
-        
-        .style-option {
-            background: var(--bg-elevated);
-            border: 2px solid var(--border);
-            border-radius: 12px;
-            padding: 16px;
-            margin-bottom: 10px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        
-        .style-option:hover {
-            border-color: var(--text-muted);
-        }
-        
-        .style-option.selected {
-            border-color: var(--accent);
-            background: rgba(255, 79, 94, 0.1);
-        }
-        
-        .style-option-name {
-            font-weight: 600;
-            margin-bottom: 4px;
-        }
-        
-        .style-option-desc {
-            font-size: 13px;
-            color: var(--text-secondary);
         }
         
         .rewrite-levels {
@@ -1881,10 +1839,7 @@
     <div class="recording-modal" id="recordingModal">
         <div class="recording-header">
             <button class="recording-close" id="recordingClose">✕</button>
-            <button class="style-selector" id="styleSelector">
-                <span id="currentStyleName">Quick Rec</span>
-                <svg viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
-            </button>
+            <div class="recording-title">New Echo</div>
             <div style="width: 40px;"></div>
         </div>
         
@@ -1925,32 +1880,6 @@
             <button class="settings-close" id="settingsClose">✕</button>
         </div>
         <div class="settings-content">
-            <div class="settings-section">
-                <div class="settings-section-title">Post Style</div>
-                <div class="settings-section-desc">Choose how your posts are structured</div>
-                
-                <div class="style-option selected" data-style="quick">
-                    <div class="style-option-name">⚡ Quick Rec</div>
-                    <div class="style-option-desc">Short, punchy, under 100 words</div>
-                </div>
-                <div class="style-option" data-style="review">
-                    <div class="style-option-name">📝 Full Review</div>
-                    <div class="style-option-desc">Detailed thoughts, 150-250 words</div>
-                </div>
-                <div class="style-option" data-style="binge">
-                    <div class="style-option-name">🔥 Binge Report</div>
-                    <div class="style-option-desc">"Just finished..." energy</div>
-                </div>
-                <div class="style-option" data-style="gem">
-                    <div class="style-option-name">💎 Hidden Gem</div>
-                    <div class="style-option-desc">Underseen/underrated focus</div>
-                </div>
-                <div class="style-option" data-style="compare">
-                    <div class="style-option-name">🎯 If You Liked...</div>
-                    <div class="style-option-desc">Comparison format</div>
-                </div>
-            </div>
-            
             <div class="settings-section">
                 <div class="settings-section-title">Rewrite Level</div>
                 <div class="settings-section-desc">How much should we polish your words?</div>
@@ -2070,18 +1999,11 @@
         // CONFIG
         // ============================================
         const CONFIG = {
-            version: '0.4.0',
+            version: '0.4.1',
             webhookUrl: 'https://steveyoung.app.n8n.cloud/webhook/postcreate',
             maxRecordingTime: 60,
             supabaseUrl: 'https://oiahkbvqyfjumnqsefxw.supabase.co',
             supabaseKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9pYWhrYnZxeWZqdW1ucXNlZnh3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjY4MTgxNzUsImV4cCI6MjA4MjM5NDE3NX0.0z0aWrJo1PwUstbOQ2Z_540y00XzboCvnzmjelzzqWs',
-            styles: {
-                quick: { name: 'Quick Rec', prompt: 'Short, punchy recommendation under 100 words' },
-                review: { name: 'Full Review', prompt: 'Detailed review, 150-250 words with structure' },
-                binge: { name: 'Binge Report', prompt: '"Just finished..." excited energy, immediate reactions' },
-                gem: { name: 'Hidden Gem', prompt: 'Focus on underseen/underrated, discovery angle' },
-                compare: { name: 'If You Liked...', prompt: 'Comparison format linking to popular shows' }
-            },
             rewriteLevels: {
                 light: 'Clean up grammar only, keep original voice',
                 medium: 'Improve flow and engagement while keeping core message',
@@ -2138,7 +2060,6 @@
             currentTab: 'home',
             isRecording: false,
             isPaused: false,
-            currentStyle: 'quick',
             rewriteLevel: 'medium',
             graphicMood: 'cozy',
             graphicColors: 'warm',
@@ -2438,8 +2359,6 @@
             stopBtn: document.getElementById('stopBtn'),
             pauseBtn: document.getElementById('pauseBtn'),
             resetBtn: document.getElementById('resetBtn'),
-            styleSelector: document.getElementById('styleSelector'),
-            currentStyleName: document.getElementById('currentStyleName'),
             
             // Post Modal
             postModal: document.getElementById('postModal'),
@@ -2728,7 +2647,6 @@
         async function enhancePost(transcript) {
             elements.loadingOverlay.classList.add('visible');
             
-            const styleConfig = CONFIG.styles[state.currentStyle];
             const rewriteInstruction = CONFIG.rewriteLevels[state.rewriteLevel];
             
             // Graphic style settings
@@ -2741,8 +2659,6 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         text: transcript,
-                        style: state.currentStyle,
-                        stylePrompt: styleConfig.prompt,
                         rewriteLevel: state.rewriteLevel,
                         rewriteInstruction: rewriteInstruction,
                         platform: 'facebook-group',
@@ -2779,7 +2695,6 @@
                     enhancedText,
                     originalText: transcript,
                     imageUrl,
-                    style: state.currentStyle,
                     createdAt: new Date().toISOString()
                 };
                 
@@ -3041,21 +2956,8 @@
         elements.settingsClose.addEventListener('click', () => {
             elements.settingsModal.classList.remove('visible');
         });
-        elements.styleSelector.addEventListener('click', () => {
-            elements.settingsModal.classList.add('visible');
-        });
         elements.styleSettingsBtn.addEventListener('click', () => {
             elements.settingsModal.classList.add('visible');
-        });
-        
-        // Style selection
-        document.querySelectorAll('.style-option').forEach(option => {
-            option.addEventListener('click', () => {
-                document.querySelectorAll('.style-option').forEach(o => o.classList.remove('selected'));
-                option.classList.add('selected');
-                state.currentStyle = option.dataset.style;
-                elements.currentStyleName.textContent = CONFIG.styles[state.currentStyle].name;
-            });
         });
         
         // Rewrite level
