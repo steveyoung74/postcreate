@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Echoes v0.3.0</title>
+    <title>Echoes v0.4.0</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -1092,6 +1092,103 @@
             color: var(--accent);
         }
         
+        /* Graphic Style Mixer */
+        .style-mixer-section {
+            margin-top: 24px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border);
+        }
+        
+        .style-mixer-row {
+            margin-bottom: 20px;
+        }
+        
+        .style-mixer-label {
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 10px;
+            color: var(--text-secondary);
+        }
+        
+        .style-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        
+        .style-pill {
+            padding: 8px 16px;
+            background: var(--bg-elevated);
+            border: 2px solid var(--border);
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: var(--text-primary);
+        }
+        
+        .style-pill:hover {
+            border-color: var(--text-muted);
+        }
+        
+        .style-pill.selected {
+            border-color: var(--accent);
+            background: rgba(255, 79, 94, 0.1);
+            color: var(--accent);
+        }
+        
+        .style-toggle {
+            display: flex;
+            background: var(--bg-elevated);
+            border-radius: 10px;
+            padding: 4px;
+            gap: 4px;
+        }
+        
+        .style-toggle-option {
+            flex: 1;
+            padding: 10px 12px;
+            border: none;
+            background: transparent;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: var(--text-secondary);
+        }
+        
+        .style-toggle-option.selected {
+            background: linear-gradient(135deg, var(--resonant-coral), var(--echo-violet));
+            color: white;
+        }
+        
+        .style-preview {
+            margin-top: 20px;
+            padding: 16px;
+            background: var(--bg-elevated);
+            border-radius: 12px;
+            text-align: center;
+        }
+        
+        .style-preview-label {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+        
+        .style-preview-box {
+            height: 80px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 18px;
+            transition: all 0.3s;
+        }
+        
         /* Profile Tab */
         .profile-container {
             padding: 20px 16px;
@@ -1864,6 +1961,48 @@
                     <div class="rewrite-level" data-level="heavy">Heavy</div>
                 </div>
             </div>
+            
+            <div class="settings-section style-mixer-section">
+                <div class="settings-section-title">Graphic Style</div>
+                <div class="settings-section-desc">Customize how your graphics look</div>
+                
+                <div class="style-mixer-row">
+                    <div class="style-mixer-label">Mood</div>
+                    <div class="style-pills" id="moodPills">
+                        <div class="style-pill selected" data-mood="cozy">☕ Cozy</div>
+                        <div class="style-pill" data-mood="bold">💥 Bold</div>
+                        <div class="style-pill" data-mood="elegant">✨ Elegant</div>
+                        <div class="style-pill" data-mood="playful">🎈 Playful</div>
+                        <div class="style-pill" data-mood="dark">🌙 Dark</div>
+                    </div>
+                </div>
+                
+                <div class="style-mixer-row">
+                    <div class="style-mixer-label">Colors</div>
+                    <div class="style-pills" id="colorPills">
+                        <div class="style-pill selected" data-colors="warm">🔥 Warm</div>
+                        <div class="style-pill" data-colors="cool">❄️ Cool</div>
+                        <div class="style-pill" data-colors="neon">⚡ Neon</div>
+                        <div class="style-pill" data-colors="muted">🌫️ Muted</div>
+                        <div class="style-pill" data-colors="mono">◐ Mono</div>
+                    </div>
+                </div>
+                
+                <div class="style-mixer-row">
+                    <div class="style-mixer-label">When creating graphics...</div>
+                    <div class="style-toggle" id="styleToggle">
+                        <button class="style-toggle-option selected" data-mode="auto">Match the show</button>
+                        <button class="style-toggle-option" data-mode="custom">Always my style</button>
+                    </div>
+                </div>
+                
+                <div class="style-preview" id="stylePreview">
+                    <div class="style-preview-label">Preview</div>
+                    <div class="style-preview-box" id="stylePreviewBox">
+                        OBSESSED
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     
@@ -1931,7 +2070,7 @@
         // CONFIG
         // ============================================
         const CONFIG = {
-            version: '0.3.0',
+            version: '0.4.0',
             webhookUrl: 'https://steveyoung.app.n8n.cloud/webhook/postcreate',
             maxRecordingTime: 60,
             supabaseUrl: 'https://oiahkbvqyfjumnqsefxw.supabase.co',
@@ -1947,6 +2086,33 @@
                 light: 'Clean up grammar only, keep original voice',
                 medium: 'Improve flow and engagement while keeping core message',
                 heavy: 'Full rewrite for maximum engagement'
+            },
+            graphicMoods: {
+                cozy: { name: 'Cozy', prompt: 'warm lighting, soft edges, inviting feel, friendly serif fonts' },
+                bold: { name: 'Bold', prompt: 'high contrast, strong typography, impactful, condensed bold fonts' },
+                elegant: { name: 'Elegant', prompt: 'refined, serif typography, sophisticated, minimal, cinematic' },
+                playful: { name: 'Playful', prompt: 'rounded fonts, fun colors, energetic, bubble letters' },
+                dark: { name: 'Dark', prompt: 'moody, cinematic, deep shadows, dramatic, gothic undertones' }
+            },
+            graphicColors: {
+                warm: { name: 'Warm', prompt: 'amber, coral, cream, rust, orange tones' },
+                cool: { name: 'Cool', prompt: 'teal, slate, ice blue, silver, cool tones' },
+                neon: { name: 'Neon', prompt: 'hot pink, electric blue, purple glow, vibrant neon' },
+                muted: { name: 'Muted', prompt: 'dusty pastels, sage, mauve, sand, soft muted tones' },
+                mono: { name: 'Mono', prompt: 'black and white with single accent color, monochromatic' }
+            },
+            // Preview colors for the style mixer
+            previewStyles: {
+                cozy: { bg: 'linear-gradient(135deg, #2d1f1f, #1a1515)', color: '#FFB347' },
+                bold: { bg: 'linear-gradient(135deg, #1a1a2e, #16213e)', color: '#FF4F5E' },
+                elegant: { bg: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', color: '#D4AF37' },
+                playful: { bg: 'linear-gradient(135deg, #1f2d1f, #152115)', color: '#7FFF00' },
+                dark: { bg: 'linear-gradient(135deg, #0a0a0f, #1a1a2e)', color: '#9B59B6' },
+                warm: { accent: '#FF6B35' },
+                cool: { accent: '#4ECDC4' },
+                neon: { accent: '#FF006E' },
+                muted: { accent: '#B8A9C9' },
+                mono: { accent: '#FFFFFF' }
             }
         };
 
@@ -1974,6 +2140,9 @@
             isPaused: false,
             currentStyle: 'quick',
             rewriteLevel: 'medium',
+            graphicMood: 'cozy',
+            graphicColors: 'warm',
+            graphicMode: 'auto', // 'auto' or 'custom'
             timeRemaining: CONFIG.maxRecordingTime,
             finalTranscript: '',
             interimTranscript: '',
@@ -2290,6 +2459,10 @@
             settingsModal: document.getElementById('settingsModal'),
             settingsClose: document.getElementById('settingsClose'),
             styleSettingsBtn: document.getElementById('styleSettingsBtn'),
+            moodPills: document.getElementById('moodPills'),
+            colorPills: document.getElementById('colorPills'),
+            styleToggle: document.getElementById('styleToggle'),
+            stylePreviewBox: document.getElementById('stylePreviewBox'),
             
             // Loading & Toast
             loadingOverlay: document.getElementById('loadingOverlay'),
@@ -2558,6 +2731,10 @@
             const styleConfig = CONFIG.styles[state.currentStyle];
             const rewriteInstruction = CONFIG.rewriteLevels[state.rewriteLevel];
             
+            // Graphic style settings
+            const graphicMoodConfig = CONFIG.graphicMoods[state.graphicMood];
+            const graphicColorsConfig = CONFIG.graphicColors[state.graphicColors];
+            
             try {
                 const response = await fetch(CONFIG.webhookUrl, {
                     method: 'POST',
@@ -2569,7 +2746,13 @@
                         rewriteLevel: state.rewriteLevel,
                         rewriteInstruction: rewriteInstruction,
                         platform: 'facebook-group',
-                        context: 'Netflix Recommendations Facebook Group'
+                        context: 'Netflix Recommendations Facebook Group',
+                        // Graphic style settings
+                        graphicMode: state.graphicMode,
+                        graphicMood: state.graphicMood,
+                        graphicMoodPrompt: graphicMoodConfig.prompt,
+                        graphicColors: state.graphicColors,
+                        graphicColorsPrompt: graphicColorsConfig.prompt
                     })
                 });
                 
@@ -2883,6 +3066,49 @@
                 state.rewriteLevel = level.dataset.level;
             });
         });
+        
+        // Graphic Style Mixer - Mood pills
+        document.querySelectorAll('#moodPills .style-pill').forEach(pill => {
+            pill.addEventListener('click', () => {
+                document.querySelectorAll('#moodPills .style-pill').forEach(p => p.classList.remove('selected'));
+                pill.classList.add('selected');
+                state.graphicMood = pill.dataset.mood;
+                updateStylePreview();
+            });
+        });
+        
+        // Graphic Style Mixer - Color pills
+        document.querySelectorAll('#colorPills .style-pill').forEach(pill => {
+            pill.addEventListener('click', () => {
+                document.querySelectorAll('#colorPills .style-pill').forEach(p => p.classList.remove('selected'));
+                pill.classList.add('selected');
+                state.graphicColors = pill.dataset.colors;
+                updateStylePreview();
+            });
+        });
+        
+        // Graphic Style Mixer - Toggle (auto vs custom)
+        document.querySelectorAll('#styleToggle .style-toggle-option').forEach(option => {
+            option.addEventListener('click', () => {
+                document.querySelectorAll('#styleToggle .style-toggle-option').forEach(o => o.classList.remove('selected'));
+                option.classList.add('selected');
+                state.graphicMode = option.dataset.mode;
+            });
+        });
+        
+        // Update style preview box
+        function updateStylePreview() {
+            const mood = state.graphicMood;
+            const colors = state.graphicColors;
+            const moodStyle = CONFIG.previewStyles[mood];
+            const colorStyle = CONFIG.previewStyles[colors];
+            
+            elements.stylePreviewBox.style.background = moodStyle.bg;
+            elements.stylePreviewBox.style.color = colorStyle.accent || moodStyle.color;
+        }
+        
+        // Initialize preview
+        updateStylePreview();
 
         // ============================================
         // AUTH UI FUNCTIONS
