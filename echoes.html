@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Echoes v0.5.3</title>
+    <title>Echoes v0.5.5</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -755,6 +755,114 @@
             color: var(--text-muted);
         }
         
+        /* Trending Section */
+        .trending-section {
+            margin-bottom: 20px;
+        }
+        
+        .trending-header {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .trending-header svg {
+            width: 16px;
+            height: 16px;
+            fill: var(--resonant-coral);
+        }
+        
+        .trending-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        
+        .trending-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 14px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .trending-pill:hover {
+            background: var(--bg-elevated);
+            border-color: var(--text-muted);
+            color: var(--text-primary);
+        }
+        
+        .trending-pill.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: white;
+        }
+        
+        .trending-pill-count {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-muted);
+            background: var(--bg-elevated);
+            padding: 2px 6px;
+            border-radius: 10px;
+        }
+        
+        .trending-pill.active .trending-pill-count {
+            background: rgba(255,255,255,0.2);
+            color: white;
+        }
+        
+        /* Active Filter Bar */
+        .active-filter {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 14px;
+            background: var(--bg-card);
+            border-radius: 10px;
+            margin-bottom: 16px;
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+        
+        .active-filter span {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .clear-filter {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: var(--bg-elevated);
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .clear-filter:hover {
+            background: var(--border);
+            color: var(--text-primary);
+        }
+        
         .discover-feed {
             display: flex;
             flex-direction: column;
@@ -1024,6 +1132,7 @@
         }
         
         /* New Posts Indicator */
+        /* New Posts Indicator */
         .new-posts-indicator {
             position: fixed;
             top: 70px;
@@ -1038,14 +1147,18 @@
             cursor: pointer;
             box-shadow: 0 4px 20px rgba(255, 79, 94, 0.4);
             z-index: 150;
-            transition: transform 0.3s ease;
+            transition: transform 0.3s ease, opacity 0.3s ease;
             display: flex;
             align-items: center;
             gap: 8px;
+            opacity: 0;
+            pointer-events: none;
         }
         
         .new-posts-indicator.visible {
             transform: translateX(-50%) translateY(0);
+            opacity: 1;
+            pointer-events: auto;
         }
         
         .new-posts-indicator svg {
@@ -2056,6 +2169,22 @@
                 max-height: 400px;
             }
             
+            /* Discover desktop */
+            .discover-container {
+                max-width: 600px;
+                margin: 0 auto;
+                padding: 24px 40px;
+            }
+            
+            .discover-feed {
+                gap: 20px;
+            }
+            
+            .discover-card-image {
+                aspect-ratio: 16/9;
+                max-height: 340px;
+            }
+            
             /* Empty state desktop */
             .empty-state {
                 min-height: 400px;
@@ -2209,7 +2338,7 @@
                         <path d="M20 18c-1.1 0-2 .9-2 2s.9 2 2 2" stroke="url(#echoGradient)" stroke-width="3" stroke-linecap="round" fill="none"/>
                     </svg>
                 </div>
-                Echoes <span class="version-badge">v0.5.3</span>
+                Echoes <span class="version-badge">v0.5.5</span>
             </div>
             <button class="header-btn" id="profileBtn" title="Profile">
                 <img id="headerAvatar" src="" alt="" style="display: none;">
@@ -2274,6 +2403,23 @@
                     <div class="discover-header">
                         <div class="discover-title">Discover</div>
                         <div class="discover-subtitle">See what the community is watching</div>
+                    </div>
+                    
+                    <!-- Trending Topics -->
+                    <div class="trending-section" id="trendingSection" style="display: none;">
+                        <div class="trending-header">
+                            <svg viewBox="0 0 24 24"><path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z"/></svg>
+                            <span>Trending</span>
+                        </div>
+                        <div class="trending-pills" id="trendingPills">
+                            <!-- Pills populated by JS -->
+                        </div>
+                    </div>
+                    
+                    <!-- Active Filter -->
+                    <div class="active-filter" id="activeFilter" style="display: none;">
+                        <span id="activeFilterText"></span>
+                        <button class="clear-filter" id="clearFilter">✕</button>
                     </div>
                     
                     <!-- Loading Skeletons -->
@@ -2643,7 +2789,7 @@
         // CONFIG
         // ============================================
         const CONFIG = {
-            version: '0.5.3',
+            version: '0.5.5',
             webhookUrl: 'https://steveyoung.app.n8n.cloud/webhook/postcreate',
             maxRecordingTime: 60,
             supabaseUrl: 'https://oiahkbvqyfjumnqsefxw.supabase.co',
@@ -3107,6 +3253,11 @@
             discoverFeed: document.getElementById('discoverFeed'),
             discoverSkeletons: document.getElementById('discoverSkeletons'),
             discoverEmpty: document.getElementById('discoverEmpty'),
+            trendingSection: document.getElementById('trendingSection'),
+            trendingPills: document.getElementById('trendingPills'),
+            activeFilter: document.getElementById('activeFilter'),
+            activeFilterText: document.getElementById('activeFilterText'),
+            clearFilter: document.getElementById('clearFilter'),
             discoverModal: document.getElementById('discoverModal'),
             discoverModalClose: document.getElementById('discoverModalClose'),
             discoverModalImage: document.getElementById('discoverModalImage'),
@@ -3657,35 +3808,103 @@
         let lastKnownPostId = null;
         let isRefreshing = false;
         let newPostsCheckInterval = null;
+        let allPublicPosts = [];
+        let currentFilter = null;
         
-        async function loadDiscoverFeed(showSkeletons = true) {
-            // Show skeletons while loading (only on initial load, not refresh)
-            if (showSkeletons) {
-                elements.discoverSkeletons.style.display = 'flex';
-                elements.discoverFeed.style.display = 'none';
-                elements.discoverEmpty.style.display = 'none';
-            }
+        // Common words to exclude from trending
+        const stopWords = ['the', 'a', 'an', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for', 'of', 'my', 'is', 'it', 'i', 'me', 'we', 'you', 'this', 'that', 'with', 'from', 'as', 'be', 'was', 'are', 'been', 'have', 'has', 'had', 'do', 'does', 'did', 'will', 'would', 'could', 'should', 'may', 'might', 'must', 'shall', 'can', 'need', 'dare', 'ought', 'used', 'what', 'who', 'which', 'when', 'where', 'why', 'how', 'all', 'each', 'every', 'both', 'few', 'more', 'most', 'other', 'some', 'such', 'no', 'not', 'only', 'own', 'same', 'so', 'than', 'too', 'very', 'just', 'about', 'into', 'through', 'during', 'before', 'after', 'above', 'below', 'between', 'under', 'again', 'further', 'then', 'once', 'here', 'there', 'any', 'show', 'shows', 'movie', 'movies', 'series', 'watch', 'watching', 'watched', 'recommendation', 'recommendations', 'recs', 'rec', 'suggest', 'suggestions', 'like', 'looking', 'need', 'want', 'something', 'anything', 'echo', 'shared', 'post', 'new'];
+        
+        function extractTrendingTopics(posts) {
+            const titleCounts = {};
             
-            const publicPosts = await Storage.loadPublicPosts();
+            posts.forEach(post => {
+                const title = (post.title || '').trim();
+                if (!title || title === 'Shared Echo' || title === 'My Echo') return;
+                
+                // Use full title as a topic (cleaned up)
+                const cleanTitle = title.replace(/[^\w\s'-]/g, '').trim();
+                if (cleanTitle.length > 2) {
+                    titleCounts[cleanTitle] = (titleCounts[cleanTitle] || 0) + 1;
+                }
+            });
             
-            // Hide skeletons
-            elements.discoverSkeletons.style.display = 'none';
-            
-            if (publicPosts.length === 0) {
-                elements.discoverFeed.style.display = 'none';
-                elements.discoverEmpty.style.display = 'block';
+            // Sort by count and take top 8
+            return Object.entries(titleCounts)
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 8)
+                .map(([topic, count]) => ({ topic, count }));
+        }
+        
+        function renderTrendingPills(topics) {
+            if (topics.length === 0) {
+                elements.trendingSection.style.display = 'none';
                 return;
             }
             
-            // Track latest post for new posts detection
-            if (publicPosts[0]) {
-                lastKnownPostId = publicPosts[0].id;
+            elements.trendingSection.style.display = 'block';
+            elements.trendingPills.innerHTML = topics.map(({ topic, count }) => `
+                <button class="trending-pill ${currentFilter === topic ? 'active' : ''}" data-topic="${topic}">
+                    ${topic}
+                    ${count > 1 ? `<span class="trending-pill-count">${count}</span>` : ''}
+                </button>
+            `).join('');
+            
+            // Add click handlers
+            elements.trendingPills.querySelectorAll('.trending-pill').forEach(pill => {
+                pill.addEventListener('click', () => {
+                    const topic = pill.dataset.topic;
+                    if (currentFilter === topic) {
+                        clearFilterHandler();
+                    } else {
+                        setFilter(topic);
+                    }
+                });
+            });
+        }
+        
+        function setFilter(topic) {
+            currentFilter = topic;
+            elements.activeFilter.style.display = 'flex';
+            elements.activeFilterText.textContent = `Showing: ${topic}`;
+            
+            // Update pill states
+            elements.trendingPills.querySelectorAll('.trending-pill').forEach(pill => {
+                pill.classList.toggle('active', pill.dataset.topic === topic);
+            });
+            
+            // Filter and re-render feed
+            renderDiscoverCards(allPublicPosts.filter(post => 
+                (post.title || '').toLowerCase().includes(topic.toLowerCase())
+            ));
+        }
+        
+        function clearFilterHandler() {
+            currentFilter = null;
+            elements.activeFilter.style.display = 'none';
+            
+            // Update pill states
+            elements.trendingPills.querySelectorAll('.trending-pill').forEach(pill => {
+                pill.classList.remove('active');
+            });
+            
+            // Show all posts
+            renderDiscoverCards(allPublicPosts);
+        }
+        
+        // Clear filter button handler
+        elements.clearFilter.addEventListener('click', clearFilterHandler);
+        
+        function renderDiscoverCards(posts) {
+            if (posts.length === 0) {
+                elements.discoverFeed.innerHTML = `
+                    <div class="discover-empty" style="display: block; padding: 40px 20px;">
+                        <div style="font-size: 16px; color: var(--text-muted);">No posts match this filter</div>
+                    </div>
+                `;
+                return;
             }
             
-            elements.discoverFeed.style.display = 'flex';
-            elements.discoverEmpty.style.display = 'none';
-            
-            elements.discoverFeed.innerHTML = publicPosts.map(post => {
+            elements.discoverFeed.innerHTML = posts.map(post => {
                 const isLiked = state.likedPosts.includes(post.id);
                 return `
                 <div class="discover-card" data-post-id="${post.id}">
@@ -3712,11 +3931,10 @@
             // Add click handlers to cards
             elements.discoverFeed.querySelectorAll('.discover-card').forEach(card => {
                 card.addEventListener('click', (e) => {
-                    // Don't open modal if clicking action buttons
                     if (e.target.closest('.discover-action-btn')) return;
                     
                     const postId = card.dataset.postId;
-                    const post = publicPosts.find(p => p.id == postId);
+                    const post = allPublicPosts.find(p => p.id == postId);
                     if (post) openDiscoverModal(post);
                 });
             });
@@ -3732,13 +3950,56 @@
                 });
             });
             
-            // Like button handlers (store in state for now)
+            // Like button handlers
             elements.discoverFeed.querySelectorAll('.like-btn').forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     e.stopPropagation();
                     handleDiscoverLike(btn);
                 });
             });
+        }
+        
+        async function loadDiscoverFeed(showSkeletons = true) {
+            // Show skeletons while loading (only on initial load, not refresh)
+            if (showSkeletons) {
+                elements.discoverSkeletons.style.display = 'flex';
+                elements.discoverFeed.style.display = 'none';
+                elements.discoverEmpty.style.display = 'none';
+                elements.trendingSection.style.display = 'none';
+            }
+            
+            allPublicPosts = await Storage.loadPublicPosts();
+            
+            // Hide skeletons
+            elements.discoverSkeletons.style.display = 'none';
+            
+            if (allPublicPosts.length === 0) {
+                elements.discoverFeed.style.display = 'none';
+                elements.discoverEmpty.style.display = 'block';
+                elements.trendingSection.style.display = 'none';
+                return;
+            }
+            
+            // Track latest post for new posts detection
+            if (allPublicPosts[0]) {
+                lastKnownPostId = allPublicPosts[0].id;
+            }
+            
+            // Extract and render trending topics
+            const trendingTopics = extractTrendingTopics(allPublicPosts);
+            renderTrendingPills(trendingTopics);
+            
+            elements.discoverFeed.style.display = 'flex';
+            elements.discoverEmpty.style.display = 'none';
+            
+            // Render cards (respecting any active filter)
+            if (currentFilter) {
+                renderDiscoverCards(allPublicPosts.filter(post => 
+                    (post.title || '').toLowerCase().includes(currentFilter.toLowerCase())
+                ));
+            } else {
+                renderDiscoverCards(allPublicPosts);
+            }
             
             // Hide new posts indicator after refresh
             elements.newPostsIndicator.classList.remove('visible');
