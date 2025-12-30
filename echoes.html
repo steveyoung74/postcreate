@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Echoes v0.4.2</title>
+    <title>Echoes v0.5.0</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -553,6 +553,265 @@
             width: 28px;
             height: 28px;
             fill: white;
+        }
+        
+        /* Community Share Toggle */
+        .community-toggle-section {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .community-toggle-info {
+            flex: 1;
+        }
+        
+        .community-toggle-label {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+        
+        .community-toggle-desc {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+        
+        .community-toggle {
+            position: relative;
+            width: 52px;
+            height: 32px;
+            flex-shrink: 0;
+            margin-left: 16px;
+        }
+        
+        .community-toggle input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .community-toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--bg-elevated);
+            border-radius: 16px;
+            transition: 0.3s;
+        }
+        
+        .community-toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 24px;
+            width: 24px;
+            left: 4px;
+            bottom: 4px;
+            background: white;
+            border-radius: 50%;
+            transition: 0.3s;
+        }
+        
+        .community-toggle input:checked + .community-toggle-slider {
+            background: var(--neon-whisper);
+        }
+        
+        .community-toggle input:checked + .community-toggle-slider:before {
+            transform: translateX(20px);
+        }
+        
+        .shared-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--neon-whisper);
+            background: rgba(45, 226, 230, 0.15);
+            padding: 4px 8px;
+            border-radius: 6px;
+            margin-left: 8px;
+        }
+        
+        /* Profile Panel (slide from right) */
+        .profile-panel {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            width: 100%;
+            max-width: 380px;
+            background: var(--bg-primary);
+            z-index: 300;
+            overflow-y: auto;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+        }
+        
+        .profile-panel.visible {
+            transform: translateX(0);
+        }
+        
+        .profile-panel-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 299;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        
+        .profile-panel-backdrop.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        
+        .profile-panel-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .profile-panel-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        .profile-panel-close {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--bg-elevated);
+            border: none;
+            cursor: pointer;
+            color: var(--text-secondary);
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .profile-panel-content {
+            padding: 20px 16px;
+        }
+        
+        /* Discover Tab */
+        .discover-container {
+            padding: 16px;
+            padding-bottom: 100px;
+        }
+        
+        .discover-header {
+            margin-bottom: 20px;
+        }
+        
+        .discover-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+        
+        .discover-subtitle {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+        
+        .discover-feed {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        
+        .discover-card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        .discover-card:active {
+            transform: scale(0.98);
+        }
+        
+        .discover-card-image {
+            width: 100%;
+            aspect-ratio: 1;
+            object-fit: cover;
+        }
+        
+        .discover-card-content {
+            padding: 16px;
+        }
+        
+        .discover-card-text {
+            font-size: 15px;
+            line-height: 1.5;
+            color: var(--text-secondary);
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        .discover-card-meta {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 12px;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+        
+        .discover-empty {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-muted);
+        }
+        
+        .discover-empty-icon {
+            width: 64px;
+            height: 64px;
+            margin: 0 auto 16px;
+            opacity: 0.3;
+        }
+        
+        .discover-empty-icon svg {
+            width: 100%;
+            height: 100%;
+            fill: currentColor;
+        }
+        
+        /* Discover Card Modal (read-only view) */
+        .discover-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--bg-primary);
+            z-index: 250;
+            overflow-y: auto;
+        }
+        
+        .discover-modal.visible {
+            display: block;
+            animation: slideUp 0.3s ease;
         }
         
         /* Post Detail Modal */
@@ -1664,14 +1923,14 @@
                 <button class="sidebar-nav-item create-item" id="sidebarCreateBtn" title="Let it echo">
                     <svg viewBox="0 0 24 24"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/><path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/></svg>
                 </button>
-                <button class="sidebar-nav-item" data-tab="profile" title="Profile">
-                    <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                <button class="sidebar-nav-item" data-tab="discover" title="Discover">
+                    <svg viewBox="0 0 24 24"><path d="M12 10.9c-.61 0-1.1.49-1.1 1.1s.49 1.1 1.1 1.1c.61 0 1.1-.49 1.1-1.1s-.49-1.1-1.1-1.1zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm2.19 12.19L6 18l3.81-8.19L18 6l-3.81 8.19z"/></svg>
                 </button>
             </nav>
             
             <div class="sidebar-bottom">
-                <button class="sidebar-nav-item" id="sidebarSettingsBtn" title="Settings">
-                    <svg viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.31.06-.63.06-.94 0-.31-.02-.63-.06-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.04.31-.06.63-.06.94s.02.63.06.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
+                <button class="sidebar-nav-item" id="sidebarProfileBtn" title="Profile">
+                    <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
                 </button>
             </div>
         </aside>
@@ -1692,10 +1951,10 @@
                         <path d="M20 18c-1.1 0-2 .9-2 2s.9 2 2 2" stroke="url(#echoGradient)" stroke-width="3" stroke-linecap="round" fill="none"/>
                     </svg>
                 </div>
-                Echoes <span class="version-badge">v0.4.2</span>
+                Echoes <span class="version-badge">v0.5.0</span>
             </div>
-            <button class="header-btn" id="settingsBtn">
-                <svg viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.31.06-.63.06-.94 0-.31-.02-.63-.06-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.04.31-.06.63-.06.94s.02.63.06.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
+            <button class="header-btn" id="profileBtn" title="Profile">
+                <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
             </button>
         </header>
         
@@ -1743,51 +2002,24 @@
                 </div>
             </div>
             
-            <!-- Profile Tab -->
-            <div class="tab-content" id="profileTab">
-                <div class="profile-container">
-                    <!-- Logged Out State -->
-                    <div class="profile-header" id="profileLoggedOut">
-                        <div class="profile-avatar">
-                            <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
-                        </div>
-                        <div class="profile-name">Welcome to Echoes</div>
-                        <div class="profile-email">Sign in to sync your echoes everywhere</div>
-                        <button class="auth-btn" id="showAuthBtn" style="margin-top: 20px; max-width: 200px; margin-left: auto; margin-right: auto;">
-                            Sign In
-                        </button>
+            <!-- Discover Tab -->
+            <div class="tab-content" id="discoverTab">
+                <div class="discover-container">
+                    <div class="discover-header">
+                        <div class="discover-title">Discover</div>
+                        <div class="discover-subtitle">See what the community is watching</div>
                     </div>
                     
-                    <!-- Logged In State -->
-                    <div class="profile-header" id="profileLoggedIn" style="display: none;">
-                        <div class="profile-avatar" id="profileAvatarLoggedIn">
-                            <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
-                        </div>
-                        <div class="profile-name" id="profileUserName">User</div>
-                        <div class="profile-email" id="profileUserEmail"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="7005031502301508111d001c155e131f1d">[email&#160;protected]</a></div>
+                    <div class="discover-feed" id="discoverFeed">
+                        <!-- Feed cards will be populated by JS -->
                     </div>
                     
-                    <div class="profile-stats">
-                        <div class="profile-stat">
-                            <div class="profile-stat-value" id="postCount">0</div>
-                            <div class="profile-stat-label">Echoes</div>
+                    <div class="discover-empty" id="discoverEmpty">
+                        <div class="discover-empty-icon">
+                            <svg viewBox="0 0 24 24"><path d="M12 10.9c-.61 0-1.1.49-1.1 1.1s.49 1.1 1.1 1.1c.61 0 1.1-.49 1.1-1.1s-.49-1.1-1.1-1.1zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm2.19 12.19L6 18l3.81-8.19L18 6l-3.81 8.19z"/></svg>
                         </div>
-                        <div class="profile-stat">
-                            <div class="profile-stat-value" id="tokenCount">50</div>
-                            <div class="profile-stat-label">Remaining</div>
-                        </div>
-                    </div>
-                    
-                    <div class="profile-menu-item" id="styleSettingsBtn">
-                        <svg viewBox="0 0 24 24"><path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9c.83 0 1.5-.67 1.5-1.5 0-.39-.15-.74-.39-1.01-.23-.26-.38-.61-.38-.99 0-.83.67-1.5 1.5-1.5H16c2.76 0 5-2.24 5-5 0-4.42-4.03-8-9-8zm-5.5 9c-.83 0-1.5-.67-1.5-1.5S5.67 9 6.5 9 8 9.67 8 10.5 7.33 12 6.5 12zm3-4C8.67 8 8 7.33 8 6.5S8.67 5 9.5 5s1.5.67 1.5 1.5S10.33 8 9.5 8zm5 0c-.83 0-1.5-.67-1.5-1.5S13.67 5 14.5 5s1.5.67 1.5 1.5S15.33 8 14.5 8zm3 4c-.83 0-1.5-.67-1.5-1.5S16.67 9 17.5 9s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
-                        <span>Post Style Settings</span>
-                        <svg class="chevron" viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
-                    </div>
-                    
-                    <div class="profile-menu-item" id="signOutBtn" style="display: none;">
-                        <svg viewBox="0 0 24 24"><path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"/></svg>
-                        <span>Sign Out</span>
-                        <svg class="chevron" viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+                        <div style="font-size: 18px; font-weight: 600; margin-bottom: 8px;">Nothing here yet</div>
+                        <div>Be the first to share your echoes with the community!</div>
                     </div>
                 </div>
             </div>
@@ -1806,11 +2038,80 @@
                 </button>
             </div>
             
-            <button class="nav-item" data-tab="profile">
-                <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
-                <span>Profile</span>
+            <button class="nav-item" data-tab="discover">
+                <svg viewBox="0 0 24 24"><path d="M12 10.9c-.61 0-1.1.49-1.1 1.1s.49 1.1 1.1 1.1c.61 0 1.1-.49 1.1-1.1s-.49-1.1-1.1-1.1zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm2.19 12.19L6 18l3.81-8.19L18 6l-3.81 8.19z"/></svg>
+                <span>Discover</span>
             </button>
         </nav>
+    </div>
+    
+    <!-- Profile Panel (slide from right) -->
+    <div class="profile-panel-backdrop" id="profilePanelBackdrop"></div>
+    <div class="profile-panel" id="profilePanel">
+        <div class="profile-panel-header">
+            <div class="profile-panel-title">Profile</div>
+            <button class="profile-panel-close" id="profilePanelClose">✕</button>
+        </div>
+        <div class="profile-panel-content">
+            <!-- Logged Out State -->
+            <div class="profile-header" id="profileLoggedOut">
+                <div class="profile-avatar">
+                    <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                </div>
+                <div class="profile-name">Welcome to Echoes</div>
+                <div class="profile-email">Sign in to sync your echoes everywhere</div>
+                <button class="auth-btn" id="showAuthBtn" style="margin-top: 20px; max-width: 200px; margin-left: auto; margin-right: auto;">
+                    Sign In
+                </button>
+            </div>
+            
+            <!-- Logged In State -->
+            <div class="profile-header" id="profileLoggedIn" style="display: none;">
+                <div class="profile-avatar" id="profileAvatarLoggedIn">
+                    <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                </div>
+                <div class="profile-name" id="profileUserName">User</div>
+                <div class="profile-email" id="profileUserEmail">user@example.com</div>
+            </div>
+            
+            <div class="profile-stats">
+                <div class="profile-stat">
+                    <div class="profile-stat-value" id="postCount">0</div>
+                    <div class="profile-stat-label">Echoes</div>
+                </div>
+                <div class="profile-stat">
+                    <div class="profile-stat-value" id="tokenCount">50</div>
+                    <div class="profile-stat-label">Remaining</div>
+                </div>
+            </div>
+            
+            <div class="profile-menu-item" id="styleSettingsBtn">
+                <svg viewBox="0 0 24 24"><path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9c.83 0 1.5-.67 1.5-1.5 0-.39-.15-.74-.39-1.01-.23-.26-.38-.61-.38-.99 0-.83.67-1.5 1.5-1.5H16c2.76 0 5-2.24 5-5 0-4.42-4.03-8-9-8zm-5.5 9c-.83 0-1.5-.67-1.5-1.5S5.67 9 6.5 9 8 9.67 8 10.5 7.33 12 6.5 12zm3-4C8.67 8 8 7.33 8 6.5S8.67 5 9.5 5s1.5.67 1.5 1.5S10.33 8 9.5 8zm5 0c-.83 0-1.5-.67-1.5-1.5S13.67 5 14.5 5s1.5.67 1.5 1.5S15.33 8 14.5 8zm3 4c-.83 0-1.5-.67-1.5-1.5S16.67 9 17.5 9s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
+                <span>Post Style Settings</span>
+                <svg class="chevron" viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+            </div>
+            
+            <div class="profile-menu-item" id="signOutBtn" style="display: none;">
+                <svg viewBox="0 0 24 24"><path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"/></svg>
+                <span>Sign Out</span>
+                <svg class="chevron" viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Discover Post Modal (read-only view) -->
+    <div class="discover-modal" id="discoverModal">
+        <div class="post-modal-header">
+            <button class="post-modal-close" id="discoverModalClose">✕</button>
+            <div></div>
+        </div>
+        <div class="post-modal-content">
+            <div class="post-image-container">
+                <img class="post-image" id="discoverModalImage" src="" alt="">
+            </div>
+            <div class="post-text" id="discoverModalText"></div>
+            <div class="post-date" id="discoverModalDate" style="margin-top: 20px;"></div>
+        </div>
     </div>
     
     <!-- Post Detail Modal -->
@@ -1833,6 +2134,20 @@
             <div class="post-date" id="modalPostDate"></div>
             <div class="post-title" id="modalPostTitle"></div>
             <div class="post-text" id="modalPostText"></div>
+            
+            <div class="community-toggle-section" id="communityToggleSection">
+                <div class="community-toggle-info">
+                    <div class="community-toggle-label">
+                        Share to Community
+                        <span class="shared-badge" id="sharedBadge" style="display: none;">✓ Shared</span>
+                    </div>
+                    <div class="community-toggle-desc">Let others discover this echo</div>
+                </div>
+                <label class="community-toggle">
+                    <input type="checkbox" id="communityToggle" checked>
+                    <span class="community-toggle-slider"></span>
+                </label>
+            </div>
             
             <div class="post-share-section">
                 <div class="post-share-title">Share</div>
@@ -2021,7 +2336,7 @@
         // CONFIG
         // ============================================
         const CONFIG = {
-            version: '0.4.2',
+            version: '0.5.0',
             webhookUrl: 'https://steveyoung.app.n8n.cloud/webhook/postcreate',
             maxRecordingTime: 60,
             supabaseUrl: 'https://oiahkbvqyfjumnqsefxw.supabase.co',
@@ -2218,7 +2533,8 @@
                                 enhanced_text: post.enhancedText,
                                 original_text: post.originalText,
                                 image_url: post.imageUrl,
-                                style: post.style
+                                style: post.style,
+                                is_public: post.isPublic !== false // Default to true
                             })
                             .select()
                             .single();
@@ -2235,10 +2551,57 @@
                 } else {
                     // Save locally
                     const posts = this.loadLocalPosts();
+                    post.isPublic = post.isPublic !== false; // Default to true
                     posts.unshift(post);
                     this.saveLocalPosts(posts);
                     return posts;
                 }
+            },
+            
+            async updatePostPublicStatus(postId, isPublic) {
+                if (state.user && supabaseClient) {
+                    try {
+                        const { error } = await supabaseClient
+                            .from('posts')
+                            .update({ is_public: isPublic })
+                            .eq('id', postId);
+                        
+                        if (error) throw error;
+                        return true;
+                    } catch (e) {
+                        console.error('Error updating post:', e);
+                        return false;
+                    }
+                } else {
+                    // Update locally
+                    let posts = this.loadLocalPosts();
+                    const post = posts.find(p => p.id === postId);
+                    if (post) {
+                        post.isPublic = isPublic;
+                        this.saveLocalPosts(posts);
+                    }
+                    return true;
+                }
+            },
+            
+            async loadPublicPosts() {
+                if (supabaseClient) {
+                    try {
+                        const { data, error } = await supabaseClient
+                            .from('posts')
+                            .select('id, enhanced_text, image_url, created_at')
+                            .eq('is_public', true)
+                            .order('created_at', { ascending: false })
+                            .limit(50);
+                        
+                        if (error) throw error;
+                        return data || [];
+                    } catch (e) {
+                        console.error('Error loading public posts:', e);
+                        return [];
+                    }
+                }
+                return [];
             },
             
             async deletePost(id) {
@@ -2375,7 +2738,7 @@
         const elements = {
             // Tabs
             homeTab: document.getElementById('homeTab'),
-            profileTab: document.getElementById('profileTab'),
+            discoverTab: document.getElementById('discoverTab'),
             navItems: document.querySelectorAll('.nav-item[data-tab]'),
             
             // Gallery
@@ -2408,9 +2771,16 @@
             modalShareBtn: document.getElementById('modalShareBtn'),
             downloadPostBtn: document.getElementById('downloadPostBtn'),
             deletePostBtn: document.getElementById('deletePostBtn'),
+            communityToggle: document.getElementById('communityToggle'),
+            sharedBadge: document.getElementById('sharedBadge'),
+            
+            // Profile Panel
+            profileBtn: document.getElementById('profileBtn'),
+            profilePanel: document.getElementById('profilePanel'),
+            profilePanelBackdrop: document.getElementById('profilePanelBackdrop'),
+            profilePanelClose: document.getElementById('profilePanelClose'),
             
             // Settings
-            settingsBtn: document.getElementById('settingsBtn'),
             settingsModal: document.getElementById('settingsModal'),
             settingsClose: document.getElementById('settingsClose'),
             styleSettingsBtn: document.getElementById('styleSettingsBtn'),
@@ -2419,6 +2789,15 @@
             styleToggle: document.getElementById('styleToggle'),
             stylePreviewBox: document.getElementById('stylePreviewBox'),
             styleIndicator: document.getElementById('styleIndicator'),
+            
+            // Discover
+            discoverFeed: document.getElementById('discoverFeed'),
+            discoverEmpty: document.getElementById('discoverEmpty'),
+            discoverModal: document.getElementById('discoverModal'),
+            discoverModalClose: document.getElementById('discoverModalClose'),
+            discoverModalImage: document.getElementById('discoverModalImage'),
+            discoverModalText: document.getElementById('discoverModalText'),
+            discoverModalDate: document.getElementById('discoverModalDate'),
             
             // Loading & Toast
             loadingOverlay: document.getElementById('loadingOverlay'),
@@ -2827,6 +3206,11 @@
             elements.modalPostText.textContent = post.enhancedText;
             elements.modalOriginalText.textContent = post.originalText;
             
+            // Set community toggle state
+            const isPublic = post.isPublic !== false && post.is_public !== false;
+            elements.communityToggle.checked = isPublic;
+            elements.sharedBadge.style.display = isPublic ? 'inline-flex' : 'none';
+            
             elements.postModal.classList.add('visible');
         }
 
@@ -2936,6 +3320,78 @@
                 tab.classList.remove('active');
             });
             document.getElementById(`${tabName}Tab`).classList.add('active');
+            
+            // Load discover feed when switching to discover tab
+            if (tabName === 'discover') {
+                loadDiscoverFeed();
+            }
+        }
+        
+        // ============================================
+        // DISCOVER FEED
+        // ============================================
+        async function loadDiscoverFeed() {
+            const publicPosts = await Storage.loadPublicPosts();
+            
+            if (publicPosts.length === 0) {
+                elements.discoverFeed.style.display = 'none';
+                elements.discoverEmpty.style.display = 'block';
+                return;
+            }
+            
+            elements.discoverFeed.style.display = 'flex';
+            elements.discoverEmpty.style.display = 'none';
+            
+            elements.discoverFeed.innerHTML = publicPosts.map(post => `
+                <div class="discover-card" data-post-id="${post.id}">
+                    <img class="discover-card-image" src="${post.image_url}" alt="" loading="lazy">
+                    <div class="discover-card-content">
+                        <div class="discover-card-text">${post.enhanced_text}</div>
+                        <div class="discover-card-meta">
+                            ${new Date(post.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+            
+            // Add click handlers to cards
+            elements.discoverFeed.querySelectorAll('.discover-card').forEach(card => {
+                card.addEventListener('click', () => {
+                    const postId = card.dataset.postId;
+                    const post = publicPosts.find(p => p.id == postId);
+                    if (post) openDiscoverModal(post);
+                });
+            });
+        }
+        
+        function openDiscoverModal(post) {
+            elements.discoverModalImage.src = post.image_url;
+            elements.discoverModalText.textContent = post.enhanced_text;
+            elements.discoverModalDate.textContent = new Date(post.created_at).toLocaleDateString('en-US', { 
+                month: 'long', day: 'numeric', year: 'numeric' 
+            });
+            elements.discoverModal.classList.add('visible');
+        }
+        
+        async function handleCommunityToggle() {
+            const isPublic = elements.communityToggle.checked;
+            const success = await Storage.updatePostPublicStatus(state.currentPostId, isPublic);
+            
+            if (success) {
+                // Update local state
+                const post = state.posts.find(p => p.id === state.currentPostId);
+                if (post) {
+                    post.isPublic = isPublic;
+                    post.is_public = isPublic;
+                }
+                
+                elements.sharedBadge.style.display = isPublic ? 'inline-flex' : 'none';
+                showToast(isPublic ? 'Shared to community!' : 'Removed from community', 'success');
+            } else {
+                // Revert toggle on failure
+                elements.communityToggle.checked = !isPublic;
+                showToast('Failed to update sharing status', 'error');
+            }
         }
 
         // ============================================
@@ -2975,11 +3431,33 @@
         document.getElementById('sidebarCreateBtn')?.addEventListener('click', startRecording);
         
         // Settings buttons
-        elements.settingsBtn.addEventListener('click', () => {
+        elements.styleSettingsBtn.addEventListener('click', () => {
             elements.settingsModal.classList.add('visible');
         });
-        document.getElementById('sidebarSettingsBtn')?.addEventListener('click', () => {
-            elements.settingsModal.classList.add('visible');
+        
+        // Profile Panel
+        elements.profileBtn.addEventListener('click', () => {
+            elements.profilePanel.classList.add('visible');
+            elements.profilePanelBackdrop.classList.add('visible');
+        });
+        
+        function closeProfilePanel() {
+            elements.profilePanel.classList.remove('visible');
+            elements.profilePanelBackdrop.classList.remove('visible');
+        }
+        
+        elements.profilePanelClose.addEventListener('click', closeProfilePanel);
+        elements.profilePanelBackdrop.addEventListener('click', closeProfilePanel);
+        
+        // Discover Modal
+        elements.discoverModalClose.addEventListener('click', () => {
+            elements.discoverModal.classList.remove('visible');
+        });
+        
+        // Sidebar Profile Button (desktop)
+        document.getElementById('sidebarProfileBtn')?.addEventListener('click', () => {
+            elements.profilePanel.classList.add('visible');
+            elements.profilePanelBackdrop.classList.add('visible');
         });
         
         // Recording
@@ -2994,6 +3472,7 @@
         elements.modalShareBtn.addEventListener('click', shareImage);
         elements.downloadPostBtn.addEventListener('click', downloadCurrentImage);
         elements.deletePostBtn.addEventListener('click', deleteCurrentPost);
+        elements.communityToggle.addEventListener('change', handleCommunityToggle);
         elements.settingsClose.addEventListener('click', () => {
             elements.settingsModal.classList.remove('visible');
         });
