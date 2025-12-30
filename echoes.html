@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Echoes v0.5.0</title>
+    <title>Echoes v0.5.1</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -772,6 +772,13 @@
         
         .discover-card-content {
             padding: 16px;
+        }
+        
+        .discover-card-title {
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
         }
         
         .discover-card-text {
@@ -1967,7 +1974,7 @@
                         <path d="M20 18c-1.1 0-2 .9-2 2s.9 2 2 2" stroke="url(#echoGradient)" stroke-width="3" stroke-linecap="round" fill="none"/>
                     </svg>
                 </div>
-                Echoes <span class="version-badge">v0.5.0</span>
+                Echoes <span class="version-badge">v0.5.1</span>
             </div>
             <button class="header-btn" id="profileBtn" title="Profile">
                 <img id="headerAvatar" src="" alt="" style="display: none;">
@@ -2127,8 +2134,9 @@
             <div class="post-image-container">
                 <img class="post-image" id="discoverModalImage" src="" alt="">
             </div>
+            <div class="post-date" id="discoverModalDate"></div>
+            <div class="post-title" id="discoverModalTitle"></div>
             <div class="post-text" id="discoverModalText"></div>
-            <div class="post-date" id="discoverModalDate" style="margin-top: 20px;"></div>
         </div>
     </div>
     
@@ -2354,7 +2362,7 @@
         // CONFIG
         // ============================================
         const CONFIG = {
-            version: '0.5.0',
+            version: '0.5.1',
             webhookUrl: 'https://steveyoung.app.n8n.cloud/webhook/postcreate',
             maxRecordingTime: 60,
             supabaseUrl: 'https://oiahkbvqyfjumnqsefxw.supabase.co',
@@ -2512,10 +2520,12 @@
                         // Transform to match our format
                         return data.map(p => ({
                             id: p.id,
+                            title: p.title,
                             enhancedText: p.enhanced_text,
                             originalText: p.original_text,
                             imageUrl: p.image_url,
                             style: p.style,
+                            isPublic: p.is_public,
                             createdAt: p.created_at
                         }));
                     } catch (e) {
@@ -2548,6 +2558,7 @@
                             .from('posts')
                             .insert({
                                 user_id: state.user.id,
+                                title: post.title,
                                 enhanced_text: post.enhancedText,
                                 original_text: post.originalText,
                                 image_url: post.imageUrl,
@@ -2607,7 +2618,7 @@
                     try {
                         const { data, error } = await supabaseClient
                             .from('posts')
-                            .select('id, enhanced_text, image_url, created_at')
+                            .select('id, title, enhanced_text, image_url, created_at')
                             .eq('is_public', true)
                             .order('created_at', { ascending: false })
                             .limit(50);
@@ -2815,6 +2826,7 @@
             discoverModal: document.getElementById('discoverModal'),
             discoverModalClose: document.getElementById('discoverModalClose'),
             discoverModalImage: document.getElementById('discoverModalImage'),
+            discoverModalTitle: document.getElementById('discoverModalTitle'),
             discoverModalText: document.getElementById('discoverModalText'),
             discoverModalDate: document.getElementById('discoverModalDate'),
             
@@ -3118,6 +3130,7 @@
                 const result = Array.isArray(data) ? data[0] : data;
                 
                 const enhancedText = result.enhancedPost || result.enhancedText || result.text;
+                const title = result.title || 'My Echo';
                 let imageUrl = result.imageURL || result.imageUrl || result.image;
                 
                 // Generate post ID
@@ -3132,6 +3145,7 @@
                 // Create post object
                 const post = {
                     id: postId,
+                    title,
                     enhancedText,
                     originalText: transcript,
                     imageUrl,
@@ -3179,10 +3193,8 @@
                 const date = new Date(post.createdAt);
                 const dateStr = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
                 
-                // Extract title
-                let title = 'Post';
-                const match = post.enhancedText.match(/(?:watching|watched|binged|finished|loved|recommend)\s+([A-Z][A-Za-z\s:'-]+)/i);
-                if (match) title = match[1].trim().substring(0, 20);
+                // Use stored title or fallback
+                const title = post.title || 'My Echo';
                 
                 return `
                     <div class="gallery-item" data-id="${post.id}">
@@ -3217,10 +3229,8 @@
                 month: 'long', day: 'numeric', year: 'numeric' 
             });
             
-            // Extract title
-            let title = 'Your Post';
-            const match = post.enhancedText.match(/(?:watching|watched|binged|finished|loved|recommend)\s+([A-Z][A-Za-z\s:'-]+)/i);
-            if (match) title = match[1].trim();
+            // Use stored title or fallback
+            const title = post.title || 'My Echo';
             
             elements.modalPostTitle.textContent = title;
             elements.modalPostText.textContent = post.enhancedText;
@@ -3366,6 +3376,7 @@
                 <div class="discover-card" data-post-id="${post.id}">
                     <img class="discover-card-image" src="${post.image_url}" alt="" loading="lazy">
                     <div class="discover-card-content">
+                        <div class="discover-card-title">${post.title || 'Shared Echo'}</div>
                         <div class="discover-card-text">${post.enhanced_text}</div>
                         <div class="discover-card-meta">
                             ${new Date(post.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
@@ -3386,6 +3397,7 @@
         
         function openDiscoverModal(post) {
             elements.discoverModalImage.src = post.image_url;
+            elements.discoverModalTitle.textContent = post.title || 'Shared Echo';
             elements.discoverModalText.textContent = post.enhanced_text;
             elements.discoverModalDate.textContent = new Date(post.created_at).toLocaleDateString('en-US', { 
                 month: 'long', day: 'numeric', year: 'numeric' 
