@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Echoes v0.4.1</title>
+    <title>Echoes v0.4.2</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -308,9 +308,13 @@
             height: 22px;
         }
         
+        .echoes-logo {
+            background: transparent !important;
+        }
+        
         .echoes-logo svg {
-            width: 24px;
-            height: 24px;
+            width: 32px;
+            height: 32px;
         }
         
         .version-badge {
@@ -551,11 +555,6 @@
             fill: white;
         }
         
-        .nav-item-create span {
-            margin-top: 6px;
-            color: var(--text-muted);
-        }
-        
         /* Post Detail Modal */
         .post-modal {
             display: none;
@@ -782,6 +781,28 @@
             font-size: 16px;
             font-weight: 600;
             color: var(--text-primary);
+        }
+        
+        /* Style indicator in recording modal */
+        .style-indicator {
+            text-align: center;
+            padding: 10px 16px;
+            margin: 0 16px 16px 16px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 500;
+        }
+        
+        .style-indicator.auto {
+            background: linear-gradient(135deg, rgba(122, 108, 255, 0.15), rgba(255, 79, 94, 0.15));
+            color: var(--echo-violet);
+            border: 1px solid rgba(122, 108, 255, 0.3);
+        }
+        
+        .style-indicator.custom {
+            background: rgba(255, 79, 94, 0.15);
+            color: var(--resonant-coral);
+            border: 1px solid rgba(255, 79, 94, 0.3);
         }
         
         /* Recording box */
@@ -1671,7 +1692,7 @@
                         <path d="M20 18c-1.1 0-2 .9-2 2s.9 2 2 2" stroke="url(#echoGradient)" stroke-width="3" stroke-linecap="round" fill="none"/>
                     </svg>
                 </div>
-                Echoes <span class="version-badge">v0.3.0</span>
+                Echoes <span class="version-badge">v0.4.2</span>
             </div>
             <button class="header-btn" id="settingsBtn">
                 <svg viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.31.06-.63.06-.94 0-.31-.02-.63-.06-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.04.31-.06.63-.06.94s.02.63.06.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
@@ -1783,7 +1804,6 @@
                 <button class="create-btn" id="createBtn">
                     <svg viewBox="0 0 24 24"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/><path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/></svg>
                 </button>
-                <span>Echo</span>
             </div>
             
             <button class="nav-item" data-tab="profile">
@@ -1842,6 +1862,8 @@
             <div class="recording-title">New Echo</div>
             <div style="width: 40px;"></div>
         </div>
+        
+        <div class="style-indicator auto" id="styleIndicator">✨ Style: Match the show</div>
         
         <div class="recording-box" id="recordingBox">
             <div class="recording-timer" id="recordingTimer">00:60</div>
@@ -1999,7 +2021,7 @@
         // CONFIG
         // ============================================
         const CONFIG = {
-            version: '0.4.1',
+            version: '0.4.2',
             webhookUrl: 'https://steveyoung.app.n8n.cloud/webhook/postcreate',
             maxRecordingTime: 60,
             supabaseUrl: 'https://oiahkbvqyfjumnqsefxw.supabase.co',
@@ -2056,14 +2078,17 @@
         // ============================================
         // STATE
         // ============================================
+        // Load saved settings from localStorage
+        const savedSettings = JSON.parse(localStorage.getItem('echoes_settings') || '{}');
+        
         const state = {
             currentTab: 'home',
             isRecording: false,
             isPaused: false,
-            rewriteLevel: 'medium',
-            graphicMood: 'cozy',
-            graphicColors: 'warm',
-            graphicMode: 'auto', // 'auto' or 'custom'
+            rewriteLevel: savedSettings.rewriteLevel || 'medium',
+            graphicMood: savedSettings.graphicMood || 'cozy',
+            graphicColors: savedSettings.graphicColors || 'warm',
+            graphicMode: savedSettings.graphicMode || 'auto', // 'auto' or 'custom'
             timeRemaining: CONFIG.maxRecordingTime,
             finalTranscript: '',
             interimTranscript: '',
@@ -2072,6 +2097,17 @@
             user: null,
             authMode: 'signin' // 'signin' or 'signup'
         };
+        
+        // Save settings to localStorage
+        function saveSettings() {
+            localStorage.setItem('echoes_settings', JSON.stringify({
+                rewriteLevel: state.rewriteLevel,
+                graphicMood: state.graphicMood,
+                graphicColors: state.graphicColors,
+                graphicMode: state.graphicMode
+            }));
+            console.log('Settings saved:', state.graphicMode, state.graphicMood, state.graphicColors);
+        }
 
         // ============================================
         // STORAGE (Supabase when logged in, localStorage as fallback)
@@ -2382,6 +2418,7 @@
             colorPills: document.getElementById('colorPills'),
             styleToggle: document.getElementById('styleToggle'),
             stylePreviewBox: document.getElementById('stylePreviewBox'),
+            styleIndicator: document.getElementById('styleIndicator'),
             
             // Loading & Toast
             loadingOverlay: document.getElementById('loadingOverlay'),
@@ -2567,6 +2604,10 @@
             elements.liveTranscript.textContent = 'Start speaking...';
             elements.liveTranscript.classList.add('empty');
             elements.recordingModal.classList.add('visible');
+            
+            // Update style indicator and recording box style
+            updateStyleIndicator();
+            updateRecordingBoxStyle();
             
             updateTimerDisplay();
             updatePauseButton();
@@ -2966,6 +3007,7 @@
                 document.querySelectorAll('.rewrite-level').forEach(l => l.classList.remove('selected'));
                 level.classList.add('selected');
                 state.rewriteLevel = level.dataset.level;
+                saveSettings();
             });
         });
         
@@ -2976,6 +3018,8 @@
                 pill.classList.add('selected');
                 state.graphicMood = pill.dataset.mood;
                 updateStylePreview();
+                saveSettings();
+                updateStyleIndicator();
             });
         });
         
@@ -2986,6 +3030,8 @@
                 pill.classList.add('selected');
                 state.graphicColors = pill.dataset.colors;
                 updateStylePreview();
+                saveSettings();
+                updateStyleIndicator();
             });
         });
         
@@ -2995,6 +3041,8 @@
                 document.querySelectorAll('#styleToggle .style-toggle-option').forEach(o => o.classList.remove('selected'));
                 option.classList.add('selected');
                 state.graphicMode = option.dataset.mode;
+                saveSettings();
+                updateStyleIndicator();
             });
         });
         
@@ -3009,8 +3057,68 @@
             elements.stylePreviewBox.style.color = colorStyle.accent || moodStyle.color;
         }
         
-        // Initialize preview
-        updateStylePreview();
+        // Update style indicator in recording modal
+        function updateStyleIndicator() {
+            if (state.graphicMode === 'auto') {
+                elements.styleIndicator.textContent = '✨ Style: Match the show';
+                elements.styleIndicator.className = 'style-indicator auto';
+            } else {
+                const moodEmoji = {
+                    'cozy': '☕', 'bold': '💥', 'elegant': '✨', 'playful': '🎈', 'dark': '🌙'
+                };
+                const colorEmoji = {
+                    'warm': '🔥', 'cool': '❄️', 'neon': '⚡', 'muted': '🌫️', 'mono': '◐'
+                };
+                const emoji = moodEmoji[state.graphicMood] || '🎨';
+                elements.styleIndicator.textContent = `${emoji} Style: ${state.graphicMood.charAt(0).toUpperCase() + state.graphicMood.slice(1)} + ${state.graphicColors.charAt(0).toUpperCase() + state.graphicColors.slice(1)}`;
+                elements.styleIndicator.className = 'style-indicator custom';
+            }
+        }
+        
+        // Update recording box style based on custom mode
+        function updateRecordingBoxStyle() {
+            if (state.graphicMode === 'custom') {
+                const moodStyle = CONFIG.previewStyles[state.graphicMood];
+                const colorStyle = CONFIG.previewStyles[state.graphicColors];
+                elements.recordingBox.style.background = moodStyle.bg;
+                // Subtle accent color glow
+                const accentColor = colorStyle.accent || moodStyle.color;
+                elements.recordingBox.style.boxShadow = `0 0 40px ${accentColor}40`;
+            } else {
+                // Default coral gradient for auto mode
+                elements.recordingBox.style.background = 'var(--accent)';
+                elements.recordingBox.style.boxShadow = 'none';
+            }
+        }
+        
+        // Initialize UI with saved settings
+        function initializeSettingsUI() {
+            // Rewrite levels
+            document.querySelectorAll('.rewrite-level').forEach(el => {
+                el.classList.toggle('selected', el.dataset.level === state.rewriteLevel);
+            });
+            
+            // Mood pills
+            document.querySelectorAll('#moodPills .style-pill').forEach(el => {
+                el.classList.toggle('selected', el.dataset.mood === state.graphicMood);
+            });
+            
+            // Color pills
+            document.querySelectorAll('#colorPills .style-pill').forEach(el => {
+                el.classList.toggle('selected', el.dataset.colors === state.graphicColors);
+            });
+            
+            // Style toggle
+            document.querySelectorAll('#styleToggle .style-toggle-option').forEach(el => {
+                el.classList.toggle('selected', el.dataset.mode === state.graphicMode);
+            });
+            
+            updateStylePreview();
+            updateStyleIndicator();
+        }
+        
+        // Initialize settings UI
+        initializeSettingsUI();
 
         // ============================================
         // AUTH UI FUNCTIONS
