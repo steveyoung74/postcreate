@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Echoes v0.5.5</title>
+    <title>Echoes v0.5.6</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -2338,7 +2338,7 @@
                         <path d="M20 18c-1.1 0-2 .9-2 2s.9 2 2 2" stroke="url(#echoGradient)" stroke-width="3" stroke-linecap="round" fill="none"/>
                     </svg>
                 </div>
-                Echoes <span class="version-badge">v0.5.5</span>
+                Echoes <span class="version-badge">v0.5.6</span>
             </div>
             <button class="header-btn" id="profileBtn" title="Profile">
                 <img id="headerAvatar" src="" alt="" style="display: none;">
@@ -2789,7 +2789,7 @@
         // CONFIG
         // ============================================
         const CONFIG = {
-            version: '0.5.5',
+            version: '0.5.6',
             webhookUrl: 'https://steveyoung.app.n8n.cloud/webhook/postcreate',
             maxRecordingTime: 60,
             supabaseUrl: 'https://oiahkbvqyfjumnqsefxw.supabase.co',
@@ -3812,24 +3812,44 @@
         let currentFilter = null;
         
         // Common words to exclude from trending
-        const stopWords = ['the', 'a', 'an', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for', 'of', 'my', 'is', 'it', 'i', 'me', 'we', 'you', 'this', 'that', 'with', 'from', 'as', 'be', 'was', 'are', 'been', 'have', 'has', 'had', 'do', 'does', 'did', 'will', 'would', 'could', 'should', 'may', 'might', 'must', 'shall', 'can', 'need', 'dare', 'ought', 'used', 'what', 'who', 'which', 'when', 'where', 'why', 'how', 'all', 'each', 'every', 'both', 'few', 'more', 'most', 'other', 'some', 'such', 'no', 'not', 'only', 'own', 'same', 'so', 'than', 'too', 'very', 'just', 'about', 'into', 'through', 'during', 'before', 'after', 'above', 'below', 'between', 'under', 'again', 'further', 'then', 'once', 'here', 'there', 'any', 'show', 'shows', 'movie', 'movies', 'series', 'watch', 'watching', 'watched', 'recommendation', 'recommendations', 'recs', 'rec', 'suggest', 'suggestions', 'like', 'looking', 'need', 'want', 'something', 'anything', 'echo', 'shared', 'post', 'new'];
+        const stopWords = new Set(['the', 'a', 'an', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for', 'of', 'my', 'is', 'it', 'i', 'me', 'we', 'you', 'this', 'that', 'with', 'from', 'as', 'be', 'was', 'are', 'been', 'have', 'has', 'had', 'do', 'does', 'did', 'will', 'would', 'could', 'should', 'may', 'might', 'must', 'shall', 'can', 'need', 'dare', 'ought', 'used', 'what', 'who', 'which', 'when', 'where', 'why', 'how', 'all', 'each', 'every', 'both', 'few', 'more', 'most', 'other', 'some', 'such', 'no', 'not', 'only', 'own', 'same', 'so', 'than', 'too', 'very', 'just', 'about', 'into', 'through', 'during', 'before', 'after', 'above', 'below', 'between', 'under', 'again', 'further', 'then', 'once', 'here', 'there', 'any', 'show', 'shows', 'movie', 'movies', 'series', 'watch', 'watching', 'watched', 'recommendation', 'recommendations', 'recs', 'rec', 'suggest', 'suggestions', 'like', 'looking', 'need', 'want', 'something', 'anything', 'echo', 'shared', 'post', 'new', 'just', 'finished', 'binged', 'loved', 'really', 'great', 'good', 'best', 'ever', 'seen', 'think', 'episode', 'episodes', 'season', 'seasons', 'netflix', 'hbo', 'amazon', 'prime', 'disney', 'hulu', 'apple', 'peacock', 'paramount', 'max', 'streaming', 'binge', 'anyone', 'everyone', 'someone', 'people', 'thing', 'things', 'time', 'way', 'going', 'get', 'got', 'make', 'made', 'take', 'took', 'come', 'came', 'know', 'knew', 'see', 'saw', 'give', 'gave', 'find', 'found', 'tell', 'told', 'feel', 'felt', 'try', 'tried', 'leave', 'left', 'call', 'called', 'keep', 'kept', 'let', 'begin', 'began', 'seem', 'seemed', 'help', 'helped', 'show', 'showed', 'hear', 'heard', 'play', 'played', 'run', 'ran', 'move', 'moved', 'live', 'lived', 'believe', 'believed', 'bring', 'brought', 'happen', 'happened', 'write', 'wrote', 'sit', 'sat', 'stand', 'stood', 'lose', 'lost', 'pay', 'paid', 'meet', 'met', 'include', 'included', 'continue', 'continued', 'set', 'learn', 'learned', 'change', 'changed', 'lead', 'led', 'understand', 'understood', 'watch', 'watched', 'follow', 'followed', 'stop', 'stopped', 'create', 'created', 'speak', 'spoke', 'read', 'allow', 'allowed', 'add', 'added', 'spend', 'spent', 'grow', 'grew', 'open', 'opened', 'walk', 'walked', 'win', 'won', 'offer', 'offered', 'remember', 'remembered', 'love', 'consider', 'considered', 'appear', 'appeared', 'buy', 'bought', 'wait', 'waited', 'serve', 'served', 'die', 'died', 'send', 'sent', 'expect', 'expected', 'build', 'built', 'stay', 'stayed', 'fall', 'fell', 'cut', 'reach', 'reached', 'kill', 'killed', 'remain', 'remained']);
         
         function extractTrendingTopics(posts) {
-            const titleCounts = {};
+            const topicCounts = {};
             
             posts.forEach(post => {
-                const title = (post.title || '').trim();
-                if (!title || title === 'Shared Echo' || title === 'My Echo') return;
+                let topic = null;
                 
-                // Use full title as a topic (cleaned up)
-                const cleanTitle = title.replace(/[^\w\s'-]/g, '').trim();
-                if (cleanTitle.length > 2) {
-                    titleCounts[cleanTitle] = (titleCounts[cleanTitle] || 0) + 1;
+                // First try to use the title
+                const title = (post.title || '').trim();
+                if (title && title !== 'Shared Echo' && title !== 'My Echo' && title.length > 2) {
+                    topic = title;
+                } else {
+                    // Extract from text - look for show names
+                    const text = post.enhanced_text || '';
+                    
+                    // Try to find quoted show names
+                    const quotedMatch = text.match(/[""]([^""]+)[""]|["']([^"']+)["']/);
+                    if (quotedMatch) {
+                        topic = (quotedMatch[1] || quotedMatch[2] || '').trim();
+                    }
+                    
+                    // If no quoted match, try capitalized phrases (likely show names)
+                    if (!topic || topic.length < 2) {
+                        const capsMatch = text.match(/(?:called|named|titled|watching|watched|binged|finished|loved|recommend)\s+([A-Z][A-Za-z\s:'-]+)/i);
+                        if (capsMatch && capsMatch[1]) {
+                            topic = capsMatch[1].trim().substring(0, 30);
+                        }
+                    }
+                }
+                
+                if (topic && topic.length > 2 && topic.length < 50) {
+                    topicCounts[topic] = (topicCounts[topic] || 0) + 1;
                 }
             });
             
-            // Sort by count and take top 8
-            return Object.entries(titleCounts)
+            // Sort by count and take top 8, show all even with count of 1
+            return Object.entries(topicCounts)
                 .sort((a, b) => b[1] - a[1])
                 .slice(0, 8)
                 .map(([topic, count]) => ({ topic, count }));
@@ -3872,10 +3892,15 @@
                 pill.classList.toggle('active', pill.dataset.topic === topic);
             });
             
-            // Filter and re-render feed
-            renderDiscoverCards(allPublicPosts.filter(post => 
-                (post.title || '').toLowerCase().includes(topic.toLowerCase())
-            ));
+            // Filter posts - search in title AND text
+            const filtered = allPublicPosts.filter(post => {
+                const title = (post.title || '').toLowerCase();
+                const text = (post.enhanced_text || '').toLowerCase();
+                const search = topic.toLowerCase();
+                return title.includes(search) || text.includes(search);
+            });
+            
+            renderDiscoverCards(filtered);
         }
         
         function clearFilterHandler() {
@@ -3970,6 +3995,10 @@
             
             allPublicPosts = await Storage.loadPublicPosts();
             
+            // Debug logging
+            console.log('Public posts loaded:', allPublicPosts.length);
+            console.log('First post:', allPublicPosts[0]);
+            
             // Hide skeletons
             elements.discoverSkeletons.style.display = 'none';
             
@@ -3987,6 +4016,7 @@
             
             // Extract and render trending topics
             const trendingTopics = extractTrendingTopics(allPublicPosts);
+            console.log('Trending topics:', trendingTopics);
             renderTrendingPills(trendingTopics);
             
             elements.discoverFeed.style.display = 'flex';
@@ -3994,9 +4024,12 @@
             
             // Render cards (respecting any active filter)
             if (currentFilter) {
-                renderDiscoverCards(allPublicPosts.filter(post => 
-                    (post.title || '').toLowerCase().includes(currentFilter.toLowerCase())
-                ));
+                const search = currentFilter.toLowerCase();
+                renderDiscoverCards(allPublicPosts.filter(post => {
+                    const title = (post.title || '').toLowerCase();
+                    const text = (post.enhanced_text || '').toLowerCase();
+                    return title.includes(search) || text.includes(search);
+                }));
             } else {
                 renderDiscoverCards(allPublicPosts);
             }
