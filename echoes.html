@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Echoes v0.5.2</title>
+    <title>Echoes v0.5.3</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -803,10 +803,106 @@
         .discover-card-meta {
             display: flex;
             align-items: center;
-            gap: 8px;
+            justify-content: space-between;
             margin-top: 12px;
             font-size: 12px;
             color: var(--text-muted);
+        }
+        
+        .discover-card-actions {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .discover-action-btn {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 6px 12px;
+            background: var(--bg-elevated);
+            border: none;
+            border-radius: 16px;
+            color: var(--text-secondary);
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .discover-action-btn:hover {
+            background: var(--border);
+            color: var(--text-primary);
+        }
+        
+        .discover-action-btn:active {
+            transform: scale(0.95);
+        }
+        
+        .discover-action-btn svg {
+            width: 14px;
+            height: 14px;
+            fill: currentColor;
+        }
+        
+        .discover-action-btn.liked {
+            color: var(--resonant-coral);
+        }
+        
+        .discover-action-btn.liked svg {
+            fill: var(--resonant-coral);
+        }
+        
+        /* Discover Modal Actions */
+        .discover-modal-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 24px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+        }
+        
+        .discover-modal-btn {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 14px;
+            border: none;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .discover-modal-btn svg {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+        }
+        
+        .discover-modal-btn.copy {
+            background: var(--bg-elevated);
+            color: var(--text-primary);
+        }
+        
+        .discover-modal-btn.copy:hover {
+            background: var(--border);
+        }
+        
+        .discover-modal-btn.like {
+            background: var(--bg-elevated);
+            color: var(--text-primary);
+        }
+        
+        .discover-modal-btn.like:hover {
+            background: var(--border);
+        }
+        
+        .discover-modal-btn.like.liked {
+            background: rgba(255, 79, 94, 0.15);
+            color: var(--resonant-coral);
         }
         
         .discover-empty {
@@ -2113,7 +2209,7 @@
                         <path d="M20 18c-1.1 0-2 .9-2 2s.9 2 2 2" stroke="url(#echoGradient)" stroke-width="3" stroke-linecap="round" fill="none"/>
                     </svg>
                 </div>
-                Echoes <span class="version-badge">v0.5.2</span>
+                Echoes <span class="version-badge">v0.5.3</span>
             </div>
             <button class="header-btn" id="profileBtn" title="Profile">
                 <img id="headerAvatar" src="" alt="" style="display: none;">
@@ -2311,6 +2407,17 @@
             <div class="post-date" id="discoverModalDate"></div>
             <div class="post-title" id="discoverModalTitle"></div>
             <div class="post-text" id="discoverModalText"></div>
+            
+            <div class="discover-modal-actions">
+                <button class="discover-modal-btn copy" id="discoverCopyBtn">
+                    <svg viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+                    Copy Text
+                </button>
+                <button class="discover-modal-btn like" id="discoverLikeBtn">
+                    <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                    <span id="discoverLikeText">Like</span>
+                </button>
+            </div>
         </div>
     </div>
     
@@ -2536,7 +2643,7 @@
         // CONFIG
         // ============================================
         const CONFIG = {
-            version: '0.5.2',
+            version: '0.5.3',
             webhookUrl: 'https://steveyoung.app.n8n.cloud/webhook/postcreate',
             maxRecordingTime: 60,
             supabaseUrl: 'https://oiahkbvqyfjumnqsefxw.supabase.co',
@@ -2610,7 +2717,8 @@
             posts: [],
             currentPostId: null,
             user: null,
-            authMode: 'signin' // 'signin' or 'signup'
+            authMode: 'signin', // 'signin' or 'signup'
+            likedPosts: JSON.parse(localStorage.getItem('echoes_liked_posts') || '[]')
         };
         
         // Save settings to localStorage
@@ -3005,6 +3113,9 @@
             discoverModalTitle: document.getElementById('discoverModalTitle'),
             discoverModalText: document.getElementById('discoverModalText'),
             discoverModalDate: document.getElementById('discoverModalDate'),
+            discoverCopyBtn: document.getElementById('discoverCopyBtn'),
+            discoverLikeBtn: document.getElementById('discoverLikeBtn'),
+            discoverLikeText: document.getElementById('discoverLikeText'),
             pullToRefresh: document.getElementById('pullToRefresh'),
             pullToRefreshText: document.getElementById('pullToRefreshText'),
             newPostsIndicator: document.getElementById('newPostsIndicator'),
@@ -3574,25 +3685,58 @@
             elements.discoverFeed.style.display = 'flex';
             elements.discoverEmpty.style.display = 'none';
             
-            elements.discoverFeed.innerHTML = publicPosts.map(post => `
+            elements.discoverFeed.innerHTML = publicPosts.map(post => {
+                const isLiked = state.likedPosts.includes(post.id);
+                return `
                 <div class="discover-card" data-post-id="${post.id}">
                     <img class="discover-card-image" src="${post.image_url}" alt="" loading="lazy">
                     <div class="discover-card-content">
                         <div class="discover-card-title">${post.title || 'Shared Echo'}</div>
                         <div class="discover-card-text">${post.enhanced_text}</div>
                         <div class="discover-card-meta">
-                            ${new Date(post.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                            <span>${new Date(post.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
+                            <div class="discover-card-actions">
+                                <button class="discover-action-btn copy-btn" data-text="${encodeURIComponent(post.enhanced_text)}" title="Copy text">
+                                    <svg viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+                                    Copy
+                                </button>
+                                <button class="discover-action-btn like-btn ${isLiked ? 'liked' : ''}" data-post-id="${post.id}">
+                                    <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
-            `).join('');
+            `}).join('');
             
             // Add click handlers to cards
             elements.discoverFeed.querySelectorAll('.discover-card').forEach(card => {
-                card.addEventListener('click', () => {
+                card.addEventListener('click', (e) => {
+                    // Don't open modal if clicking action buttons
+                    if (e.target.closest('.discover-action-btn')) return;
+                    
                     const postId = card.dataset.postId;
                     const post = publicPosts.find(p => p.id == postId);
                     if (post) openDiscoverModal(post);
+                });
+            });
+            
+            // Copy button handlers
+            elements.discoverFeed.querySelectorAll('.copy-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const text = decodeURIComponent(btn.dataset.text);
+                    navigator.clipboard.writeText(text).then(() => {
+                        showToast('Text copied!', 'success');
+                    });
+                });
+            });
+            
+            // Like button handlers (store in state for now)
+            elements.discoverFeed.querySelectorAll('.like-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    handleDiscoverLike(btn);
                 });
             });
             
@@ -3703,14 +3847,74 @@
             showToast('Feed updated', 'success');
         });
         
+        let currentDiscoverPost = null;
+        
         function openDiscoverModal(post) {
+            currentDiscoverPost = post;
+            
             elements.discoverModalImage.src = post.image_url;
             elements.discoverModalTitle.textContent = post.title || 'Shared Echo';
             elements.discoverModalText.textContent = post.enhanced_text;
             elements.discoverModalDate.textContent = new Date(post.created_at).toLocaleDateString('en-US', { 
                 month: 'long', day: 'numeric', year: 'numeric' 
             });
+            
+            // Update like button state
+            const isLiked = state.likedPosts.includes(post.id);
+            elements.discoverLikeBtn.classList.toggle('liked', isLiked);
+            elements.discoverLikeText.textContent = isLiked ? 'Liked' : 'Like';
+            
             elements.discoverModal.classList.add('visible');
+        }
+        
+        // Modal copy button
+        elements.discoverCopyBtn.addEventListener('click', () => {
+            if (!currentDiscoverPost) return;
+            navigator.clipboard.writeText(currentDiscoverPost.enhanced_text).then(() => {
+                showToast('Text copied!', 'success');
+            });
+        });
+        
+        // Modal like button
+        elements.discoverLikeBtn.addEventListener('click', () => {
+            if (!currentDiscoverPost) return;
+            
+            const postId = currentDiscoverPost.id;
+            const isLiked = state.likedPosts.includes(postId);
+            
+            if (isLiked) {
+                state.likedPosts = state.likedPosts.filter(id => id !== postId);
+                elements.discoverLikeBtn.classList.remove('liked');
+                elements.discoverLikeText.textContent = 'Like';
+            } else {
+                state.likedPosts.push(postId);
+                elements.discoverLikeBtn.classList.add('liked');
+                elements.discoverLikeText.textContent = 'Liked';
+            }
+            
+            localStorage.setItem('echoes_liked_posts', JSON.stringify(state.likedPosts));
+            
+            // Update the card button too
+            const cardBtn = document.querySelector(`.like-btn[data-post-id="${postId}"]`);
+            if (cardBtn) {
+                cardBtn.classList.toggle('liked', !isLiked);
+            }
+        });
+        
+        // Card like button handler
+        function handleDiscoverLike(btn) {
+            const postId = btn.dataset.postId;
+            const isLiked = state.likedPosts.includes(postId);
+            
+            if (isLiked) {
+                state.likedPosts = state.likedPosts.filter(id => id !== postId);
+                btn.classList.remove('liked');
+            } else {
+                state.likedPosts.push(postId);
+                btn.classList.add('liked');
+            }
+            
+            localStorage.setItem('echoes_liked_posts', JSON.stringify(state.likedPosts));
         }
         
         async function handleCommunityToggle() {
