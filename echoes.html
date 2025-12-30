@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Echoes v0.5.1</title>
+    <title>Echoes v0.5.2</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -379,6 +379,11 @@
             display: block;
         }
         
+        #discoverTab {
+            height: calc(100vh - 136px);
+            overflow: hidden;
+        }
+        
         /* Home Tab - Gallery */
         .gallery-container {
             padding: 8px;
@@ -729,6 +734,10 @@
         .discover-container {
             padding: 16px;
             padding-bottom: 100px;
+            height: 100%;
+            overflow-y: auto;
+            overscroll-behavior-y: contain;
+            -webkit-overflow-scrolling: touch;
         }
         
         .discover-header {
@@ -816,6 +825,136 @@
         .discover-empty-icon svg {
             width: 100%;
             height: 100%;
+            fill: currentColor;
+        }
+        
+        /* Pull to Refresh */
+        .pull-to-refresh {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            margin: -16px -16px 16px -16px;
+            color: var(--text-muted);
+            font-size: 13px;
+            gap: 8px;
+            opacity: 0;
+            transform: translateY(-100%);
+            transition: all 0.2s ease;
+        }
+        
+        .pull-to-refresh.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .pull-to-refresh.refreshing .refresh-spinner {
+            animation: spin 1s linear infinite;
+        }
+        
+        .refresh-spinner {
+            width: 18px;
+            height: 18px;
+        }
+        
+        .refresh-spinner svg {
+            width: 100%;
+            height: 100%;
+            fill: currentColor;
+        }
+        
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Skeleton Loading */
+        .skeleton-card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            overflow: hidden;
+        }
+        
+        .skeleton-image {
+            width: 100%;
+            aspect-ratio: 1;
+            background: linear-gradient(90deg, var(--bg-elevated) 25%, var(--bg-card) 50%, var(--bg-elevated) 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+        }
+        
+        .skeleton-content {
+            padding: 16px;
+        }
+        
+        .skeleton-title {
+            height: 20px;
+            width: 60%;
+            background: linear-gradient(90deg, var(--bg-elevated) 25%, var(--bg-card) 50%, var(--bg-elevated) 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+            border-radius: 4px;
+            margin-bottom: 12px;
+        }
+        
+        .skeleton-text {
+            height: 14px;
+            width: 100%;
+            background: linear-gradient(90deg, var(--bg-elevated) 25%, var(--bg-card) 50%, var(--bg-elevated) 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+            border-radius: 4px;
+            margin-bottom: 8px;
+        }
+        
+        .skeleton-text:last-child {
+            width: 80%;
+            margin-bottom: 0;
+        }
+        
+        .skeleton-meta {
+            height: 12px;
+            width: 25%;
+            background: linear-gradient(90deg, var(--bg-elevated) 25%, var(--bg-card) 50%, var(--bg-elevated) 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+            border-radius: 4px;
+            margin-top: 12px;
+        }
+        
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+        
+        /* New Posts Indicator */
+        .new-posts-indicator {
+            position: fixed;
+            top: 70px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-100px);
+            background: var(--accent);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(255, 79, 94, 0.4);
+            z-index: 150;
+            transition: transform 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .new-posts-indicator.visible {
+            transform: translateX(-50%) translateY(0);
+        }
+        
+        .new-posts-indicator svg {
+            width: 16px;
+            height: 16px;
             fill: currentColor;
         }
         
@@ -1974,7 +2113,7 @@
                         <path d="M20 18c-1.1 0-2 .9-2 2s.9 2 2 2" stroke="url(#echoGradient)" stroke-width="3" stroke-linecap="round" fill="none"/>
                     </svg>
                 </div>
-                Echoes <span class="version-badge">v0.5.1</span>
+                Echoes <span class="version-badge">v0.5.2</span>
             </div>
             <button class="header-btn" id="profileBtn" title="Profile">
                 <img id="headerAvatar" src="" alt="" style="display: none;">
@@ -2028,10 +2167,39 @@
             
             <!-- Discover Tab -->
             <div class="tab-content" id="discoverTab">
-                <div class="discover-container">
+                <div class="discover-container" id="discoverContainer">
+                    <div class="pull-to-refresh" id="pullToRefresh">
+                        <div class="refresh-spinner">
+                            <svg viewBox="0 0 24 24"><path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>
+                        </div>
+                        <span id="pullToRefreshText">Pull to refresh</span>
+                    </div>
+                    
                     <div class="discover-header">
                         <div class="discover-title">Discover</div>
                         <div class="discover-subtitle">See what the community is watching</div>
+                    </div>
+                    
+                    <!-- Loading Skeletons -->
+                    <div class="discover-feed" id="discoverSkeletons" style="display: none;">
+                        <div class="skeleton-card">
+                            <div class="skeleton-image"></div>
+                            <div class="skeleton-content">
+                                <div class="skeleton-title"></div>
+                                <div class="skeleton-text"></div>
+                                <div class="skeleton-text"></div>
+                                <div class="skeleton-meta"></div>
+                            </div>
+                        </div>
+                        <div class="skeleton-card">
+                            <div class="skeleton-image"></div>
+                            <div class="skeleton-content">
+                                <div class="skeleton-title"></div>
+                                <div class="skeleton-text"></div>
+                                <div class="skeleton-text"></div>
+                                <div class="skeleton-meta"></div>
+                            </div>
+                        </div>
                     </div>
                     
                     <div class="discover-feed" id="discoverFeed">
@@ -2048,6 +2216,12 @@
                 </div>
             </div>
         </main>
+        
+        <!-- New Posts Indicator -->
+        <div class="new-posts-indicator" id="newPostsIndicator">
+            <svg viewBox="0 0 24 24"><path d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"/></svg>
+            New posts available
+        </div>
         
         <!-- Bottom Navigation -->
         <nav class="bottom-nav">
@@ -2362,7 +2536,7 @@
         // CONFIG
         // ============================================
         const CONFIG = {
-            version: '0.5.1',
+            version: '0.5.2',
             webhookUrl: 'https://steveyoung.app.n8n.cloud/webhook/postcreate',
             maxRecordingTime: 60,
             supabaseUrl: 'https://oiahkbvqyfjumnqsefxw.supabase.co',
@@ -2821,7 +2995,9 @@
             styleIndicator: document.getElementById('styleIndicator'),
             
             // Discover
+            discoverContainer: document.getElementById('discoverContainer'),
             discoverFeed: document.getElementById('discoverFeed'),
+            discoverSkeletons: document.getElementById('discoverSkeletons'),
             discoverEmpty: document.getElementById('discoverEmpty'),
             discoverModal: document.getElementById('discoverModal'),
             discoverModalClose: document.getElementById('discoverModalClose'),
@@ -2829,6 +3005,9 @@
             discoverModalTitle: document.getElementById('discoverModalTitle'),
             discoverModalText: document.getElementById('discoverModalText'),
             discoverModalDate: document.getElementById('discoverModalDate'),
+            pullToRefresh: document.getElementById('pullToRefresh'),
+            pullToRefreshText: document.getElementById('pullToRefreshText'),
+            newPostsIndicator: document.getElementById('newPostsIndicator'),
             
             // Loading & Toast
             loadingOverlay: document.getElementById('loadingOverlay'),
@@ -3351,22 +3530,45 @@
             });
             document.getElementById(`${tabName}Tab`).classList.add('active');
             
-            // Load discover feed when switching to discover tab
+            // Handle discover tab
             if (tabName === 'discover') {
                 loadDiscoverFeed();
+                startNewPostsChecker();
+            } else {
+                stopNewPostsChecker();
+                elements.newPostsIndicator.classList.remove('visible');
             }
         }
         
         // ============================================
         // DISCOVER FEED
         // ============================================
-        async function loadDiscoverFeed() {
+        let lastKnownPostId = null;
+        let isRefreshing = false;
+        let newPostsCheckInterval = null;
+        
+        async function loadDiscoverFeed(showSkeletons = true) {
+            // Show skeletons while loading (only on initial load, not refresh)
+            if (showSkeletons) {
+                elements.discoverSkeletons.style.display = 'flex';
+                elements.discoverFeed.style.display = 'none';
+                elements.discoverEmpty.style.display = 'none';
+            }
+            
             const publicPosts = await Storage.loadPublicPosts();
+            
+            // Hide skeletons
+            elements.discoverSkeletons.style.display = 'none';
             
             if (publicPosts.length === 0) {
                 elements.discoverFeed.style.display = 'none';
                 elements.discoverEmpty.style.display = 'block';
                 return;
+            }
+            
+            // Track latest post for new posts detection
+            if (publicPosts[0]) {
+                lastKnownPostId = publicPosts[0].id;
             }
             
             elements.discoverFeed.style.display = 'flex';
@@ -3393,7 +3595,113 @@
                     if (post) openDiscoverModal(post);
                 });
             });
+            
+            // Hide new posts indicator after refresh
+            elements.newPostsIndicator.classList.remove('visible');
         }
+        
+        // Pull to refresh
+        function setupPullToRefresh() {
+            const container = elements.discoverContainer;
+            let startY = 0;
+            let currentY = 0;
+            let pulling = false;
+            
+            container.addEventListener('touchstart', (e) => {
+                if (container.scrollTop === 0 && !isRefreshing) {
+                    startY = e.touches[0].pageY;
+                    pulling = true;
+                }
+            }, { passive: true });
+            
+            container.addEventListener('touchmove', (e) => {
+                if (!pulling || isRefreshing) return;
+                
+                currentY = e.touches[0].pageY;
+                const pullDistance = currentY - startY;
+                
+                if (pullDistance > 0 && container.scrollTop === 0) {
+                    const progress = Math.min(pullDistance / 80, 1);
+                    elements.pullToRefresh.style.opacity = progress;
+                    elements.pullToRefresh.style.transform = `translateY(${Math.min(pullDistance * 0.5, 40) - 40}px)`;
+                    
+                    if (pullDistance > 80) {
+                        elements.pullToRefreshText.textContent = 'Release to refresh';
+                    } else {
+                        elements.pullToRefreshText.textContent = 'Pull to refresh';
+                    }
+                }
+            }, { passive: true });
+            
+            container.addEventListener('touchend', async () => {
+                if (!pulling) return;
+                pulling = false;
+                
+                const pullDistance = currentY - startY;
+                
+                if (pullDistance > 80 && !isRefreshing) {
+                    // Trigger refresh
+                    isRefreshing = true;
+                    elements.pullToRefresh.classList.add('visible', 'refreshing');
+                    elements.pullToRefreshText.textContent = 'Refreshing...';
+                    
+                    await loadDiscoverFeed(false);
+                    
+                    // Reset
+                    setTimeout(() => {
+                        elements.pullToRefresh.classList.remove('visible', 'refreshing');
+                        elements.pullToRefresh.style.opacity = '';
+                        elements.pullToRefresh.style.transform = '';
+                        isRefreshing = false;
+                        showToast('Feed refreshed', 'success');
+                    }, 500);
+                } else {
+                    // Reset without refresh
+                    elements.pullToRefresh.style.opacity = '';
+                    elements.pullToRefresh.style.transform = '';
+                }
+                
+                startY = 0;
+                currentY = 0;
+            }, { passive: true });
+        }
+        
+        // Check for new posts periodically
+        async function checkForNewPosts() {
+            if (state.currentTab !== 'discover' || !lastKnownPostId) return;
+            
+            const publicPosts = await Storage.loadPublicPosts();
+            
+            if (publicPosts.length > 0 && publicPosts[0].id !== lastKnownPostId) {
+                // New posts available
+                elements.newPostsIndicator.classList.add('visible');
+            }
+        }
+        
+        function startNewPostsChecker() {
+            // Check every 30 seconds when on discover tab
+            if (newPostsCheckInterval) clearInterval(newPostsCheckInterval);
+            newPostsCheckInterval = setInterval(checkForNewPosts, 30000);
+        }
+        
+        function stopNewPostsChecker() {
+            if (newPostsCheckInterval) {
+                clearInterval(newPostsCheckInterval);
+                newPostsCheckInterval = null;
+            }
+        }
+        
+        // New posts indicator click
+        elements.newPostsIndicator.addEventListener('click', async () => {
+            elements.newPostsIndicator.classList.remove('visible');
+            
+            // Scroll to top
+            elements.discoverContainer.scrollTo({ top: 0, behavior: 'smooth' });
+            
+            // Reload feed
+            await loadDiscoverFeed(false);
+            showToast('Feed updated', 'success');
+        });
         
         function openDiscoverModal(post) {
             elements.discoverModalImage.src = post.image_url;
@@ -3788,6 +4096,9 @@
         // ============================================
         async function init() {
             console.log(`Echoes v${CONFIG.version} starting...`);
+            
+            // Setup pull to refresh on Discover
+            setupPullToRefresh();
             
             try {
                 // Check for existing session
