@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Echoes v0.6.0</title>
+    <title>Echoes v0.6.1</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -772,112 +772,33 @@
             color: var(--text-muted);
         }
         
-        /* Trending Section */
-        .trending-section {
-            margin-bottom: 20px;
-        }
-        
-        .trending-header {
+        .discover-tabs {
             display: flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--text-muted);
-            margin-bottom: 10px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        
-        .trending-header svg {
-            width: 16px;
-            height: 16px;
-            fill: var(--resonant-coral);
-        }
-        
-        .trending-pills {
-            display: flex;
-            flex-wrap: wrap;
             gap: 8px;
+            margin-top: 16px;
         }
         
-        .trending-pill {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 8px 14px;
-            background: var(--bg-card);
+        .discover-tab {
+            padding: 8px 20px;
+            background: transparent;
             border: 1px solid var(--border);
             border-radius: 20px;
-            font-size: 13px;
+            color: var(--text-muted);
+            font-size: 14px;
             font-weight: 500;
-            color: var(--text-secondary);
             cursor: pointer;
             transition: all 0.2s;
         }
         
-        .trending-pill:hover {
-            background: var(--bg-elevated);
+        .discover-tab:hover {
             border-color: var(--text-muted);
-            color: var(--text-primary);
-        }
-        
-        .trending-pill.active {
-            background: var(--accent);
-            border-color: var(--accent);
-            color: white;
-        }
-        
-        .trending-pill-count {
-            font-size: 11px;
-            font-weight: 600;
-            color: var(--text-muted);
-            background: var(--bg-elevated);
-            padding: 2px 6px;
-            border-radius: 10px;
-        }
-        
-        .trending-pill.active .trending-pill-count {
-            background: rgba(255,255,255,0.2);
-            color: white;
-        }
-        
-        /* Active Filter Bar */
-        .active-filter {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 10px 14px;
-            background: var(--bg-card);
-            border-radius: 10px;
-            margin-bottom: 16px;
-            font-size: 14px;
             color: var(--text-secondary);
         }
         
-        .active-filter span {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        
-        .clear-filter {
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            background: var(--bg-elevated);
-            border: none;
-            color: var(--text-muted);
-            cursor: pointer;
-            font-size: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .clear-filter:hover {
-            background: var(--border);
-            color: var(--text-primary);
+        .discover-tab.active {
+            background: var(--text-primary);
+            border-color: var(--text-primary);
+            color: var(--bg-primary);
         }
         
         .discover-feed {
@@ -934,65 +855,76 @@
             color: var(--text-muted);
         }
         
-        .discover-card-actions {
-            display: flex;
-            gap: 8px;
-        }
-        
-        .discover-action-btn {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            padding: 6px 12px;
+        .discover-like-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
             background: var(--bg-elevated);
             border: none;
-            border-radius: 16px;
-            color: var(--text-secondary);
-            font-size: 12px;
-            font-weight: 500;
             cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             transition: all 0.2s;
         }
         
-        .discover-action-btn:hover {
+        .discover-like-btn:hover {
             background: var(--border);
-            color: var(--text-primary);
+            transform: scale(1.1);
         }
         
-        .discover-action-btn:active {
-            transform: scale(0.95);
+        .discover-like-btn:active {
+            transform: scale(0.9);
         }
         
-        .discover-action-btn svg {
-            width: 14px;
-            height: 14px;
-            fill: currentColor;
+        .discover-like-btn svg {
+            width: 18px;
+            height: 18px;
+            fill: var(--text-muted);
+            transition: all 0.2s;
         }
         
-        .discover-action-btn.liked {
-            color: var(--resonant-coral);
+        .discover-like-btn.liked {
+            background: rgba(255, 79, 94, 0.15);
         }
         
-        .discover-action-btn.liked svg {
+        .discover-like-btn.liked svg {
             fill: var(--resonant-coral);
+        }
+        
+        .discover-empty-message {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-muted);
+        }
+        
+        .discover-empty-message svg {
+            width: 48px;
+            height: 48px;
+            fill: var(--text-muted);
+            opacity: 0.5;
+            margin-bottom: 16px;
+        }
+        
+        .discover-empty-message div {
+            font-size: 15px;
         }
         
         /* Discover Modal Actions */
         .discover-modal-actions {
             display: flex;
-            gap: 10px;
+            justify-content: center;
             margin-top: 24px;
             padding-top: 20px;
             border-top: 1px solid var(--border);
         }
         
         .discover-modal-btn {
-            flex: 1;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
-            padding: 14px;
+            padding: 14px 40px;
             border: none;
             border-radius: 12px;
             font-size: 14px;
@@ -1005,15 +937,6 @@
             width: 20px;
             height: 20px;
             fill: currentColor;
-        }
-        
-        .discover-modal-btn.copy {
-            background: var(--bg-elevated);
-            color: var(--text-primary);
-        }
-        
-        .discover-modal-btn.copy:hover {
-            background: var(--border);
         }
         
         .discover-modal-btn.like {
@@ -2450,7 +2373,7 @@
                         <path d="M20 18c-1.1 0-2 .9-2 2s.9 2 2 2" stroke="url(#echoGradient)" stroke-width="3" stroke-linecap="round" fill="none"/>
                     </svg>
                 </div>
-                Echoes <span class="version-badge">v0.6.0</span>
+                Echoes <span class="version-badge">v0.6.1</span>
             </div>
             
             <!-- Desktop Nav -->
@@ -2527,23 +2450,10 @@
                     <div class="discover-header">
                         <div class="discover-title">Discover</div>
                         <div class="discover-subtitle">See what the community is watching</div>
-                    </div>
-                    
-                    <!-- Trending Topics -->
-                    <div class="trending-section" id="trendingSection" style="display: none;">
-                        <div class="trending-header">
-                            <svg viewBox="0 0 24 24"><path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z"/></svg>
-                            <span>Trending</span>
+                        <div class="discover-tabs">
+                            <button class="discover-tab active" data-filter="all">All</button>
+                            <button class="discover-tab" data-filter="liked">Liked</button>
                         </div>
-                        <div class="trending-pills" id="trendingPills">
-                            <!-- Pills populated by JS -->
-                        </div>
-                    </div>
-                    
-                    <!-- Active Filter -->
-                    <div class="active-filter" id="activeFilter" style="display: none;">
-                        <span id="activeFilterText"></span>
-                        <button class="clear-filter" id="clearFilter">✕</button>
                     </div>
                     
                     <!-- Loading Skeletons -->
@@ -2684,10 +2594,6 @@
             <div class="post-text" id="discoverModalText"></div>
             
             <div class="discover-modal-actions">
-                <button class="discover-modal-btn copy" id="discoverCopyBtn">
-                    <svg viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
-                    Copy Text
-                </button>
                 <button class="discover-modal-btn like" id="discoverLikeBtn">
                     <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
                     <span id="discoverLikeText">Like</span>
@@ -2876,7 +2782,7 @@
                     </svg>
                 </div>
                 <div class="about-tagline">Every opinion deserves to be heard.</div>
-                <div class="about-version">Version 0.6.0</div>
+                <div class="about-version">Version 0.6.1</div>
             </div>
             
             <div class="about-section">
@@ -3009,7 +2915,7 @@
         // CONFIG
         // ============================================
         const CONFIG = {
-            version: '0.6.0',
+            version: '0.6.1',
             webhookUrl: 'https://steveyoung.app.n8n.cloud/webhook/postcreate',
             maxRecordingTime: 60,
             supabaseUrl: 'https://oiahkbvqyfjumnqsefxw.supabase.co',
@@ -3482,18 +3388,12 @@
             discoverFeed: document.getElementById('discoverFeed'),
             discoverSkeletons: document.getElementById('discoverSkeletons'),
             discoverEmpty: document.getElementById('discoverEmpty'),
-            trendingSection: document.getElementById('trendingSection'),
-            trendingPills: document.getElementById('trendingPills'),
-            activeFilter: document.getElementById('activeFilter'),
-            activeFilterText: document.getElementById('activeFilterText'),
-            clearFilter: document.getElementById('clearFilter'),
             discoverModal: document.getElementById('discoverModal'),
             discoverModalClose: document.getElementById('discoverModalClose'),
             discoverModalImage: document.getElementById('discoverModalImage'),
             discoverModalTitle: document.getElementById('discoverModalTitle'),
             discoverModalText: document.getElementById('discoverModalText'),
             discoverModalDate: document.getElementById('discoverModalDate'),
-            discoverCopyBtn: document.getElementById('discoverCopyBtn'),
             discoverLikeBtn: document.getElementById('discoverLikeBtn'),
             discoverLikeText: document.getElementById('discoverLikeText'),
             pullToRefresh: document.getElementById('pullToRefresh'),
@@ -4048,139 +3948,16 @@
         let isRefreshing = false;
         let newPostsCheckInterval = null;
         let allPublicPosts = [];
-        let currentFilter = null;
         
-        function extractTrendingTopics(posts) {
-            const topicCounts = {};
-            
-            // Known show name patterns to look for
-            const showPatterns = [
-                /(?:watching|watched|binged?|finished|loved?|recommend|enjoying|started|into)\s+[""]?([A-Z][A-Za-z0-9\s:'\-&!]+?)[""]?(?:\s+(?:and|on|is|was|has|lately|recently|right now|this week|last night|season|\d|$|[.!?,]))/gi,
-                /[""]([^""]+)[""]/g,  // Quoted titles with smart quotes
-                /["']([^"']+)["']/g,   // Quoted titles with regular quotes
-                /(?:the show|the series|the movie|this show|this series|this movie)\s+[""]?([A-Z][A-Za-z0-9\s:'\-&!]+?)[""]?/gi,
-            ];
-            
-            posts.forEach(post => {
-                // First priority: use title field if it exists and looks like a real title
-                const title = (post.title || '').trim();
-                if (title && 
-                    title !== 'Shared Echo' && 
-                    title !== 'My Echo' && 
-                    title.length > 2 && 
-                    title.length < 40 &&
-                    !title.includes(' I ') &&
-                    !title.startsWith("I'") &&
-                    !title.startsWith("I ")) {
-                    topicCounts[title] = (topicCounts[title] || 0) + 1;
-                    return; // Use title, don't parse text
-                }
-                
-                // Second priority: extract from text
-                const text = post.enhanced_text || '';
-                
-                for (const pattern of showPatterns) {
-                    pattern.lastIndex = 0; // Reset regex
-                    let match;
-                    while ((match = pattern.exec(text)) !== null) {
-                        let topic = (match[1] || '').trim();
-                        
-                        // Clean up the topic
-                        topic = topic
-                            .replace(/[.!?,;:]+$/, '') // Remove trailing punctuation
-                            .replace(/\s+(and|on|is|was|has|the)$/i, '') // Remove trailing words
-                            .trim();
-                        
-                        // Validate it looks like a title
-                        if (topic.length >= 2 && 
-                            topic.length <= 35 &&
-                            /^[A-Z]/.test(topic) && // Starts with capital
-                            !/^(I|We|You|They|He|She|It|My|The|This|That|What|When|Where|Why|How|Just|Really|So|But|And|Or|If|After|Before)$/i.test(topic) &&
-                            !topic.includes(' I ') &&
-                            !topic.startsWith("I'")) {
-                            topicCounts[topic] = (topicCounts[topic] || 0) + 1;
-                            break; // Only take first match per post
-                        }
-                    }
-                }
-            });
-            
-            // Sort by count and take top 6
-            return Object.entries(topicCounts)
-                .sort((a, b) => b[1] - a[1])
-                .slice(0, 6)
-                .map(([topic, count]) => ({ topic, count }));
-        }
-        
-        function renderTrendingPills(topics) {
-            if (topics.length === 0) {
-                elements.trendingSection.style.display = 'none';
-                return;
-            }
-            
-            elements.trendingSection.style.display = 'block';
-            elements.trendingPills.innerHTML = topics.map(({ topic, count }) => `
-                <button class="trending-pill ${currentFilter === topic ? 'active' : ''}" data-topic="${topic}">
-                    ${topic}
-                    ${count > 1 ? `<span class="trending-pill-count">${count}</span>` : ''}
-                </button>
-            `).join('');
-            
-            // Add click handlers
-            elements.trendingPills.querySelectorAll('.trending-pill').forEach(pill => {
-                pill.addEventListener('click', () => {
-                    const topic = pill.dataset.topic;
-                    if (currentFilter === topic) {
-                        clearFilterHandler();
-                    } else {
-                        setFilter(topic);
-                    }
-                });
-            });
-        }
-        
-        function setFilter(topic) {
-            currentFilter = topic;
-            elements.activeFilter.style.display = 'flex';
-            elements.activeFilterText.textContent = `Showing: ${topic}`;
-            
-            // Update pill states
-            elements.trendingPills.querySelectorAll('.trending-pill').forEach(pill => {
-                pill.classList.toggle('active', pill.dataset.topic === topic);
-            });
-            
-            // Filter posts - search in title AND text
-            const filtered = allPublicPosts.filter(post => {
-                const title = (post.title || '').toLowerCase();
-                const text = (post.enhanced_text || '').toLowerCase();
-                const search = topic.toLowerCase();
-                return title.includes(search) || text.includes(search);
-            });
-            
-            renderDiscoverCards(filtered);
-        }
-        
-        function clearFilterHandler() {
-            currentFilter = null;
-            elements.activeFilter.style.display = 'none';
-            
-            // Update pill states
-            elements.trendingPills.querySelectorAll('.trending-pill').forEach(pill => {
-                pill.classList.remove('active');
-            });
-            
-            // Show all posts
-            renderDiscoverCards(allPublicPosts);
-        }
-        
-        // Clear filter button handler
-        elements.clearFilter.addEventListener('click', clearFilterHandler);
-        
-        function renderDiscoverCards(posts) {
+        function renderDiscoverCards(posts, isLikedFilter = false) {
             if (posts.length === 0) {
+                const emptyMessage = isLikedFilter 
+                    ? "No liked posts yet. Tap the heart on posts you love!"
+                    : "No posts to show yet";
                 elements.discoverFeed.innerHTML = `
-                    <div class="discover-empty" style="display: block; padding: 40px 20px;">
-                        <div style="font-size: 16px; color: var(--text-muted);">No posts match this filter</div>
+                    <div class="discover-empty-message">
+                        <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                        <div>${emptyMessage}</div>
                     </div>
                 `;
                 return;
@@ -4196,15 +3973,9 @@
                         <div class="discover-card-text">${post.enhanced_text}</div>
                         <div class="discover-card-meta">
                             <span>${new Date(post.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
-                            <div class="discover-card-actions">
-                                <button class="discover-action-btn copy-btn" data-text="${encodeURIComponent(post.enhanced_text)}" title="Copy text">
-                                    <svg viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
-                                    Copy
-                                </button>
-                                <button class="discover-action-btn like-btn ${isLiked ? 'liked' : ''}" data-post-id="${post.id}">
-                                    <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
-                                </button>
-                            </div>
+                            <button class="discover-like-btn ${isLiked ? 'liked' : ''}" data-post-id="${post.id}">
+                                <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -4213,7 +3984,7 @@
             // Add click handlers to cards
             elements.discoverFeed.querySelectorAll('.discover-card').forEach(card => {
                 card.addEventListener('click', (e) => {
-                    if (e.target.closest('.discover-action-btn')) return;
+                    if (e.target.closest('.discover-like-btn')) return;
                     
                     const postId = card.dataset.postId;
                     const post = allPublicPosts.find(p => p.id == postId);
@@ -4221,19 +3992,8 @@
                 });
             });
             
-            // Copy button handlers
-            elements.discoverFeed.querySelectorAll('.copy-btn').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    const text = decodeURIComponent(btn.dataset.text);
-                    navigator.clipboard.writeText(text).then(() => {
-                        showToast('Text copied!', 'success');
-                    });
-                });
-            });
-            
             // Like button handlers
-            elements.discoverFeed.querySelectorAll('.like-btn').forEach(btn => {
+            elements.discoverFeed.querySelectorAll('.discover-like-btn').forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     e.stopPropagation();
                     handleDiscoverLike(btn);
@@ -4247,7 +4007,6 @@
                 elements.discoverSkeletons.style.display = 'flex';
                 elements.discoverFeed.style.display = 'none';
                 elements.discoverEmpty.style.display = 'none';
-                elements.trendingSection.style.display = 'none';
             }
             
             allPublicPosts = await Storage.loadPublicPosts();
@@ -4258,7 +4017,6 @@
             if (allPublicPosts.length === 0) {
                 elements.discoverFeed.style.display = 'none';
                 elements.discoverEmpty.style.display = 'block';
-                elements.trendingSection.style.display = 'none';
                 return;
             }
             
@@ -4267,28 +4025,36 @@
                 lastKnownPostId = allPublicPosts[0].id;
             }
             
-            // Extract and render trending topics
-            const trendingTopics = extractTrendingTopics(allPublicPosts);
-            renderTrendingPills(trendingTopics);
-            
             elements.discoverFeed.style.display = 'flex';
             elements.discoverEmpty.style.display = 'none';
             
-            // Render cards (respecting any active filter)
-            if (currentFilter) {
-                const search = currentFilter.toLowerCase();
-                renderDiscoverCards(allPublicPosts.filter(post => {
-                    const title = (post.title || '').toLowerCase();
-                    const text = (post.enhanced_text || '').toLowerCase();
-                    return title.includes(search) || text.includes(search);
-                }));
-            } else {
-                renderDiscoverCards(allPublicPosts);
-            }
+            // Render cards based on current filter
+            applyDiscoverFilter();
             
             // Hide new posts indicator after refresh
             elements.newPostsIndicator.classList.remove('visible');
         }
+        
+        let discoverFilter = 'all'; // 'all' or 'liked'
+        
+        function applyDiscoverFilter() {
+            if (discoverFilter === 'liked') {
+                const likedPosts = allPublicPosts.filter(post => state.likedPosts.includes(post.id));
+                renderDiscoverCards(likedPosts, true);
+            } else {
+                renderDiscoverCards(allPublicPosts, false);
+            }
+        }
+        
+        // Discover tab filter handlers
+        document.querySelectorAll('.discover-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.discover-tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                discoverFilter = tab.dataset.filter;
+                applyDiscoverFilter();
+            });
+        });
         
         // Pull to refresh
         function setupPullToRefresh() {
@@ -4413,14 +4179,6 @@
             elements.discoverModal.classList.add('visible');
         }
         
-        // Modal copy button
-        elements.discoverCopyBtn.addEventListener('click', () => {
-            if (!currentDiscoverPost) return;
-            navigator.clipboard.writeText(currentDiscoverPost.enhanced_text).then(() => {
-                showToast('Text copied!', 'success');
-            });
-        });
-        
         // Modal like button
         elements.discoverLikeBtn.addEventListener('click', () => {
             if (!currentDiscoverPost) return;
@@ -4432,6 +4190,10 @@
                 state.likedPosts = state.likedPosts.filter(id => id !== postId);
                 elements.discoverLikeBtn.classList.remove('liked');
                 elements.discoverLikeText.textContent = 'Like';
+                // If on Liked filter and unliking, refresh the view
+                if (discoverFilter === 'liked') {
+                    applyDiscoverFilter();
+                }
             } else {
                 state.likedPosts.push(postId);
                 elements.discoverLikeBtn.classList.add('liked');
@@ -4441,7 +4203,7 @@
             localStorage.setItem('echoes_liked_posts', JSON.stringify(state.likedPosts));
             
             // Update the card button too
-            const cardBtn = document.querySelector(`.like-btn[data-post-id="${postId}"]`);
+            const cardBtn = document.querySelector(`.discover-like-btn[data-post-id="${postId}"]`);
             if (cardBtn) {
                 cardBtn.classList.toggle('liked', !isLiked);
             }
@@ -4455,6 +4217,10 @@
             if (isLiked) {
                 state.likedPosts = state.likedPosts.filter(id => id !== postId);
                 btn.classList.remove('liked');
+                // If on Liked filter and unliking, refresh the view
+                if (discoverFilter === 'liked') {
+                    applyDiscoverFilter();
+                }
             } else {
                 state.likedPosts.push(postId);
                 btn.classList.add('liked');
