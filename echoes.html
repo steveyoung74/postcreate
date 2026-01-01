@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Echoes v0.6.8</title>
+    <title>Echoes v0.7.0</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -1549,6 +1549,23 @@
             margin-top: 8px;
         }
         
+        .loading-cancel {
+            margin-top: 32px;
+            padding: 10px 24px;
+            background: transparent;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-muted);
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .loading-cancel:hover {
+            border-color: var(--text-muted);
+            color: var(--text-secondary);
+        }
+        
         /* Settings Modal */
         .settings-modal {
             display: none;
@@ -2387,7 +2404,7 @@
                         <path d="M20 18c-1.1 0-2 .9-2 2s.9 2 2 2" stroke="url(#echoGradient)" stroke-width="3" stroke-linecap="round" fill="none"/>
                     </svg>
                 </div>
-                Echoes <span class="version-badge">v0.6.8</span>
+                Echoes <span class="version-badge">v0.7.0</span>
             </div>
             
             <!-- Desktop Nav -->
@@ -2868,8 +2885,9 @@
     <!-- Loading Overlay -->
     <div class="loading-overlay" id="loadingOverlay">
         <div class="loading-spinner"></div>
-        <div class="loading-text">Letting it echo…</div>
-        <div class="loading-subtext">Still you. Just clearer.</div>
+        <div class="loading-text" id="loadingText">Letting it echo…</div>
+        <div class="loading-subtext" id="loadingSubtext">Still you. Just clearer.</div>
+        <button class="loading-cancel" id="loadingCancel">Cancel</button>
     </div>
     
     <!-- Auth Modal -->
@@ -3190,7 +3208,7 @@
                     try {
                         const { data, error } = await supabaseClient
                             .from('posts')
-                            .select('id, title, post_type, enhanced_text, image_url, created_at')
+                            .select('id, title, post_type, enhanced_text, original_text, image_url, created_at')
                             .eq('is_public', true)
                             .eq('post_type', 'recommendation')
                             .order('created_at', { ascending: false })
@@ -3421,6 +3439,9 @@
             
             // Loading & Toast
             loadingOverlay: document.getElementById('loadingOverlay'),
+            loadingText: document.getElementById('loadingText'),
+            loadingSubtext: document.getElementById('loadingSubtext'),
+            loadingCancel: document.getElementById('loadingCancel'),
             toast: document.getElementById('toast'),
             
             // Auth
@@ -3685,8 +3706,27 @@
         // ============================================
         // ENHANCE POST
         // ============================================
+        let enhanceAbortController = null;
+        
+        function updateLoadingState(text, subtext) {
+            if (elements.loadingText) elements.loadingText.textContent = text;
+            if (elements.loadingSubtext) elements.loadingSubtext.textContent = subtext;
+        }
+        
+        function hideLoading() {
+            elements.loadingOverlay.classList.remove('visible');
+            updateLoadingState('Letting it echo…', 'Still you. Just clearer.');
+        }
+        
         async function enhancePost(transcript) {
             elements.loadingOverlay.classList.add('visible');
+            updateLoadingState('Enhancing your post…', 'This usually takes 10-20 seconds');
+            
+            // Create abort controller for cancellation
+            enhanceAbortController = new AbortController();
+            const timeoutId = setTimeout(() => {
+                enhanceAbortController.abort();
+            }, 90000); // 90 second timeout
             
             const rewriteInstruction = CONFIG.rewriteLevels[state.rewriteLevel];
             
@@ -3695,9 +3735,13 @@
             const graphicColorsConfig = CONFIG.graphicColors[state.graphicColors];
             
             try {
+                // Step 1: Call webhook
+                updateLoadingState('Enhancing your post…', 'Creating your content');
+                
                 const response = await fetch(CONFIG.webhookUrl, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
+                    signal: enhanceAbortController.signal,
                     body: JSON.stringify({
                         text: transcript,
                         rewriteLevel: state.rewriteLevel,
@@ -3713,7 +3757,11 @@
                     })
                 });
                 
-                if (!response.ok) throw new Error('Failed');
+                clearTimeout(timeoutId);
+                
+                if (!response.ok) {
+                    throw new Error(`Server error: ${response.status}`);
+                }
                 
                 const data = await response.json();
                 const result = Array.isArray(data) ? data[0] : data;
@@ -3722,21 +3770,38 @@
                 console.log('Webhook response:', result);
                 console.log('Title field:', result.title);
                 
+                // Validate response
                 const enhancedText = result.enhancedPost || result.enhancedText || result.text;
+                if (!enhancedText) {
+                    throw new Error('No enhanced text received');
+                }
+                
                 const title = result.title || result.showName || result.postTitle || result.name || 'My Echo';
                 const postType = result.postType || result.post_type || result.type || 'recommendation';
                 let imageUrl = result.imageURL || result.imageUrl || result.image;
                 
+                if (!imageUrl) {
+                    throw new Error('No image received');
+                }
+                
                 // Generate post ID
                 const postId = Date.now().toString();
                 
-                // Upload image to Supabase Storage (if logged in)
+                // Step 2: Upload image to Supabase Storage (if logged in)
                 if (state.user && supabaseClient) {
-                    const permanentUrl = await Storage.uploadImage(imageUrl, postId);
-                    imageUrl = permanentUrl;
+                    updateLoadingState('Saving your image…', 'Almost there');
+                    try {
+                        const permanentUrl = await Storage.uploadImage(imageUrl, postId);
+                        imageUrl = permanentUrl;
+                    } catch (uploadError) {
+                        console.warn('Image upload failed, using original URL:', uploadError);
+                        // Continue with original URL - don't fail the whole post
+                    }
                 }
                 
-                // Create post object
+                // Step 3: Create and save post
+                updateLoadingState('Saving your post…', 'Just a moment');
+                
                 const post = {
                     id: postId,
                     title,
@@ -3748,9 +3813,18 @@
                 };
                 
                 // Save to storage
-                state.posts = await Storage.addPost(post);
+                try {
+                    state.posts = await Storage.addPost(post);
+                } catch (saveError) {
+                    console.error('Error saving post:', saveError);
+                    // Still show the post even if save failed
+                    hideLoading();
+                    openPostModal(post);
+                    showToast('Post created but may not have saved. Try again if needed.', 'error');
+                    return;
+                }
                 
-                elements.loadingOverlay.classList.remove('visible');
+                hideLoading();
                 
                 // Get the saved post (might have different ID from Supabase)
                 const savedPost = state.posts[0] || post;
@@ -3762,11 +3836,38 @@
                 await renderGallery();
                 
             } catch (error) {
+                clearTimeout(timeoutId);
+                hideLoading();
+                
                 console.error('Enhancement error:', error);
-                elements.loadingOverlay.classList.remove('visible');
-                showToast('Enhancement failed. Please try again.', 'error');
+                
+                // Provide specific error messages
+                if (error.name === 'AbortError') {
+                    showToast('Request timed out. Please try again.', 'error');
+                } else if (error.message.includes('Server error')) {
+                    showToast('Server error. Please try again in a moment.', 'error');
+                } else if (error.message.includes('No enhanced text')) {
+                    showToast('Failed to enhance post. Please try again.', 'error');
+                } else if (error.message.includes('No image')) {
+                    showToast('Failed to generate image. Please try again.', 'error');
+                } else if (error.message.includes('Failed to fetch')) {
+                    showToast('Network error. Check your connection.', 'error');
+                } else {
+                    showToast('Something went wrong. Please try again.', 'error');
+                }
+            } finally {
+                enhanceAbortController = null;
             }
         }
+        
+        // Cancel button handler
+        document.getElementById('loadingCancel')?.addEventListener('click', () => {
+            if (enhanceAbortController) {
+                enhanceAbortController.abort();
+            }
+            hideLoading();
+            showToast('Cancelled', 'success');
+        });
 
         // ============================================
         // GALLERY

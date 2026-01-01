@@ -351,6 +351,152 @@
             border-left: 3px solid var(--echo-violet);
         }
         
+        /* Live Showcase */
+        .showcase {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .showcase-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            overflow: hidden;
+        }
+        
+        .showcase-input {
+            padding: 24px;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .showcase-input-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--echo-violet);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .showcase-input-label svg {
+            width: 16px;
+            height: 16px;
+            fill: var(--echo-violet);
+        }
+        
+        .showcase-input-text {
+            font-size: 16px;
+            color: var(--text-muted);
+            font-style: italic;
+            line-height: 1.6;
+        }
+        
+        .showcase-arrow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            background: var(--bg-secondary);
+        }
+        
+        .showcase-arrow svg {
+            width: 24px;
+            height: 24px;
+            fill: var(--echo-violet);
+        }
+        
+        .showcase-output {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0;
+        }
+        
+        .showcase-image {
+            aspect-ratio: 1;
+            overflow: hidden;
+        }
+        
+        .showcase-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .showcase-text {
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .showcase-title {
+            font-family: 'General Sans', sans-serif;
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: var(--soft-ivory);
+        }
+        
+        .showcase-post {
+            font-size: 14px;
+            color: var(--text-muted);
+            line-height: 1.6;
+            flex: 1;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 6;
+            -webkit-box-orient: vertical;
+        }
+        
+        .showcase-refresh {
+            margin-top: 24px;
+            display: flex;
+            justify-content: center;
+        }
+        
+        .showcase-refresh-btn {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+        }
+        
+        .showcase-refresh-btn:hover {
+            border-color: var(--echo-violet);
+            color: var(--soft-ivory);
+        }
+        
+        .showcase-refresh-btn svg {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
+        }
+        
+        .showcase-loading {
+            padding: 80px;
+            text-align: center;
+            color: var(--text-muted);
+        }
+        
+        @media (max-width: 768px) {
+            .showcase-output {
+                grid-template-columns: 1fr;
+            }
+            
+            .showcase-image {
+                aspect-ratio: 16/9;
+            }
+        }
+        
         /* Features Grid */
         .features-grid {
             max-width: 1100px;
@@ -765,33 +911,19 @@
 
     <!-- How it works -->
     <section class="section" id="how">
-        <div class="section-label">How it works</div>
-        <h2 class="section-title">From thought to post in seconds</h2>
-        <p class="section-subtitle">No writing. No designing. Just speak naturally about what you watched.</p>
+        <div class="section-label">See it in action</div>
+        <h2 class="section-title">Real posts from our community</h2>
+        <p class="section-subtitle">Watch how spoken thoughts become share-ready posts. These are real examples.</p>
         
-        <div class="steps">
-            <div class="step">
-                <div class="step-number">1</div>
-                <div class="step-content">
-                    <h3>Speak your mind</h3>
-                    <p>Tap record and talk naturally about what you watched. No script needed.</p>
-                    <div class="step-example">"Just finished Wednesday and honestly it was so good, the dark humor is perfect and Jenna Ortega absolutely killed it..."</div>
-                </div>
-            </div>
-            <div class="step">
-                <div class="step-number">2</div>
-                <div class="step-content">
-                    <h3>Watch it transform</h3>
-                    <p>We polish your words and create a matching typographic graphic that captures the vibe.</p>
-                </div>
-            </div>
-            <div class="step">
-                <div class="step-number">3</div>
-                <div class="step-content">
-                    <h3>Share everywhere</h3>
-                    <p>Post to Facebook groups, Instagram, X, or anywhere you want. Your opinion, amplified.</p>
-                </div>
-            </div>
+        <div class="showcase" id="showcase">
+            <div class="showcase-loading">Loading real examples...</div>
+        </div>
+        
+        <div class="showcase-refresh">
+            <button class="showcase-refresh-btn" id="refreshShowcase">
+                <svg viewBox="0 0 24 24"><path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>
+                Show another example
+            </button>
         </div>
     </section>
 
@@ -1004,5 +1136,121 @@
             </div>
         </div>
     </footer>
+
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <script>
+        // Supabase config
+        const SUPABASE_URL = 'https://oiahkbvqyfjumnqsefxw.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9pYWhrYnZxeWZqdW1ucXNlZnh3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjY4MTgxNzUsImV4cCI6MjA4MjM5NDE3NX0.0z0aWrJo1PwUstbOQ2Z_540y00XzboCvnzmjelzzqWs';
+        
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        
+        let showcasePosts = [];
+        let currentShowcaseIndex = 0;
+        
+        // Fallback examples if no posts in database
+        const fallbackExamples = [
+            {
+                title: 'Wednesday',
+                original_text: "Just finished Wednesday and honestly it was so good, the dark humor is perfect and Jenna Ortega absolutely killed it, I couldn't stop watching",
+                enhanced_text: "Wednesday\n\nJust binged Wednesday and I'm completely obsessed! 🖤 The dark humor hits perfectly, and Jenna Ortega absolutely owns this role. Couldn't stop watching – finished it way too fast!\n\nAnyone else get major Addams Family nostalgia while watching?",
+                image_url: null
+            },
+            {
+                title: 'The Bear',
+                original_text: "The Bear is so stressful to watch but I can't look away, the kitchen scenes are so intense and Jeremy Allen White is incredible",
+                enhanced_text: "The Bear\n\nThis show is an absolute masterpiece of controlled chaos. 🔥 The kitchen scenes had me holding my breath, and Jeremy Allen White delivers a career-defining performance.\n\nFair warning: you'll never look at a restaurant kitchen the same way. Who else felt the stress watching this?",
+                image_url: null
+            }
+        ];
+        
+        async function loadShowcasePosts() {
+            try {
+                const { data, error } = await supabase
+                    .from('posts')
+                    .select('title, original_text, enhanced_text, image_url')
+                    .eq('is_public', true)
+                    .eq('post_type', 'recommendation')
+                    .not('original_text', 'is', null)
+                    .order('created_at', { ascending: false })
+                    .limit(20);
+                
+                if (error) throw error;
+                
+                // Filter out posts without original_text or very short ones
+                showcasePosts = (data || []).filter(p => 
+                    p.original_text && 
+                    p.original_text.length > 20 &&
+                    p.enhanced_text &&
+                    p.image_url
+                );
+                
+                if (showcasePosts.length === 0) {
+                    showcasePosts = fallbackExamples;
+                }
+                
+                // Shuffle the posts
+                showcasePosts.sort(() => Math.random() - 0.5);
+                
+                renderShowcase();
+            } catch (e) {
+                console.error('Error loading showcase posts:', e);
+                showcasePosts = fallbackExamples;
+                renderShowcase();
+            }
+        }
+        
+        function renderShowcase() {
+            const showcase = document.getElementById('showcase');
+            if (!showcase || showcasePosts.length === 0) return;
+            
+            const post = showcasePosts[currentShowcaseIndex];
+            
+            // Parse enhanced text to get title and body
+            const lines = post.enhanced_text.split('\n').filter(l => l.trim());
+            const title = post.title || lines[0] || 'My Echo';
+            const body = lines.slice(1).join('\n').trim() || post.enhanced_text;
+            
+            showcase.innerHTML = `
+                <div class="showcase-card">
+                    <div class="showcase-input">
+                        <div class="showcase-input-label">
+                            <svg viewBox="0 0 24 24"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/><path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/></svg>
+                            What they said
+                        </div>
+                        <div class="showcase-input-text">"${post.original_text}"</div>
+                    </div>
+                    <div class="showcase-arrow">
+                        <svg viewBox="0 0 24 24"><path d="M16.01 11H4v2h12.01v3L20 12l-3.99-4z"/></svg>
+                    </div>
+                    <div class="showcase-output">
+                        ${post.image_url ? `
+                        <div class="showcase-image">
+                            <img src="${post.image_url}" alt="${title}" loading="lazy">
+                        </div>
+                        ` : ''}
+                        <div class="showcase-text" ${!post.image_url ? 'style="grid-column: 1 / -1;"' : ''}>
+                            <div class="showcase-title">${title}</div>
+                            <div class="showcase-post">${body.replace(/\n/g, '<br>')}</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        function showNextExample() {
+            currentShowcaseIndex = (currentShowcaseIndex + 1) % showcasePosts.length;
+            renderShowcase();
+        }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            loadShowcasePosts();
+            
+            document.getElementById('refreshShowcase')?.addEventListener('click', showNextExample);
+        });
+    </script>
 </body>
 </html>
