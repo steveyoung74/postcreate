@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Echoes v0.6.7</title>
+    <title>Echoes v0.6.8</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -2387,7 +2387,7 @@
                         <path d="M20 18c-1.1 0-2 .9-2 2s.9 2 2 2" stroke="url(#echoGradient)" stroke-width="3" stroke-linecap="round" fill="none"/>
                     </svg>
                 </div>
-                Echoes <span class="version-badge">v0.6.7</span>
+                Echoes <span class="version-badge">v0.6.8</span>
             </div>
             
             <!-- Desktop Nav -->
@@ -3718,9 +3718,13 @@
                 const data = await response.json();
                 const result = Array.isArray(data) ? data[0] : data;
                 
+                // Debug: log what we received
+                console.log('Webhook response:', result);
+                console.log('Title field:', result.title);
+                
                 const enhancedText = result.enhancedPost || result.enhancedText || result.text;
-                const title = result.title || 'My Echo';
-                const postType = result.postType || result.post_type || 'recommendation';
+                const title = result.title || result.showName || result.postTitle || result.name || 'My Echo';
+                const postType = result.postType || result.post_type || result.type || 'recommendation';
                 let imageUrl = result.imageURL || result.imageUrl || result.image;
                 
                 // Generate post ID
