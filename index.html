@@ -4,27 +4,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Echoes — Turn your voice into share-ready posts</title>
-    <meta name="description" content="Speak your thoughts about shows and movies. Get polished posts with stunning graphics. Share everywhere.">
+    <meta name="description" content="Speak your thoughts about shows and movies. Get polished text and stunning graphics. Share everywhere.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=General+Sans:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-        
         :root {
             --midnight-void: #0C0F14;
             --soft-ivory: #F3F3EE;
             --resonant-coral: #FF4F5E;
             --echo-violet: #7A6CFF;
             --neon-whisper: #2DE2E6;
-            --bg-card: #161a22;
-            --bg-elevated: #1e232d;
-            --text-secondary: #9ca3af;
-            --text-muted: #6b7280;
+            --bg-card: #161A22;
+            --bg-secondary: #1C2128;
+            --text-muted: #8B949E;
+            --border: #2D333B;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
         
         html {
@@ -39,52 +39,65 @@
             overflow-x: hidden;
         }
         
-        /* Navigation */
-        nav {
+        /* Subtle noise texture */
+        body::before {
+            content: '';
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
-            z-index: 100;
-            padding: 20px 40px;
+            bottom: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+            opacity: 0.03;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 16px 24px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: rgba(12, 15, 20, 0.8);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(255,255,255,0.05);
+            z-index: 100;
+            background: linear-gradient(to bottom, var(--midnight-void) 0%, transparent 100%);
         }
         
-        .nav-logo {
+        .logo {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
+            font-family: 'General Sans', sans-serif;
             font-weight: 700;
             font-size: 20px;
             text-decoration: none;
             color: var(--soft-ivory);
         }
         
-        .nav-logo svg {
+        .logo-icon {
             width: 32px;
             height: 32px;
         }
         
-        .nav-links {
+        .nav {
             display: flex;
             gap: 32px;
             align-items: center;
         }
         
-        .nav-links a {
-            color: var(--text-secondary);
+        .nav a {
+            color: var(--text-muted);
             text-decoration: none;
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 500;
             transition: color 0.2s;
         }
         
-        .nav-links a:hover {
+        .nav a:hover {
             color: var(--soft-ivory);
         }
         
@@ -94,15 +107,13 @@
             padding: 10px 20px;
             border-radius: 8px;
             font-weight: 600;
-            transition: transform 0.2s, box-shadow 0.2s;
         }
         
         .nav-cta:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(255, 79, 94, 0.3);
+            opacity: 0.9;
         }
         
-        .nav-menu-btn {
+        .mobile-menu-btn {
             display: none;
             background: none;
             border: none;
@@ -119,56 +130,55 @@
             justify-content: center;
             align-items: center;
             text-align: center;
-            padding: 120px 20px 80px;
+            padding: 120px 24px 80px;
             position: relative;
-            overflow: hidden;
         }
         
+        /* Gradient orbs */
         .hero::before {
             content: '';
             position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle at 30% 20%, rgba(122, 108, 255, 0.15) 0%, transparent 50%),
-                        radial-gradient(circle at 70% 80%, rgba(255, 79, 94, 0.1) 0%, transparent 50%);
-            animation: float 20s ease-in-out infinite;
+            top: 10%;
+            left: 10%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(255, 79, 94, 0.15) 0%, transparent 70%);
+            border-radius: 50%;
+            filter: blur(60px);
+            pointer-events: none;
         }
         
-        @keyframes float {
-            0%, 100% { transform: translate(0, 0) rotate(0deg); }
-            50% { transform: translate(-20px, -20px) rotate(5deg); }
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: 20%;
+            right: 10%;
+            width: 350px;
+            height: 350px;
+            background: radial-gradient(circle, rgba(122, 108, 255, 0.12) 0%, transparent 70%);
+            border-radius: 50%;
+            filter: blur(60px);
+            pointer-events: none;
         }
         
         .hero-content {
             position: relative;
             z-index: 1;
-            max-width: 900px;
+            max-width: 800px;
         }
         
         .hero h1 {
+            font-family: 'General Sans', sans-serif;
             font-size: clamp(40px, 8vw, 72px);
-            font-weight: 800;
+            font-weight: 700;
             line-height: 1.1;
             margin-bottom: 24px;
             letter-spacing: -0.02em;
         }
         
-        .hero h1 span {
-            display: block;
-        }
-        
-        .hero-rotating {
-            background: linear-gradient(135deg, var(--resonant-coral), var(--echo-violet));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
         .hero-subtitle {
-            font-size: clamp(18px, 3vw, 24px);
-            color: var(--text-secondary);
+            font-size: clamp(18px, 3vw, 22px);
+            color: var(--text-muted);
             margin-bottom: 16px;
             max-width: 600px;
             margin-left: auto;
@@ -176,438 +186,332 @@
         }
         
         .hero-tagline {
-            font-size: 18px;
+            font-size: 16px;
             color: var(--echo-violet);
             margin-bottom: 40px;
             font-weight: 500;
         }
         
         .hero-cta {
-            display: inline-flex;
-            align-items: center;
-            gap: 12px;
-            background: linear-gradient(135deg, var(--resonant-coral), var(--echo-violet));
+            display: inline-block;
+            background: linear-gradient(135deg, var(--resonant-coral) 0%, var(--echo-violet) 100%);
             color: white;
-            padding: 16px 32px;
+            padding: 16px 40px;
             border-radius: 12px;
             font-size: 18px;
             font-weight: 600;
             text-decoration: none;
             transition: transform 0.2s, box-shadow 0.2s;
-            box-shadow: 0 10px 40px rgba(255, 79, 94, 0.3);
+            box-shadow: 0 4px 24px rgba(255, 79, 94, 0.3);
         }
         
         .hero-cta:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 50px rgba(255, 79, 94, 0.4);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 32px rgba(255, 79, 94, 0.4);
         }
         
-        .hero-cta svg {
-            width: 20px;
-            height: 20px;
+        /* Community Section */
+        .community-section {
+            padding: 60px 24px;
+            text-align: center;
+            position: relative;
+            z-index: 1;
         }
         
-        .hero-platforms {
-            display: flex;
-            gap: 24px;
-            justify-content: center;
-            margin-top: 24px;
+        .community-intro {
+            font-size: 16px;
             color: var(--text-muted);
-            font-size: 14px;
+            max-width: 600px;
+            margin: 0 auto 40px;
+            line-height: 1.7;
         }
         
-        .hero-stats {
+        .community-intro strong {
+            color: var(--soft-ivory);
+        }
+        
+        .stats-grid {
             display: flex;
-            gap: 48px;
             justify-content: center;
-            margin-top: 60px;
-            padding-top: 40px;
-            border-top: 1px solid rgba(255,255,255,0.1);
+            gap: 60px;
+            flex-wrap: wrap;
         }
         
-        .hero-stat {
+        .stat {
             text-align: center;
         }
         
-        .hero-stat-value {
-            font-size: 32px;
+        .stat-value {
+            font-family: 'General Sans', sans-serif;
+            font-size: 48px;
             font-weight: 700;
-            background: linear-gradient(135deg, var(--resonant-coral), var(--echo-violet));
+            background: linear-gradient(135deg, var(--resonant-coral) 0%, var(--echo-violet) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.2;
         }
         
-        .hero-stat-label {
+        .stat-label {
             font-size: 14px;
-            color: var(--text-secondary);
+            color: var(--text-muted);
             margin-top: 4px;
         }
         
-        /* Sections */
-        section {
-            padding: 100px 20px;
-            max-width: 1200px;
-            margin: 0 auto;
+        /* How it works */
+        .section {
+            padding: 100px 24px;
             position: relative;
             z-index: 1;
         }
         
         .section-label {
-            text-transform: uppercase;
             font-size: 13px;
             font-weight: 600;
-            letter-spacing: 0.1em;
             color: var(--echo-violet);
-            margin-bottom: 16px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 12px;
+            text-align: center;
         }
         
         .section-title {
+            font-family: 'General Sans', sans-serif;
             font-size: clamp(32px, 5vw, 48px);
             font-weight: 700;
-            margin-bottom: 20px;
-            line-height: 1.2;
+            text-align: center;
+            margin-bottom: 16px;
         }
         
         .section-subtitle {
             font-size: 18px;
-            color: var(--text-secondary);
-            max-width: 600px;
-        }
-        
-        /* How it Works */
-        .how-it-works {
+            color: var(--text-muted);
             text-align: center;
-            overflow: visible;
+            max-width: 600px;
+            margin: 0 auto 60px;
         }
         
+        /* Steps */
         .steps {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            max-width: 900px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
             gap: 40px;
-            margin-top: 60px;
-            align-items: start;
-            width: 100%;
         }
         
         .step {
-            position: relative;
-            width: 100%;
+            display: flex;
+            gap: 32px;
+            align-items: flex-start;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 32px;
         }
         
         .step-number {
             width: 48px;
             height: 48px;
-            background: linear-gradient(135deg, var(--resonant-coral), var(--echo-violet));
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 20px;
-            margin: 0 auto 20px;
-        }
-        
-        .step-visual {
-            width: 100%;
-            height: 220px;
-            background: var(--bg-card);
-            border-radius: 16px;
-            margin-bottom: 24px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 1px solid rgba(255,255,255,0.05);
-            overflow: hidden;
-        }
-        
-        .step-visual-content {
-            padding: 24px;
-            text-align: left;
-            width: 100%;
-        }
-        
-        .step-visual-voice {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-        
-        .voice-wave {
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 3px;
-        }
-        
-        .voice-wave span {
-            width: 4px;
-            background: linear-gradient(to top, var(--resonant-coral), var(--echo-violet));
-            border-radius: 2px;
-            animation: wave 1s ease-in-out infinite;
-        }
-        
-        .voice-wave span:nth-child(1) { height: 20px; animation-delay: 0s; }
-        .voice-wave span:nth-child(2) { height: 35px; animation-delay: 0.1s; }
-        .voice-wave span:nth-child(3) { height: 25px; animation-delay: 0.2s; }
-        .voice-wave span:nth-child(4) { height: 40px; animation-delay: 0.3s; }
-        .voice-wave span:nth-child(5) { height: 30px; animation-delay: 0.4s; }
-        .voice-wave span:nth-child(6) { height: 35px; animation-delay: 0.5s; }
-        .voice-wave span:nth-child(7) { height: 20px; animation-delay: 0.6s; }
-        
-        @keyframes wave {
-            0%, 100% { transform: scaleY(1); }
-            50% { transform: scaleY(0.5); }
-        }
-        
-        .voice-text {
-            font-size: 14px;
-            color: var(--text-secondary);
-            font-style: italic;
-        }
-        
-        .step-visual-magic {
-            font-size: 48px;
-        }
-        
-        .step-visual-result {
-            background: linear-gradient(135deg, #1a1520 0%, #151020 100%);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            width: 100%;
-            padding: 20px;
-        }
-        
-        .result-image {
-            width: 60%;
-            max-width: 120px;
-            height: 120px;
-            background: linear-gradient(135deg, #2a1a2e, #1a1525);
+            background: linear-gradient(135deg, var(--resonant-coral) 0%, var(--echo-violet) 100%);
             border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 12px;
-            border: 1px solid rgba(122, 108, 255, 0.3);
+            font-family: 'General Sans', sans-serif;
+            font-weight: 700;
+            font-size: 20px;
+            flex-shrink: 0;
         }
         
-        .result-image-text {
+        .step-content h3 {
+            font-family: 'General Sans', sans-serif;
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .step-content p {
+            color: var(--text-muted);
+            font-size: 16px;
+        }
+        
+        .step-example {
+            margin-top: 16px;
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 16px;
+            font-size: 14px;
+            color: var(--soft-ivory);
+            font-style: italic;
+            border-left: 3px solid var(--echo-violet);
+        }
+        
+        /* Features Grid */
+        .features-grid {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+        }
+        
+        .feature-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 32px;
+            transition: border-color 0.2s, transform 0.2s;
+        }
+        
+        .feature-card:hover {
+            border-color: var(--echo-violet);
+            transform: translateY(-4px);
+        }
+        
+        .feature-card.new::before {
+            content: 'NEW';
+            display: inline-block;
+            background: var(--neon-whisper);
+            color: var(--midnight-void);
+            font-size: 10px;
+            font-weight: 700;
+            padding: 4px 8px;
+            border-radius: 4px;
+            margin-bottom: 16px;
+        }
+        
+        .feature-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
             font-size: 24px;
-            font-weight: 800;
-            background: linear-gradient(135deg, var(--resonant-coral), var(--echo-violet));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
         }
         
-        .result-post {
-            font-size: 11px;
-            color: var(--text-secondary);
-            text-align: center;
-            line-height: 1.4;
-        }
-        
-        .step h3 {
+        .feature-card h3 {
+            font-family: 'General Sans', sans-serif;
             font-size: 20px;
             font-weight: 600;
             margin-bottom: 8px;
-            text-align: center;
         }
         
-        .step p {
-            color: var(--text-secondary);
+        .feature-card p {
+            color: var(--text-muted);
             font-size: 15px;
+        }
+        
+        /* Visual Styles Section */
+        .styles-grid {
+            max-width: 900px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 12px;
+        }
+        
+        .style-chip {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 16px;
             text-align: center;
+            font-size: 14px;
+            font-weight: 500;
+            transition: border-color 0.2s, transform 0.2s;
+        }
+        
+        .style-chip:hover {
+            border-color: var(--echo-violet);
+            transform: scale(1.02);
+        }
+        
+        .style-chip span {
+            display: block;
+            font-size: 24px;
+            margin-bottom: 8px;
         }
         
         /* Use Cases */
-        .use-cases {
-            background: var(--bg-card);
-            border-radius: 24px;
-            padding: 80px 60px;
-            margin: 0 20px;
-            max-width: 1200px;
-            margin-left: auto;
-            margin-right: auto;
-            margin-top: 0;
-            position: relative;
-            z-index: 2;
-            clear: both;
-        }
-        
         .use-cases-grid {
+            max-width: 1100px;
+            margin: 0 auto;
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 40px;
-            margin-top: 60px;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 24px;
         }
         
-        .use-case {
-            background: var(--midnight-void);
-            border-radius: 16px;
+        .use-case-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
             padding: 32px;
-            border: 1px solid rgba(255,255,255,0.05);
-            transition: transform 0.3s, border-color 0.3s;
-        }
-        
-        .use-case:hover {
-            transform: translateY(-5px);
-            border-color: rgba(122, 108, 255, 0.3);
         }
         
         .use-case-icon {
-            width: 56px;
-            height: 56px;
-            background: linear-gradient(135deg, rgba(255, 79, 94, 0.2), rgba(122, 108, 255, 0.2));
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 28px;
-            margin-bottom: 20px;
+            font-size: 32px;
+            margin-bottom: 16px;
         }
         
-        .use-case h3 {
-            font-size: 22px;
+        .use-case-card h3 {
+            font-family: 'General Sans', sans-serif;
+            font-size: 20px;
             font-weight: 600;
             margin-bottom: 8px;
         }
         
         .use-case-tags {
             display: flex;
-            flex-wrap: wrap;
             gap: 8px;
-            margin-bottom: 16px;
+            flex-wrap: wrap;
+            margin-bottom: 12px;
         }
         
         .use-case-tag {
-            background: var(--bg-elevated);
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 13px;
-            color: var(--text-secondary);
-        }
-        
-        .use-case p {
-            color: var(--text-secondary);
-            font-size: 15px;
-            line-height: 1.6;
-        }
-        
-        /* Features */
-        .features {
-            text-align: center;
-        }
-        
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 24px;
-            margin-top: 60px;
-        }
-        
-        .feature {
-            background: var(--bg-card);
-            border-radius: 16px;
-            padding: 32px 24px;
-            text-align: left;
-            border: 1px solid rgba(255,255,255,0.05);
-            transition: border-color 0.3s;
-        }
-        
-        .feature:hover {
-            border-color: rgba(122, 108, 255, 0.3);
-        }
-        
-        .feature-icon {
-            width: 48px;
-            height: 48px;
-            background: var(--bg-elevated);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            margin-bottom: 16px;
-        }
-        
-        .feature h3 {
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 8px;
-        }
-        
-        .feature p {
-            color: var(--text-secondary);
-            font-size: 14px;
-            line-height: 1.5;
-        }
-        
-        /* Styles Preview */
-        .styles-section {
-            text-align: center;
-        }
-        
-        .styles-grid {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            justify-content: center;
-            margin-top: 40px;
-        }
-        
-        .style-tag {
-            background: var(--bg-card);
-            border: 1px solid rgba(255,255,255,0.1);
-            padding: 12px 24px;
-            border-radius: 100px;
-            font-size: 15px;
-            font-weight: 500;
-            transition: all 0.3s;
-            cursor: default;
-        }
-        
-        .style-tag:hover {
-            border-color: var(--echo-violet);
+            font-size: 12px;
+            color: var(--echo-violet);
             background: rgba(122, 108, 255, 0.1);
+            padding: 4px 10px;
+            border-radius: 20px;
         }
         
-        .style-tag.highlight {
-            background: linear-gradient(135deg, var(--resonant-coral), var(--echo-violet));
-            border-color: transparent;
+        .use-case-card p {
+            color: var(--text-muted);
+            font-size: 14px;
         }
         
         /* Reviews */
-        .reviews {
-            text-align: center;
-        }
-        
         .reviews-grid {
+            max-width: 1100px;
+            margin: 0 auto;
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 24px;
-            margin-top: 60px;
         }
         
-        .review {
+        .review-card {
             background: var(--bg-card);
-            border-radius: 16px;
+            border: 1px solid var(--border);
+            border-radius: 20px;
             padding: 32px;
-            text-align: left;
-            border: 1px solid rgba(255,255,255,0.05);
         }
         
         .review-stars {
-            color: #fbbf24;
-            font-size: 18px;
+            color: #FFD700;
+            font-size: 16px;
             margin-bottom: 16px;
+            letter-spacing: 2px;
         }
         
         .review-text {
-            font-size: 15px;
-            line-height: 1.6;
+            font-size: 16px;
+            line-height: 1.7;
             margin-bottom: 20px;
+            color: var(--soft-ivory);
         }
         
         .review-author {
@@ -619,134 +523,99 @@
         .review-avatar {
             width: 44px;
             height: 44px;
-            background: linear-gradient(135deg, var(--resonant-coral), var(--echo-violet));
+            background: linear-gradient(135deg, var(--resonant-coral) 0%, var(--echo-violet) 100%);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 600;
-            font-size: 16px;
+            font-size: 18px;
         }
         
-        .review-name {
-            font-weight: 600;
+        .review-author-info h4 {
             font-size: 15px;
+            font-weight: 600;
         }
         
-        .review-handle {
-            color: var(--text-muted);
+        .review-author-info p {
             font-size: 13px;
+            color: var(--text-muted);
         }
         
-        /* Final CTA */
-        .final-cta {
+        /* CTA Section */
+        .cta-section {
+            padding: 100px 24px;
             text-align: center;
-            padding: 120px 20px;
             position: relative;
+            z-index: 1;
         }
         
-        .final-cta::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 600px;
-            height: 600px;
-            background: radial-gradient(circle, rgba(122, 108, 255, 0.15) 0%, transparent 70%);
-            pointer-events: none;
-        }
-        
-        .final-cta h2 {
-            font-size: clamp(36px, 6vw, 56px);
+        .cta-section h2 {
+            font-family: 'General Sans', sans-serif;
+            font-size: clamp(28px, 5vw, 40px);
             font-weight: 700;
-            margin-bottom: 20px;
-            position: relative;
+            margin-bottom: 16px;
         }
         
-        .final-cta p {
-            font-size: 20px;
-            color: var(--text-secondary);
-            margin-bottom: 40px;
-            position: relative;
-        }
-        
-        .final-cta .hero-cta {
-            position: relative;
+        .cta-section p {
+            color: var(--text-muted);
+            font-size: 18px;
+            margin-bottom: 32px;
         }
         
         /* Footer */
-        footer {
-            background: var(--bg-card);
-            padding: 60px 20px 40px;
-            margin-top: 40px;
+        .footer {
+            padding: 60px 24px 40px;
+            border-top: 1px solid var(--border);
+            position: relative;
+            z-index: 1;
         }
         
         .footer-content {
-            max-width: 1200px;
+            max-width: 1100px;
             margin: 0 auto;
             display: grid;
             grid-template-columns: 2fr 1fr 1fr 1fr;
-            gap: 60px;
+            gap: 40px;
         }
         
-        .footer-brand {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-        
-        .footer-logo {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            font-weight: 700;
-            font-size: 20px;
-        }
-        
-        .footer-logo svg {
-            width: 32px;
-            height: 32px;
-        }
-        
-        .footer-tagline {
-            color: var(--text-secondary);
+        .footer-brand p {
+            color: var(--text-muted);
             font-size: 14px;
+            margin-top: 16px;
             max-width: 280px;
         }
         
-        .footer-column h4 {
+        .footer-links h4 {
             font-size: 14px;
             font-weight: 600;
-            margin-bottom: 20px;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
+            margin-bottom: 16px;
+            color: var(--soft-ivory);
         }
         
-        .footer-column a {
+        .footer-links a {
             display: block;
-            color: var(--soft-ivory);
+            color: var(--text-muted);
             text-decoration: none;
-            font-size: 15px;
+            font-size: 14px;
             margin-bottom: 12px;
             transition: color 0.2s;
         }
         
-        .footer-column a:hover {
-            color: var(--resonant-coral);
+        .footer-links a:hover {
+            color: var(--soft-ivory);
         }
         
         .footer-bottom {
-            max-width: 1200px;
+            max-width: 1100px;
             margin: 40px auto 0;
             padding-top: 24px;
-            border-top: 1px solid rgba(255,255,255,0.05);
+            border-top: 1px solid var(--border);
             display: flex;
             justify-content: space-between;
             align-items: center;
+            font-size: 13px;
             color: var(--text-muted);
-            font-size: 14px;
         }
         
         .footer-social {
@@ -755,7 +624,8 @@
         }
         
         .footer-social a {
-            color: var(--text-secondary);
+            color: var(--text-muted);
+            text-decoration: none;
             transition: color 0.2s;
         }
         
@@ -764,80 +634,49 @@
         }
         
         /* Mobile Responsive */
-        @media (max-width: 1100px) {
-            .steps {
-                gap: 24px;
-            }
-            
-            .step-visual {
-                height: 180px;
-            }
-        }
-        
-        @media (max-width: 900px) {
-            nav {
-                padding: 16px 20px;
-            }
-            
-            .nav-links {
+        @media (max-width: 768px) {
+            .nav {
                 display: none;
-                position: absolute;
-                top: 100%;
-                left: 0;
-                right: 0;
-                background: var(--midnight-void);
-                flex-direction: column;
-                padding: 20px;
-                gap: 16px;
-                border-bottom: 1px solid rgba(255,255,255,0.05);
             }
             
-            .nav-links.open {
-                display: flex;
-            }
-            
-            .nav-menu-btn {
+            .mobile-menu-btn {
                 display: block;
             }
             
-            .steps {
-                grid-template-columns: 1fr;
-                gap: 60px;
+            .hero {
+                padding: 100px 20px 60px;
             }
             
-            .step-visual {
-                height: 200px;
+            .hero::before,
+            .hero::after {
+                width: 250px;
+                height: 250px;
             }
             
-            .use-cases {
-                padding: 40px 24px;
-                margin: 0 10px;
+            .stats-grid {
+                gap: 40px;
             }
             
-            .use-cases-grid {
-                grid-template-columns: 1fr;
+            .stat-value {
+                font-size: 36px;
             }
             
-            .features-grid {
-                grid-template-columns: 1fr;
+            .section {
+                padding: 60px 20px;
             }
             
-            .reviews-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .hero-stats {
+            .step {
                 flex-direction: column;
-                gap: 24px;
+                gap: 20px;
             }
             
             .footer-content {
                 grid-template-columns: 1fr 1fr;
-                gap: 40px;
+                gap: 32px;
             }
             
             .footer-brand {
-                grid-column: span 2;
+                grid-column: 1 / -1;
             }
             
             .footer-bottom {
@@ -847,140 +686,119 @@
             }
         }
         
-        @media (max-width: 600px) {
-            .footer-content {
+        @media (max-width: 480px) {
+            .features-grid,
+            .use-cases-grid,
+            .reviews-grid {
                 grid-template-columns: 1fr;
             }
             
-            .footer-brand {
-                grid-column: span 1;
+            .styles-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Navigation -->
-    <nav>
-        <a href="/" class="nav-logo">
-            <svg viewBox="0 0 40 40" fill="none">
-                <defs>
-                    <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" stop-color="#FF4F5E"/>
-                        <stop offset="100%" stop-color="#7A6CFF"/>
-                    </linearGradient>
-                </defs>
-                <path d="M20 8C13.4 8 8 13.4 8 20s5.4 12 12 12" stroke="url(#logoGradient)" stroke-width="3" stroke-linecap="round" fill="none"/>
-                <path d="M20 13c-3.9 0-7 3.1-7 7s3.1 7 7 7" stroke="url(#logoGradient)" stroke-width="3" stroke-linecap="round" fill="none"/>
-                <path d="M20 18c-1.1 0-2 .9-2 2s.9 2 2 2" stroke="url(#logoGradient)" stroke-width="3" stroke-linecap="round" fill="none"/>
-            </svg>
+    <!-- Header -->
+    <header class="header">
+        <a href="/" class="logo">
+            <div class="logo-icon">
+                <svg viewBox="0 0 40 40" fill="none">
+                    <defs>
+                        <linearGradient id="echoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#FF4F5E"/>
+                            <stop offset="100%" stop-color="#7A6CFF"/>
+                        </linearGradient>
+                    </defs>
+                    <path d="M20 8C13.4 8 8 13.4 8 20s5.4 12 12 12" stroke="url(#echoGradient)" stroke-width="3" stroke-linecap="round" fill="none"/>
+                    <path d="M20 13c-3.9 0-7 3.1-7 7s3.1 7 7 7" stroke="url(#echoGradient)" stroke-width="3" stroke-linecap="round" fill="none"/>
+                    <path d="M20 18c-1.1 0-2 .9-2 2s.9 2 2 2" stroke="url(#echoGradient)" stroke-width="3" stroke-linecap="round" fill="none"/>
+                </svg>
+            </div>
             Echoes
         </a>
-        
-        <div class="nav-links" id="navLinks">
+        <nav class="nav">
             <a href="#how">How it works</a>
             <a href="#use-cases">Use cases</a>
             <a href="#features">Features</a>
             <a href="#reviews">Reviews</a>
             <a href="echoes.html" class="nav-cta">Try it free</a>
-        </div>
-        
-        <button class="nav-menu-btn" id="menuBtn" onclick="document.getElementById('navLinks').classList.toggle('open')">☰</button>
-    </nav>
-    
-    <!-- Hero Section -->
+        </nav>
+        <button class="mobile-menu-btn">☰</button>
+    </header>
+
+    <!-- Hero -->
     <section class="hero">
         <div class="hero-content">
-            <h1>
-                <span>Turn your voice into</span>
-                <span class="hero-rotating">share-ready posts</span>
-            </h1>
-            <p class="hero-subtitle">
-                Speak your thoughts about shows and movies. Get polished text and stunning graphics. Share everywhere.
-            </p>
-            <p class="hero-tagline">✨ Still you. Just clearer.</p>
-            
-            <a href="echoes.html" class="hero-cta">
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/><path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/></svg>
-                Start for free
-            </a>
-            
-            <div class="hero-platforms">
-                <span>📱 iOS</span>
-                <span>🤖 Android</span>
-                <span>🌐 Web</span>
+            <h1>Turn your voice into share-ready posts</h1>
+            <p class="hero-subtitle">Speak your thoughts about shows and movies. Get polished text and stunning graphics. Share everywhere.</p>
+            <p class="hero-tagline">Still you. Just clearer.</p>
+            <a href="echoes.html" class="hero-cta">Start for free</a>
+        </div>
+    </section>
+
+    <!-- Community Stats -->
+    <section class="community-section">
+        <p class="community-intro">
+            Created especially for <strong>Netflix Recommendations</strong>, the largest entertainment community on Facebook, with:
+        </p>
+        <div class="stats-grid">
+            <div class="stat">
+                <div class="stat-value">5.2M+</div>
+                <div class="stat-label">Community members</div>
             </div>
-            
-            <div class="hero-stats">
-                <div class="hero-stat">
-                    <div class="hero-stat-value">5.1M+</div>
-                    <div class="hero-stat-label">Community members</div>
-                </div>
-                <div class="hero-stat">
-                    <div class="hero-stat-value">10K+</div>
-                    <div class="hero-stat-label">Posts created</div>
-                </div>
-                <div class="hero-stat">
-                    <div class="hero-stat-value">4.9★</div>
-                    <div class="hero-stat-label">User rating</div>
-                </div>
+            <div class="stat">
+                <div class="stat-value">Millions</div>
+                <div class="stat-label">of views per day</div>
             </div>
         </div>
     </section>
-    
-    <!-- How it Works -->
-    <section class="how-it-works" id="how">
-        <p class="section-label">How it works</p>
+
+    <!-- How it works -->
+    <section class="section" id="how">
+        <div class="section-label">How it works</div>
         <h2 class="section-title">From thought to post in seconds</h2>
-        <p class="section-subtitle" style="margin: 0 auto;">No writing. No designing. Just speak naturally about what you watched.</p>
+        <p class="section-subtitle">No writing. No designing. Just speak naturally about what you watched.</p>
         
         <div class="steps">
             <div class="step">
                 <div class="step-number">1</div>
-                <div class="step-visual">
-                    <div class="step-visual-content">
-                        <div class="step-visual-voice">
-                            <div class="voice-wave">
-                                <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
-                            </div>
-                            <p class="voice-text">"Just finished Wednesday and honestly it was so good, the dark humor is perfect and Jenna Ortega absolutely killed it..."</p>
-                        </div>
-                    </div>
+                <div class="step-content">
+                    <h3>Speak your mind</h3>
+                    <p>Tap record and talk naturally about what you watched. No script needed.</p>
+                    <div class="step-example">"Just finished Wednesday and honestly it was so good, the dark humor is perfect and Jenna Ortega absolutely killed it..."</div>
                 </div>
-                <h3>Speak your mind</h3>
-                <p>Tap record and talk naturally about what you watched. No script needed.</p>
             </div>
-            
             <div class="step">
                 <div class="step-number">2</div>
-                <div class="step-visual">
-                    <div class="step-visual-magic">✨🎬</div>
+                <div class="step-content">
+                    <h3>Watch it transform</h3>
+                    <p>We polish your words and create a matching typographic graphic that captures the vibe.</p>
                 </div>
-                <h3>Watch the magic</h3>
-                <p>We polish your words and create a matching typographic graphic.</p>
             </div>
-            
             <div class="step">
                 <div class="step-number">3</div>
-                <div class="step-visual step-visual-result">
-                    <div class="result-image">
-                        <span class="result-image-text">OBSESSED</span>
-                    </div>
-                    <p class="result-post">Just binged Wednesday and I'm completely hooked! 🖤 The dark humor is *chef's kiss*...</p>
+                <div class="step-content">
+                    <h3>Share everywhere</h3>
+                    <p>Post to Facebook groups, Instagram, X, or anywhere you want. Your opinion, amplified.</p>
                 </div>
-                <h3>Share everywhere</h3>
-                <p>Post to Facebook groups, Instagram, X, or anywhere you want.</p>
             </div>
         </div>
     </section>
-    
+
     <!-- Use Cases -->
-    <section class="use-cases" id="use-cases">
-        <p class="section-label">Use cases</p>
+    <section class="section" id="use-cases">
+        <div class="section-label">Use cases</div>
         <h2 class="section-title">For every kind of recommendation</h2>
         <p class="section-subtitle">Whether you just finished a binge or discovered a hidden gem, Echoes has you covered.</p>
         
         <div class="use-cases-grid">
-            <div class="use-case">
+            <div class="use-case-card">
                 <div class="use-case-icon">⚡</div>
                 <h3>Quick Recommendations</h3>
                 <div class="use-case-tags">
@@ -990,8 +808,7 @@
                 </div>
                 <p>Perfect for those "you HAVE to watch this" moments. Short, energetic posts that grab attention.</p>
             </div>
-            
-            <div class="use-case">
+            <div class="use-case-card">
                 <div class="use-case-icon">📝</div>
                 <h3>Full Reviews</h3>
                 <div class="use-case-tags">
@@ -1001,8 +818,7 @@
                 </div>
                 <p>Share your complete thoughts with what you loved, who should watch it, and why. No spoilers.</p>
             </div>
-            
-            <div class="use-case">
+            <div class="use-case-card">
                 <div class="use-case-icon">🔥</div>
                 <h3>Binge Reports</h3>
                 <div class="use-case-tags">
@@ -1012,8 +828,7 @@
                 </div>
                 <p>"Just finished and I need to talk about it!" Capture that immediate post-binge energy.</p>
             </div>
-            
-            <div class="use-case">
+            <div class="use-case-card">
                 <div class="use-case-icon">💎</div>
                 <h3>Hidden Gems</h3>
                 <div class="use-case-tags">
@@ -1025,173 +840,165 @@
             </div>
         </div>
     </section>
-    
-    <!-- Style Variety -->
-    <section class="styles-section">
-        <p class="section-label">Visual styles</p>
+
+    <!-- Visual Styles -->
+    <section class="section">
+        <div class="section-label">Visual styles</div>
         <h2 class="section-title">Graphics that match the vibe</h2>
-        <p class="section-subtitle" style="margin: 0 auto;">Each graphic is uniquely styled to match what you're talking about.</p>
+        <p class="section-subtitle">Each post gets a unique graphic styled to match what you're talking about.</p>
         
         <div class="styles-grid">
-            <span class="style-tag">🎃 Gothic Dark</span>
-            <span class="style-tag">🌴 Bright Comedy</span>
-            <span class="style-tag highlight">🔮 Neon Synthwave</span>
-            <span class="style-tag">💎 Prestige Drama</span>
-            <span class="style-tag">💕 Romance</span>
-            <span class="style-tag">🚀 Sci-Fi</span>
-            <span class="style-tag">🎬 Action Thriller</span>
-            <span class="style-tag">🍳 Kitchen Drama</span>
-            <span class="style-tag highlight">🎭 Quirky Wes Anderson</span>
-            <span class="style-tag">📺 True Crime</span>
-            <span class="style-tag">☕ Cozy Comfort</span>
-            <span class="style-tag">🌈 Animated</span>
+            <div class="style-chip"><span>🎃</span>Gothic Dark</div>
+            <div class="style-chip"><span>🌴</span>Bright Comedy</div>
+            <div class="style-chip"><span>🔮</span>Neon Synthwave</div>
+            <div class="style-chip"><span>💎</span>Prestige Drama</div>
+            <div class="style-chip"><span>💕</span>Romance</div>
+            <div class="style-chip"><span>🚀</span>Sci-Fi</div>
+            <div class="style-chip"><span>🎬</span>Action Thriller</div>
+            <div class="style-chip"><span>🍳</span>Kitchen Drama</div>
+            <div class="style-chip"><span>🎭</span>Quirky Indie</div>
+            <div class="style-chip"><span>📺</span>True Crime</div>
+            <div class="style-chip"><span>☕</span>Cozy Comfort</div>
+            <div class="style-chip"><span>🌈</span>Animated</div>
         </div>
     </section>
-    
+
     <!-- Features -->
-    <section class="features" id="features">
-        <p class="section-label">Features</p>
+    <section class="section" id="features">
+        <div class="section-label">Features</div>
         <h2 class="section-title">Everything you need to share</h2>
         
         <div class="features-grid">
-            <div class="feature">
+            <div class="feature-card">
                 <div class="feature-icon">🎤</div>
                 <h3>Voice-first</h3>
                 <p>Just talk naturally. No typing, no writer's block. Your authentic voice, polished.</p>
             </div>
-            
-            <div class="feature">
+            <div class="feature-card">
                 <div class="feature-icon">🎨</div>
                 <h3>Auto-generated graphics</h3>
-                <p>Every post gets a unique, scroll-stopping typographic image that matches the vibe.</p>
+                <p>Every post gets a unique, scroll-stopping typographic image that matches the mood.</p>
             </div>
-            
-            <div class="feature">
-                <div class="feature-icon">📱</div>
-                <h3>One-tap sharing</h3>
-                <p>Share directly to Facebook groups, Instagram, X, or download for anywhere else.</p>
+            <div class="feature-card new">
+                <div class="feature-icon">🧭</div>
+                <h3>Community Discover</h3>
+                <p>See what others in the community are watching and get inspired by their recommendations.</p>
             </div>
-            
-            <div class="feature">
+            <div class="feature-card new">
+                <div class="feature-icon">❤️</div>
+                <h3>Like & save posts</h3>
+                <p>Save recommendations you love to a personal collection for later.</p>
+            </div>
+            <div class="feature-card">
                 <div class="feature-icon">☁️</div>
                 <h3>Cloud sync</h3>
-                <p>Your posts sync across all your devices. Start on phone, continue on desktop.</p>
+                <p>Your posts are saved securely and accessible whenever you need them.</p>
             </div>
-            
-            <div class="feature">
-                <div class="feature-icon">✨</div>
-                <h3>Smart enhancement</h3>
-                <p>We improve your words while keeping your authentic voice. Still you, just clearer.</p>
-            </div>
-            
-            <div class="feature">
+            <div class="feature-card">
                 <div class="feature-icon">🌙</div>
                 <h3>Dark mode</h3>
                 <p>Beautiful dark interface that's easy on the eyes for late-night browsing.</p>
             </div>
         </div>
     </section>
-    
+
     <!-- Reviews -->
-    <section class="reviews" id="reviews">
-        <p class="section-label">Reviews</p>
+    <section class="section" id="reviews">
+        <div class="section-label">Reviews</div>
         <h2 class="section-title">Loved by entertainment fans</h2>
         
         <div class="reviews-grid">
-            <div class="review">
+            <div class="review-card">
                 <div class="review-stars">★★★★★</div>
                 <p class="review-text">"I used to spend 15 minutes writing a post about a show. Now I just talk for 30 seconds and get something even better. Game changer!"</p>
                 <div class="review-author">
                     <div class="review-avatar">S</div>
-                    <div>
-                        <div class="review-name">Sarah M.</div>
-                        <div class="review-handle">Netflix group admin</div>
+                    <div class="review-author-info">
+                        <h4>Sarah M.</h4>
+                        <p>Netflix group admin</p>
                     </div>
                 </div>
             </div>
-            
-            <div class="review">
+            <div class="review-card">
                 <div class="review-stars">★★★★★</div>
-                <p class="review-text">"The graphics are incredible. My posts actually get noticed now instead of getting lost in the feed. The Wednesday-style graphic was perfect!"</p>
+                <p class="review-text">"The graphics are incredible. My posts actually get noticed now instead of getting lost in the feed."</p>
                 <div class="review-author">
                     <div class="review-avatar">J</div>
-                    <div>
-                        <div class="review-name">James T.</div>
-                        <div class="review-handle">TV enthusiast</div>
+                    <div class="review-author-info">
+                        <h4>James T.</h4>
+                        <p>TV enthusiast</p>
                     </div>
                 </div>
             </div>
-            
-            <div class="review">
+            <div class="review-card">
                 <div class="review-stars">★★★★★</div>
-                <p class="review-text">"Finally an app that gets it. I have opinions but hate writing. Now I just ramble and it comes out polished. Love the surprise of seeing what graphic I get!"</p>
+                <p class="review-text">"Finally an app that gets it. I have opinions but hate writing. Now I just ramble and it comes out polished."</p>
                 <div class="review-author">
                     <div class="review-avatar">M</div>
-                    <div>
-                        <div class="review-name">Michelle R.</div>
-                        <div class="review-handle">Binge watcher</div>
+                    <div class="review-author-info">
+                        <h4>Michelle R.</h4>
+                        <p>Binge watcher</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
-    
-    <!-- Final CTA -->
-    <section class="final-cta">
-        <h2>Every opinion deserves<br>to be heard.</h2>
+
+    <!-- CTA -->
+    <section class="cta-section">
+        <h2>Every opinion deserves to be heard.</h2>
         <p>Start sharing what you love. It's free.</p>
-        <a href="echoes.html" class="hero-cta">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/><path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/></svg>
-            Let it echo ✨
-        </a>
+        <a href="echoes.html" class="hero-cta">Let it echo</a>
     </section>
-    
+
     <!-- Footer -->
-    <footer>
+    <footer class="footer">
         <div class="footer-content">
             <div class="footer-brand">
-                <div class="footer-logo">
-                    <svg viewBox="0 0 40 40" fill="none">
-                        <defs>
-                            <linearGradient id="footerLogoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                                <stop offset="0%" stop-color="#FF4F5E"/>
-                                <stop offset="100%" stop-color="#7A6CFF"/>
-                            </linearGradient>
-                        </defs>
-                        <path d="M20 8C13.4 8 8 13.4 8 20s5.4 12 12 12" stroke="url(#footerLogoGradient)" stroke-width="3" stroke-linecap="round" fill="none"/>
-                        <path d="M20 13c-3.9 0-7 3.1-7 7s3.1 7 7 7" stroke="url(#footerLogoGradient)" stroke-width="3" stroke-linecap="round" fill="none"/>
-                        <path d="M20 18c-1.1 0-2 .9-2 2s.9 2 2 2" stroke="url(#footerLogoGradient)" stroke-width="3" stroke-linecap="round" fill="none"/>
-                    </svg>
+                <a href="/" class="logo">
+                    <div class="logo-icon">
+                        <svg viewBox="0 0 40 40" fill="none">
+                            <defs>
+                                <linearGradient id="echoGradient2" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="#FF4F5E"/>
+                                    <stop offset="100%" stop-color="#7A6CFF"/>
+                                </linearGradient>
+                            </defs>
+                            <path d="M20 8C13.4 8 8 13.4 8 20s5.4 12 12 12" stroke="url(#echoGradient2)" stroke-width="3" stroke-linecap="round" fill="none"/>
+                            <path d="M20 13c-3.9 0-7 3.1-7 7s3.1 7 7 7" stroke="url(#echoGradient2)" stroke-width="3" stroke-linecap="round" fill="none"/>
+                            <path d="M20 18c-1.1 0-2 .9-2 2s.9 2 2 2" stroke="url(#echoGradient2)" stroke-width="3" stroke-linecap="round" fill="none"/>
+                        </svg>
+                    </div>
                     Echoes
-                </div>
-                <p class="footer-tagline">Turn your voice into share-ready posts about the shows and movies you love.</p>
+                </a>
+                <p>Turn your voice into share-ready posts about the shows and movies you love.</p>
             </div>
-            
-            <div class="footer-column">
+            <div class="footer-links">
                 <h4>Product</h4>
                 <a href="#how">How it works</a>
                 <a href="#features">Features</a>
                 <a href="#reviews">Reviews</a>
                 <a href="echoes.html">Try it free</a>
             </div>
-            
-            <div class="footer-column">
+            <div class="footer-links">
                 <h4>Resources</h4>
                 <a href="#">Support</a>
                 <a href="#">Privacy Policy</a>
                 <a href="#">Terms of Service</a>
             </div>
-            
-            <div class="footer-column">
+            <div class="footer-links">
                 <h4>Get in touch</h4>
-                <a href="/cdn-cgi/l/email-protection#bfd7dad3d3d0ffdadcd7d0dacc91decfcf"><span class="__cf_email__" data-cfemail="90f8f5fcfcffd0f5f3f8fff5e3bef1e0e0">[email&#160;protected]</span></a>
+                <a href="mailto:hello@echoesapp.com">hello@echoesapp.com</a>
                 <a href="#">Discord</a>
                 <a href="#">Twitter/X</a>
             </div>
         </div>
-        
         <div class="footer-bottom">
             <span>© 2025 Echoes. All rights reserved.</span>
             <div class="footer-social">
                 <a href="#">𝕏</a>
-                <
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
