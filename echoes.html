@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Echoes v0.6.6</title>
+    <title>Echoes v0.6.7</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -2387,7 +2387,7 @@
                         <path d="M20 18c-1.1 0-2 .9-2 2s.9 2 2 2" stroke="url(#echoGradient)" stroke-width="3" stroke-linecap="round" fill="none"/>
                     </svg>
                 </div>
-                Echoes <span class="version-badge">v0.6.6</span>
+                Echoes <span class="version-badge">v0.6.7</span>
             </div>
             
             <!-- Desktop Nav -->
@@ -2796,7 +2796,7 @@
                     </svg>
                 </div>
                 <div class="about-tagline">Every opinion deserves to be heard.</div>
-                <div class="about-version">Version 0.6.6</div>
+                <div class="about-version">Version 0.6.7</div>
             </div>
             
             <div class="about-section">
@@ -2929,7 +2929,7 @@
         // CONFIG
         // ============================================
         const CONFIG = {
-            version: '0.6.6',
+            version: '0.6.7',
             webhookUrl: 'https://steveyoung.app.n8n.cloud/webhook/postcreate',
             maxRecordingTime: 60,
             supabaseUrl: 'https://oiahkbvqyfjumnqsefxw.supabase.co',
@@ -3090,6 +3090,7 @@
                         return data.map(p => ({
                             id: p.id,
                             title: p.title,
+                            postType: p.post_type,
                             enhancedText: p.enhanced_text,
                             originalText: p.original_text,
                             imageUrl: p.image_url,
@@ -3128,6 +3129,7 @@
                             .insert({
                                 user_id: state.user.id,
                                 title: post.title,
+                                post_type: post.postType || 'recommendation',
                                 enhanced_text: post.enhancedText,
                                 original_text: post.originalText,
                                 image_url: post.imageUrl,
@@ -3150,6 +3152,7 @@
                     // Save locally
                     const posts = this.loadLocalPosts();
                     post.isPublic = post.isPublic !== false; // Default to true
+                    post.postType = post.postType || 'recommendation';
                     posts.unshift(post);
                     this.saveLocalPosts(posts);
                     return posts;
@@ -3187,8 +3190,9 @@
                     try {
                         const { data, error } = await supabaseClient
                             .from('posts')
-                            .select('id, title, enhanced_text, image_url, created_at')
+                            .select('id, title, post_type, enhanced_text, image_url, created_at')
                             .eq('is_public', true)
+                            .eq('post_type', 'recommendation')
                             .order('created_at', { ascending: false })
                             .limit(50);
                         
@@ -3716,6 +3720,7 @@
                 
                 const enhancedText = result.enhancedPost || result.enhancedText || result.text;
                 const title = result.title || 'My Echo';
+                const postType = result.postType || result.post_type || 'recommendation';
                 let imageUrl = result.imageURL || result.imageUrl || result.image;
                 
                 // Generate post ID
@@ -3731,6 +3736,7 @@
                 const post = {
                     id: postId,
                     title,
+                    postType,
                     enhancedText,
                     originalText: transcript,
                     imageUrl,
