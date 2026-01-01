@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Echoes v0.6.5</title>
+    <title>Echoes v0.6.6</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -42,7 +42,10 @@
         html, body {
             margin: 0;
             padding: 0;
-            background: var(--bg-primary);
+            background: 
+                radial-gradient(ellipse 100% 80% at 5% 5%, rgba(255, 79, 94, 0.18) 0%, transparent 50%),
+                radial-gradient(ellipse 80% 60% at 95% 10%, rgba(122, 108, 255, 0.2) 0%, transparent 50%),
+                var(--bg-primary);
             color: var(--text-primary);
             min-height: 100vh;
             overflow-x: hidden;
@@ -2384,7 +2387,7 @@
                         <path d="M20 18c-1.1 0-2 .9-2 2s.9 2 2 2" stroke="url(#echoGradient)" stroke-width="3" stroke-linecap="round" fill="none"/>
                     </svg>
                 </div>
-                Echoes <span class="version-badge">v0.6.5</span>
+                Echoes <span class="version-badge">v0.6.6</span>
             </div>
             
             <!-- Desktop Nav -->
@@ -2793,7 +2796,7 @@
                     </svg>
                 </div>
                 <div class="about-tagline">Every opinion deserves to be heard.</div>
-                <div class="about-version">Version 0.6.5</div>
+                <div class="about-version">Version 0.6.6</div>
             </div>
             
             <div class="about-section">
@@ -2926,7 +2929,7 @@
         // CONFIG
         // ============================================
         const CONFIG = {
-            version: '0.6.5',
+            version: '0.6.6',
             webhookUrl: 'https://steveyoung.app.n8n.cloud/webhook/postcreate',
             maxRecordingTime: 60,
             supabaseUrl: 'https://oiahkbvqyfjumnqsefxw.supabase.co',

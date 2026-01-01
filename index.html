@@ -33,7 +33,10 @@
         
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: var(--midnight-void);
+            background: 
+                radial-gradient(ellipse 100% 80% at 5% 5%, rgba(255, 79, 94, 0.18) 0%, transparent 50%),
+                radial-gradient(ellipse 80% 60% at 95% 10%, rgba(122, 108, 255, 0.2) 0%, transparent 50%),
+                var(--midnight-void);
             color: var(--soft-ivory);
             line-height: 1.6;
             overflow-x: hidden;
@@ -64,7 +67,8 @@
             justify-content: space-between;
             align-items: center;
             z-index: 100;
-            background: linear-gradient(to bottom, var(--midnight-void) 0%, transparent 100%);
+            background: var(--midnight-void);
+            border-bottom: 1px solid var(--border);
         }
         
         .logo {
