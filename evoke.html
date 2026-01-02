@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Evoke v0.8.1</title>
+    <title>Evoke v0.8.2</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -478,8 +478,7 @@
         }
         
         #discoverTab {
-            height: calc(100vh - 136px);
-            overflow: hidden;
+            min-height: calc(100vh - 136px);
         }
         
         /* Home Tab - Gallery */
@@ -844,10 +843,6 @@
             padding: 16px;
             padding-top: 20px;
             padding-bottom: 160px;
-            height: 100%;
-            overflow-y: auto;
-            overscroll-behavior-y: contain;
-            -webkit-overflow-scrolling: touch;
         }
         
         .discover-header {
@@ -2475,7 +2470,7 @@
                 <div class="logo-icon evoke-logo">
                     <img src="Evoke_Dark_Logo_mark.png" alt="Evoke">
                 </div>
-                Evoke <span class="version-badge">v0.8.1</span>
+                Evoke <span class="version-badge">v0.8.2</span>
             </div>
             
             <!-- Desktop Nav -->
@@ -4094,7 +4089,7 @@
                 
                 return `
                     <div class="gallery-item" data-id="${post.id}">
-                        <img src="${post.imageUrl}" alt="${title}" loading="lazy">
+                        <img src="${post.imageUrl}" alt="${title}" loading="lazy" onerror="this.parentElement.style.display='none'">
                         <div class="gallery-item-overlay">
                             <div class="gallery-item-title">${title}</div>
                             <div class="gallery-item-date">${flag} ${dateStr}</div>
@@ -4392,7 +4387,8 @@
             let pulling = false;
             
             container.addEventListener('touchstart', (e) => {
-                if (container.scrollTop === 0 && !isRefreshing) {
+                // Use window scroll position since we're using browser scroll
+                if (window.scrollY === 0 && !isRefreshing) {
                     startY = e.touches[0].pageY;
                     pulling = true;
                 }
@@ -4404,7 +4400,7 @@
                 currentY = e.touches[0].pageY;
                 const pullDistance = currentY - startY;
                 
-                if (pullDistance > 0 && container.scrollTop === 0) {
+                if (pullDistance > 0 && window.scrollY === 0) {
                     const progress = Math.min(pullDistance / 80, 1);
                     elements.pullToRefresh.style.opacity = progress;
                     elements.pullToRefresh.style.transform = `translateY(${Math.min(pullDistance * 0.5, 40) - 40}px)`;
