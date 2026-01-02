@@ -3256,7 +3256,6 @@
                                 enhanced_text: post.enhancedText,
                                 original_text: post.originalText,
                                 image_url: post.imageUrl,
-                                country_code: post.countryCode,
                                 style: post.style,
                                 is_public: post.isPublic !== false // Default to true
                             })
@@ -3315,7 +3314,7 @@
                     try {
                         const { data, error } = await supabaseClient
                             .from('posts')
-                            .select('id, title, post_type, enhanced_text, original_text, image_url, country_code, created_at')
+                            .select('id, title, post_type, enhanced_text, original_text, image_url, created_at')
                             .eq('is_public', true)
                             .eq('post_type', 'recommendation')
                             .order('created_at', { ascending: false })
@@ -3383,7 +3382,6 @@
                             enhanced_text: p.enhancedText,
                             original_text: p.originalText,
                             image_url: permanentUrl,
-                            country_code: p.countryCode || state.countryCode,
                             style: p.style || 'quick',
                             created_at: p.createdAt
                         });
