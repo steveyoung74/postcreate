@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Evoke v0.8.2</title>
+    <title>Evoke v0.8.3</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -2470,7 +2470,7 @@
                 <div class="logo-icon evoke-logo">
                     <img src="Evoke_Dark_Logo_mark.png" alt="Evoke">
                 </div>
-                Evoke <span class="version-badge">v0.8.2</span>
+                Evoke <span class="version-badge">v0.8.3</span>
             </div>
             
             <!-- Desktop Nav -->
@@ -3095,7 +3095,7 @@
         
         // Country code to flag emoji converter
         function getFlagEmoji(countryCode) {
-            if (!countryCode) return '🌍';
+            if (!countryCode) return '';
             const code = countryCode.toUpperCase();
             const offset = 127397;
             return String.fromCodePoint(...[...code].map(c => c.charCodeAt(0) + offset));
@@ -4092,7 +4092,7 @@
                         <img src="${post.imageUrl}" alt="${title}" loading="lazy" onerror="this.parentElement.style.display='none'">
                         <div class="gallery-item-overlay">
                             <div class="gallery-item-title">${title}</div>
-                            <div class="gallery-item-date">${flag} ${dateStr}</div>
+                            <div class="gallery-item-date">${flag ? flag + ' ' : ''}${dateStr}</div>
                         </div>
                     </div>
                 `;
@@ -4117,15 +4117,24 @@
             
             const date = new Date(post.createdAt);
             const flag = getFlagEmoji(post.countryCode || post.country_code);
-            elements.modalPostDate.textContent = `${flag} ${date.toLocaleDateString('en-US', { 
+            const dateText = date.toLocaleDateString('en-US', { 
                 month: 'long', day: 'numeric', year: 'numeric' 
-            })}`;
+            });
+            elements.modalPostDate.textContent = flag ? `${flag} ${dateText}` : dateText;
             
             // Use stored title or fallback
             const title = post.title || 'My Post';
             
             elements.modalPostTitle.textContent = title;
-            elements.modalPostText.textContent = post.enhancedText;
+            
+            // Strip title from enhanced text if it appears at the start
+            let enhancedText = post.enhancedText || '';
+            if (enhancedText.toLowerCase().startsWith(title.toLowerCase())) {
+                enhancedText = enhancedText.substring(title.length).trim();
+                // Also remove any leading newlines or punctuation
+                enhancedText = enhancedText.replace(/^[\n\r:.\-–—]+\s*/, '');
+            }
+            elements.modalPostText.textContent = enhancedText;
             elements.modalOriginalText.textContent = post.originalText;
             
             // Set community toggle state
@@ -4288,14 +4297,25 @@
             elements.discoverFeed.innerHTML = posts.map(post => {
                 const isLiked = state.likedPosts.includes(post.id);
                 const flag = getFlagEmoji(post.country_code);
+                const title = post.title || 'Shared Post';
+                
+                // Strip title from enhanced text if it appears at the start
+                let cardText = post.enhanced_text || '';
+                if (cardText.toLowerCase().startsWith(title.toLowerCase())) {
+                    cardText = cardText.substring(title.length).trim();
+                    cardText = cardText.replace(/^[\n\r:.\-–—]+\s*/, '');
+                }
+                
+                const dateStr = new Date(post.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+                
                 return `
                 <div class="discover-card" data-post-id="${post.id}">
                     <img class="discover-card-image" src="${post.image_url}" alt="" loading="lazy">
                     <div class="discover-card-content">
-                        <div class="discover-card-title">${post.title || 'Shared Post'}</div>
-                        <div class="discover-card-text">${post.enhanced_text}</div>
+                        <div class="discover-card-title">${title}</div>
+                        <div class="discover-card-text">${cardText}</div>
                         <div class="discover-card-meta">
-                            <span>${flag} ${new Date(post.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
+                            <span>${flag ? flag + ' ' : ''}${dateStr}</span>
                             <button class="discover-like-btn ${isLiked ? 'liked' : ''}" data-post-id="${post.id}">
                                 <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
                             </button>
@@ -4488,14 +4508,24 @@
         function openDiscoverModal(post) {
             currentDiscoverPost = post;
             
+            const title = post.title || 'Shared Post';
+            
             elements.discoverModalImage.src = post.image_url;
-            elements.discoverModalTitle.textContent = post.title || 'Shared Post';
-            elements.discoverModalText.textContent = post.enhanced_text;
+            elements.discoverModalTitle.textContent = title;
+            
+            // Strip title from enhanced text if it appears at the start
+            let enhancedText = post.enhanced_text || '';
+            if (enhancedText.toLowerCase().startsWith(title.toLowerCase())) {
+                enhancedText = enhancedText.substring(title.length).trim();
+                enhancedText = enhancedText.replace(/^[\n\r:.\-–—]+\s*/, '');
+            }
+            elements.discoverModalText.textContent = enhancedText;
             
             const flag = getFlagEmoji(post.country_code);
-            elements.discoverModalDate.textContent = `${flag} ${new Date(post.created_at).toLocaleDateString('en-US', { 
+            const dateText = new Date(post.created_at).toLocaleDateString('en-US', { 
                 month: 'long', day: 'numeric', year: 'numeric' 
-            })}`;
+            });
+            elements.discoverModalDate.textContent = flag ? `${flag} ${dateText}` : dateText;
             
             // Update like button state
             const isLiked = state.likedPosts.includes(post.id);
