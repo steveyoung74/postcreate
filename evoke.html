@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Evoke v0.8.3</title>
+    <title>Evoke v0.8.5</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -2470,7 +2470,7 @@
                 <div class="logo-icon evoke-logo">
                     <img src="Evoke_Dark_Logo_mark.png" alt="Evoke">
                 </div>
-                Evoke <span class="version-badge">v0.8.3</span>
+                Evoke <span class="version-badge">v0.8.5</span>
             </div>
             
             <!-- Desktop Nav -->
@@ -3251,6 +3251,7 @@
                                 enhanced_text: post.enhancedText,
                                 original_text: post.originalText,
                                 image_url: post.imageUrl,
+                                country_code: post.countryCode || state.countryCode,
                                 style: post.style,
                                 is_public: post.isPublic !== false // Default to true
                             })
@@ -3309,7 +3310,7 @@
                     try {
                         const { data, error } = await supabaseClient
                             .from('posts')
-                            .select('id, title, post_type, enhanced_text, original_text, image_url, created_at')
+                            .select('id, title, post_type, enhanced_text, original_text, image_url, country_code, created_at')
                             .eq('is_public', true)
                             .eq('post_type', 'recommendation')
                             .order('created_at', { ascending: false })
@@ -3377,6 +3378,7 @@
                             enhanced_text: p.enhancedText,
                             original_text: p.originalText,
                             image_url: permanentUrl,
+                            country_code: p.countryCode || state.countryCode,
                             style: p.style || 'quick',
                             created_at: p.createdAt
                         });
@@ -4168,7 +4170,10 @@
             const post = state.posts.find(p => p.id === state.currentPostId);
             if (!post) return;
             
-            navigator.clipboard.writeText(post.enhancedText).then(() => {
+            const flag = getFlagEmoji(post.countryCode || post.country_code);
+            const textToCopy = flag ? `${flag} ${post.enhancedText}` : post.enhancedText;
+            
+            navigator.clipboard.writeText(textToCopy).then(() => {
                 showToast('Text copied!', 'success');
             });
         }
@@ -4198,9 +4203,12 @@
             const post = state.posts.find(p => p.id === state.currentPostId);
             if (!post) return;
             
-            // Always copy text to clipboard first
+            // Always copy text to clipboard first (with flag)
+            const flag = getFlagEmoji(post.countryCode || post.country_code);
+            const textToCopy = flag ? `${flag} ${post.enhancedText}` : post.enhancedText;
+            
             try {
-                await navigator.clipboard.writeText(post.enhancedText);
+                await navigator.clipboard.writeText(textToCopy);
             } catch (err) {
                 console.log('Could not copy text', err);
             }
