@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Evoke v0.8.5</title>
+    <title>Evoke v0.9.0</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -1464,6 +1464,109 @@
             border: 1px solid rgba(255, 79, 94, 0.3);
         }
         
+        /* Pre-recording setup state */
+        .recording-setup {
+            padding: 20px;
+        }
+        
+        .recording-setup-title {
+            font-size: 22px;
+            font-weight: 600;
+            color: var(--text-primary);
+            text-align: center;
+            margin-bottom: 8px;
+        }
+        
+        .recording-setup-subtitle {
+            font-size: 14px;
+            color: var(--text-secondary);
+            text-align: center;
+            margin-bottom: 24px;
+        }
+        
+        .tone-selector {
+            margin-bottom: 24px;
+        }
+        
+        .tone-selector-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+        }
+        
+        .tone-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        
+        .tone-pill {
+            padding: 10px 16px;
+            border-radius: 20px;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .tone-pill:hover {
+            background: var(--bg-card);
+            color: var(--text-primary);
+        }
+        
+        .tone-pill.selected {
+            background: linear-gradient(135deg, rgba(255, 79, 94, 0.2), rgba(122, 108, 255, 0.2));
+            border-color: var(--resonant-coral);
+            color: var(--text-primary);
+        }
+        
+        .start-recording-btn {
+            width: 100%;
+            padding: 16px 24px;
+            border-radius: 16px;
+            background: var(--accent);
+            border: none;
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: transform 0.2s, opacity 0.2s;
+        }
+        
+        .start-recording-btn:hover {
+            opacity: 0.9;
+        }
+        
+        .start-recording-btn:active {
+            transform: scale(0.98);
+        }
+        
+        .start-recording-btn svg {
+            width: 24px;
+            height: 24px;
+            fill: white;
+        }
+        
+        /* Hide setup when recording, hide recording-box when in setup */
+        .recording-modal.recording .recording-setup {
+            display: none;
+        }
+        
+        .recording-modal:not(.recording) .recording-box,
+        .recording-modal:not(.recording) .live-transcript-box,
+        .recording-modal:not(.recording) .style-indicator {
+            display: none;
+        }
+        
         /* Recording box */
         .recording-box {
             background: var(--accent);
@@ -2470,7 +2573,7 @@
                 <div class="logo-icon evoke-logo">
                     <img src="Evoke_Dark_Logo_mark.png" alt="Evoke">
                 </div>
-                Evoke <span class="version-badge">v0.8.5</span>
+                Evoke <span class="version-badge">v0.9.0</span>
             </div>
             
             <!-- Desktop Nav -->
@@ -2763,14 +2866,37 @@
             <div style="width: 40px;"></div>
         </div>
         
-        <div class="style-indicator auto" id="styleIndicator">✨ Style: Match the show</div>
+        <!-- Pre-recording setup -->
+        <div class="recording-setup" id="recordingSetup">
+            <div class="recording-setup-title">What's on your mind?</div>
+            <div class="recording-setup-subtitle">Share a thought, recommendation, review, or anything you want to post.</div>
+            
+            <div class="tone-selector">
+                <div class="tone-selector-label">Choose your tone</div>
+                <div class="tone-pills" id="tonePills">
+                    <div class="tone-pill selected" data-tone="casual">😊 Casual</div>
+                    <div class="tone-pill" data-tone="excited">🔥 Excited</div>
+                    <div class="tone-pill" data-tone="thoughtful">💭 Thoughtful</div>
+                    <div class="tone-pill" data-tone="serious">🎯 Serious</div>
+                    <div class="tone-pill" data-tone="curious">🤔 Curious</div>
+                    <div class="tone-pill" data-tone="passionate">❤️ Passionate</div>
+                </div>
+            </div>
+            
+            <button class="start-recording-btn" id="startRecordingBtn">
+                <svg viewBox="0 0 24 24"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/><path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/></svg>
+                Start Recording
+            </button>
+        </div>
+        
+        <div class="style-indicator auto" id="styleIndicator">✨ Style: Match the content</div>
         
         <div class="recording-box" id="recordingBox">
             <div class="recording-timer" id="recordingTimer">00:60</div>
             
             <div class="recording-prompt" id="recordingPrompt">
-                <strong>What show are you loving?</strong>
-                Talk about what you watched, what made it great, who should watch it!
+                <strong>Speak naturally</strong>
+                We'll enhance your words to match your chosen tone.
             </div>
             
             <div class="audio-visualizer" id="audioVisualizer"></div>
@@ -2842,7 +2968,7 @@
                 <div class="style-mixer-row">
                     <div class="style-mixer-label">When creating graphics...</div>
                     <div class="style-toggle" id="styleToggle">
-                        <button class="style-toggle-option selected" data-mode="auto">Match the show</button>
+                        <button class="style-toggle-option selected" data-mode="auto">Match content</button>
                         <button class="style-toggle-option" data-mode="custom">Always my style</button>
                     </div>
                 </div>
@@ -2869,7 +2995,7 @@
                     <img src="Evoke_Dark_Logo_mark.png" alt="Evoke">
                 </div>
                 <div class="about-tagline">Call your thoughts into the world.</div>
-                <div class="about-version">Version 0.8.1</div>
+                <div class="about-version">Version 0.9.0</div>
             </div>
             
             <div class="about-section">
@@ -2880,6 +3006,14 @@
             <div class="about-section">
                 <div class="about-section-title">What's New</div>
                 <div class="about-changelog">
+                    <div class="changelog-item">
+                        <span class="changelog-version">v0.9</span>
+                        <span class="changelog-text">Tone selector for personalized posts, country flags, flexible content types</span>
+                    </div>
+                    <div class="changelog-item">
+                        <span class="changelog-version">v0.8</span>
+                        <span class="changelog-text">Multi-provider auth, free trial system, brand refresh</span>
+                    </div>
                     <div class="changelog-item">
                         <span class="changelog-version">v0.7</span>
                         <span class="changelog-text">Rebrand to Evoke, improved error handling, dynamic showcase</span>
@@ -3014,7 +3148,7 @@
         // CONFIG
         // ============================================
         const CONFIG = {
-            version: '0.6.7',
+            version: '0.9.0',
             webhookUrl: 'https://steveyoung.app.n8n.cloud/webhook/postcreate',
             maxRecordingTime: 60,
             supabaseUrl: 'https://oiahkbvqyfjumnqsefxw.supabase.co',
@@ -3037,6 +3171,14 @@
                 neon: { name: 'Neon', prompt: 'hot pink, electric blue, purple glow, vibrant neon' },
                 muted: { name: 'Muted', prompt: 'dusty pastels, sage, mauve, sand, soft muted tones' },
                 mono: { name: 'Mono', prompt: 'black and white with single accent color, monochromatic' }
+            },
+            voiceTones: {
+                casual: { name: 'Casual', prompt: 'Write in a relaxed, conversational tone. Friendly and approachable, like chatting with a friend.' },
+                excited: { name: 'Excited', prompt: 'Write with high energy and enthusiasm! Use exclamation points, show genuine excitement and passion.' },
+                thoughtful: { name: 'Thoughtful', prompt: 'Write in a reflective, considered tone. Take time to explore the topic with depth and nuance.' },
+                serious: { name: 'Serious', prompt: 'Write in a more formal, analytical tone. Focus on critical analysis and measured opinions.' },
+                curious: { name: 'Curious', prompt: 'Write with a sense of wonder and questioning. Explore ideas openly, invite discussion.' },
+                passionate: { name: 'Passionate', prompt: 'Write with intense feeling and conviction. Express strong emotions and heartfelt opinions.' }
             },
             // Preview colors for the style mixer
             previewStyles: {
@@ -3082,6 +3224,7 @@
             graphicMood: savedSettings.graphicMood || 'cozy',
             graphicColors: savedSettings.graphicColors || 'warm',
             graphicMode: savedSettings.graphicMode || 'auto', // 'auto' or 'custom'
+            voiceTone: savedSettings.voiceTone || 'casual', // casual, excited, thoughtful, serious, curious, passionate
             timeRemaining: CONFIG.maxRecordingTime,
             finalTranscript: '',
             interimTranscript: '',
@@ -3090,7 +3233,7 @@
             user: null,
             authMode: 'signin', // 'signin' or 'signup'
             likedPosts: JSON.parse(localStorage.getItem('evoke_liked_posts') || '[]'),
-            countryCode: localStorage.getItem('evoke_country') || null
+            countryCode: null
         };
         
         // Country code to flag emoji converter
@@ -3103,6 +3246,7 @@
         
         // Detect user's country from IP
         async function detectCountry() {
+            // Check session cache only (not persistent localStorage)
             if (state.countryCode) return state.countryCode;
             
             try {
@@ -3114,7 +3258,6 @@
                 const data = await response.json();
                 if (data.country_code) {
                     state.countryCode = data.country_code;
-                    localStorage.setItem('evoke_country', data.country_code);
                     console.log('Country detected:', data.country_code, getFlagEmoji(data.country_code));
                     return data.country_code;
                 }
@@ -3130,9 +3273,10 @@
                 rewriteLevel: state.rewriteLevel,
                 graphicMood: state.graphicMood,
                 graphicColors: state.graphicColors,
-                graphicMode: state.graphicMode
+                graphicMode: state.graphicMode,
+                voiceTone: state.voiceTone
             }));
-            console.log('Settings saved:', state.graphicMode, state.graphicMood, state.graphicColors);
+            console.log('Settings saved:', state.graphicMode, state.graphicMood, state.graphicColors, state.voiceTone);
         }
 
         // ============================================
@@ -3558,6 +3702,9 @@
             recordingClose: document.getElementById('recordingClose'),
             recordingTimer: document.getElementById('recordingTimer'),
             recordingBox: document.getElementById('recordingBox'),
+            recordingSetup: document.getElementById('recordingSetup'),
+            tonePills: document.getElementById('tonePills'),
+            startRecordingBtn: document.getElementById('startRecordingBtn'),
             audioVisualizer: document.getElementById('audioVisualizer'),
             liveTranscript: document.getElementById('liveTranscript'),
             stopBtn: document.getElementById('stopBtn'),
@@ -3796,13 +3943,27 @@
         // ============================================
         // RECORDING
         // ============================================
-        async function startRecording() {
+        
+        // Show the recording modal in setup mode
+        function showRecordingSetup() {
             // Check if user is logged in
             if (!state.user) {
                 showAuthModal('signup');
                 return;
             }
             
+            // Reset to setup state
+            elements.recordingModal.classList.remove('recording');
+            elements.recordingModal.classList.add('visible');
+            
+            // Update tone pills to reflect current selection
+            elements.tonePills.querySelectorAll('.tone-pill').forEach(pill => {
+                pill.classList.toggle('selected', pill.dataset.tone === state.voiceTone);
+            });
+        }
+        
+        // Actually start recording after setup
+        async function beginRecording() {
             // Ensure country is detected
             if (!state.countryCode) {
                 await detectCountry();
@@ -3819,7 +3980,9 @@
             
             elements.liveTranscript.textContent = 'Start speaking...';
             elements.liveTranscript.classList.add('empty');
-            elements.recordingModal.classList.add('visible');
+            
+            // Switch to recording state
+            elements.recordingModal.classList.add('recording');
             
             // Update style indicator and recording box style
             updateStyleIndicator();
@@ -3831,6 +3994,11 @@
             visualize();
             
             try { recognition.start(); } catch (e) {}
+        }
+        
+        // Legacy function name for compatibility
+        async function startRecording() {
+            showRecordingSetup();
         }
 
         function pauseRecording() {
@@ -3893,6 +4061,7 @@
             state.isRecording = false;
             state.isPaused = false;
             elements.recordingModal.classList.remove('visible');
+            elements.recordingModal.classList.remove('recording');
             stopTimer();
             stopAudioVisualization();
             try { recognition.stop(); } catch (e) {}
@@ -3928,6 +4097,7 @@
             // Graphic style settings
             const graphicMoodConfig = CONFIG.graphicMoods[state.graphicMood];
             const graphicColorsConfig = CONFIG.graphicColors[state.graphicColors];
+            const voiceToneConfig = CONFIG.voiceTones[state.voiceTone];
             
             try {
                 // Step 1: Call webhook
@@ -3941,8 +4111,10 @@
                         text: transcript,
                         rewriteLevel: state.rewriteLevel,
                         rewriteInstruction: rewriteInstruction,
-                        platform: 'facebook-group',
-                        context: 'Netflix Recommendations Facebook Group',
+                        voiceTone: state.voiceTone,
+                        voiceTonePrompt: voiceToneConfig.prompt,
+                        platform: 'social-media',
+                        context: 'Social media post for entertainment community',
                         // Graphic style settings
                         graphicMode: state.graphicMode,
                         graphicMood: state.graphicMood,
@@ -4697,6 +4869,19 @@
         elements.pauseBtn.addEventListener('click', togglePause);
         elements.resetBtn.addEventListener('click', resetRecording);
         
+        // Tone selector pills
+        elements.tonePills.querySelectorAll('.tone-pill').forEach(pill => {
+            pill.addEventListener('click', () => {
+                elements.tonePills.querySelectorAll('.tone-pill').forEach(p => p.classList.remove('selected'));
+                pill.classList.add('selected');
+                state.voiceTone = pill.dataset.tone;
+                saveSettings();
+            });
+        });
+        
+        // Start recording button (after tone selection)
+        elements.startRecordingBtn.addEventListener('click', beginRecording);
+        
         // Post Modal
         elements.postModalClose.addEventListener('click', closePostModal);
         elements.modalCopyBtn.addEventListener('click', copyCurrentPost);
@@ -4790,7 +4975,7 @@
         // Update style indicator in recording modal
         function updateStyleIndicator() {
             if (state.graphicMode === 'auto') {
-                elements.styleIndicator.textContent = '✨ Style: Match the show';
+                elements.styleIndicator.textContent = '✨ Style: Match content';
                 elements.styleIndicator.className = 'style-indicator auto';
             } else {
                 const moodEmoji = {
