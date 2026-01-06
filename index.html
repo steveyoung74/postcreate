@@ -1139,9 +1139,9 @@
         const SUPABASE_URL = 'https://oiahkbvqyfjumnqsefxw.supabase.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9pYWhrYnZxeWZqdW1ucXNlZnh3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjY4MTgxNzUsImV4cCI6MjA4MjM5NDE3NX0.0z0aWrJo1PwUstbOQ2Z_540y00XzboCvnzmjelzzqWs';
         
-        let supabase;
+        let supabaseClient;
         try {
-            supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+            supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
             console.log('Supabase client initialized');
         } catch (e) {
             console.error('Failed to initialize Supabase:', e);
@@ -1167,7 +1167,7 @@
         ];
         
         async function loadShowcasePosts() {
-            if (!supabase) {
+            if (!supabaseClient) {
                 console.warn('Supabase not available, using fallbacks');
                 showcasePosts = fallbackExamples;
                 renderShowcase();
@@ -1175,7 +1175,7 @@
             }
             
             try {
-                const { data, error } = await supabase
+                const { data, error } = await supabaseClient
                     .from('posts')
                     .select('title, original_text, enhanced_text, image_url')
                     .eq('is_public', true)
