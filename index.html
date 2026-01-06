@@ -1139,7 +1139,13 @@
         const SUPABASE_URL = 'https://oiahkbvqyfjumnqsefxw.supabase.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9pYWhrYnZxeWZqdW1ucXNlZnh3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjY4MTgxNzUsImV4cCI6MjA4MjM5NDE3NX0.0z0aWrJo1PwUstbOQ2Z_540y00XzboCvnzmjelzzqWs';
         
-        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        let supabase;
+        try {
+            supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+            console.log('Supabase client initialized');
+        } catch (e) {
+            console.error('Failed to initialize Supabase:', e);
+        }
         
         let showcasePosts = [];
         let currentShowcaseIndex = 0;
@@ -1161,6 +1167,13 @@
         ];
         
         async function loadShowcasePosts() {
+            if (!supabase) {
+                console.warn('Supabase not available, using fallbacks');
+                showcasePosts = fallbackExamples;
+                renderShowcase();
+                return;
+            }
+            
             try {
                 const { data, error } = await supabase
                     .from('posts')
@@ -1168,20 +1181,27 @@
                     .eq('is_public', true)
                     .eq('post_type', 'recommendation')
                     .not('original_text', 'is', null)
+                    .not('image_url', 'is', null)
                     .order('created_at', { ascending: false })
                     .limit(20);
                 
+                console.log('Showcase query result:', { data, error });
+                
                 if (error) throw error;
                 
-                // Filter out posts without original_text or very short ones
+                // Filter out posts without original_text or very short ones, or blob URLs
                 showcasePosts = (data || []).filter(p => 
                     p.original_text && 
                     p.original_text.length > 20 &&
                     p.enhanced_text &&
-                    p.image_url
+                    p.image_url &&
+                    !p.image_url.startsWith('blob:')
                 );
                 
+                console.log('Filtered showcase posts:', showcasePosts.length);
+                
                 if (showcasePosts.length === 0) {
+                    console.log('No valid posts found, using fallbacks');
                     showcasePosts = fallbackExamples;
                 }
                 
@@ -1198,7 +1218,15 @@
         
         function renderShowcase() {
             const showcase = document.getElementById('showcase');
-            if (!showcase || showcasePosts.length === 0) return;
+            if (!showcase) {
+                console.error('Showcase element not found');
+                return;
+            }
+            if (showcasePosts.length === 0) {
+                console.error('No showcase posts available');
+                showcase.innerHTML = '<div class="showcase-loading">No examples available</div>';
+                return;
+            }
             
             const post = showcasePosts[currentShowcaseIndex];
             
