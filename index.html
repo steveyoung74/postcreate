@@ -117,7 +117,7 @@
         }
         
         .hero-logo img {
-            height: 120px;
+            height: 200px;
             width: auto;
         }
         
@@ -196,6 +196,17 @@
             max-width: 1200px;
             margin: 0 auto;
             width: 100%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+        
+        .hero-right {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            text-align: right;
         }
         
         /* Gradient orbs */
@@ -297,11 +308,23 @@
             z-index: 1;
         }
         
+        /* Community Card in Hero */
+        .community-card {
+            background: rgba(22, 26, 34, 0.8);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 40px;
+            backdrop-filter: blur(12px);
+            text-align: center;
+            animation: heroContentIn 0.7s ease-out 0.9s forwards;
+            opacity: 0;
+        }
+        
         .community-intro {
             font-size: 16px;
             color: var(--text-muted);
             max-width: 600px;
-            margin: 0 auto 40px;
+            margin: 0 auto 32px;
             line-height: 1.7;
         }
         
@@ -312,7 +335,7 @@
         .stats-grid {
             display: flex;
             justify-content: center;
-            gap: 60px;
+            gap: 40px;
             flex-wrap: wrap;
         }
         
@@ -322,7 +345,7 @@
         
         .stat-value {
             font-family: 'General Sans', sans-serif;
-            font-size: 48px;
+            font-size: 42px;
             font-weight: 700;
             background: linear-gradient(135deg, var(--resonant-coral) 0%, var(--evoke-violet) 100%);
             -webkit-background-clip: text;
@@ -872,12 +895,26 @@
                 padding: 100px 20px 60px;
             }
             
+            .hero-container {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+            
             .hero-content {
                 text-align: center;
             }
             
+            .hero-right {
+                align-items: center;
+                text-align: center;
+            }
+            
             .hero-logo img {
-                height: 80px;
+                height: 100px;
+            }
+            
+            .community-card {
+                padding: 32px 24px;
             }
             
             .hero::before,
@@ -887,11 +924,11 @@
             }
             
             .stats-grid {
-                gap: 40px;
+                gap: 32px;
             }
             
             .stat-value {
-                font-size: 36px;
+                font-size: 32px;
             }
             
             .section {
@@ -969,22 +1006,24 @@
                 <a href="evoke.html" class="hero-cta">Start your free trial</a>
                 <p class="hero-pricing">3 days free, then £6.99/month. Cancel anytime.</p>
             </div>
-        </div>
-    </section>
-
-    <!-- Community Stats -->
-    <section class="community-section">
-        <p class="community-intro">
-            Created especially for <strong>Netflix Recommendations</strong>, the largest entertainment community on Facebook, with:
-        </p>
-        <div class="stats-grid">
-            <div class="stat">
-                <div class="stat-value">5.2M+</div>
-                <div class="stat-label">Community members</div>
-            </div>
-            <div class="stat">
-                <div class="stat-value">Millions</div>
-                <div class="stat-label">of views per day</div>
+            
+            <!-- Community Stats - Right Side -->
+            <div class="hero-right">
+                <div class="community-card">
+                    <p class="community-intro">
+                        Created especially for <strong>Netflix Recommendations</strong>, the largest entertainment community on Facebook
+                    </p>
+                    <div class="stats-grid">
+                        <div class="stat">
+                            <div class="stat-value">5.2M+</div>
+                            <div class="stat-label">Community members</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">Millions</div>
+                            <div class="stat-label">of views per day</div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
