@@ -67,7 +67,14 @@
             justify-content: space-between;
             align-items: center;
             z-index: 100;
-            background: var(--midnight-void);
+            background: transparent;
+            border-bottom: 1px solid transparent;
+            transition: background 0.3s, border-color 0.3s, backdrop-filter 0.3s;
+        }
+        
+        .header.scrolled {
+            background: rgba(14, 15, 20, 0.95);
+            backdrop-filter: blur(12px);
             border-bottom: 1px solid var(--border);
         }
         
@@ -80,6 +87,14 @@
             font-size: 20px;
             text-decoration: none;
             color: var(--soft-ivory);
+            opacity: 0;
+            transform: translateY(-8px);
+            transition: opacity 0.4s ease, transform 0.4s ease;
+        }
+        
+        .header.logo-visible .logo {
+            opacity: 1;
+            transform: translateY(0);
         }
         
         .logo-icon {
@@ -92,6 +107,40 @@
             height: 40px;
             object-fit: contain;
             display: block;
+        }
+        
+        /* Hero Logo - large centered */
+        .hero-logo {
+            margin-bottom: 32px;
+            animation: heroLogoIn 0.8s ease-out forwards;
+            opacity: 0;
+        }
+        
+        .hero-logo img {
+            height: 80px;
+            width: auto;
+        }
+        
+        @keyframes heroLogoIn {
+            0% {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes heroContentIn {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
         
         .nav {
@@ -185,6 +234,8 @@
             line-height: 1.1;
             margin-bottom: 24px;
             letter-spacing: -0.02em;
+            animation: heroContentIn 0.7s ease-out 0.2s forwards;
+            opacity: 0;
         }
         
         .hero-subtitle {
@@ -194,6 +245,8 @@
             max-width: 600px;
             margin-left: auto;
             margin-right: auto;
+            animation: heroContentIn 0.7s ease-out 0.35s forwards;
+            opacity: 0;
         }
         
         .hero-tagline {
@@ -201,6 +254,8 @@
             color: var(--evoke-violet);
             margin-bottom: 40px;
             font-weight: 500;
+            animation: heroContentIn 0.7s ease-out 0.5s forwards;
+            opacity: 0;
         }
         
         .hero-cta {
@@ -214,6 +269,8 @@
             text-decoration: none;
             transition: transform 0.2s, box-shadow 0.2s;
             box-shadow: 0 4px 24px rgba(255, 79, 94, 0.3);
+            animation: heroContentIn 0.7s ease-out 0.65s forwards;
+            opacity: 0;
         }
         
         .hero-cta:hover {
@@ -225,6 +282,8 @@
             margin-top: 16px;
             font-size: 14px;
             color: var(--text-muted);
+            animation: heroContentIn 0.7s ease-out 0.8s forwards;
+            opacity: 0;
         }
         
         /* Community Section */
@@ -888,6 +947,10 @@
     <!-- Hero -->
     <section class="hero">
         <div class="hero-content">
+            <!-- Large Hero Logo -->
+            <div class="hero-logo">
+                <img src="Evoke_Dark_Logo.png" alt="Evoke">
+            </div>
             <h1>Turn your voice into share-ready posts</h1>
             <p class="hero-subtitle">Speak your thoughts about shows and movies. Get polished text and stunning graphics. Share everywhere.</p>
             <p class="hero-tagline">Your words, amplified.</p>
@@ -1272,6 +1335,30 @@
             loadShowcasePosts();
             
             document.getElementById('refreshShowcase')?.addEventListener('click', showNextExample);
+            
+            // Scroll handling for header and logo
+            const header = document.querySelector('.header');
+            
+            function handleScroll() {
+                const scrollY = window.scrollY;
+                
+                // Add background to header after 50px scroll
+                if (scrollY > 50) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+                
+                // Show nav logo when hero logo scrolls out of view (around 200px)
+                if (scrollY > 200) {
+                    header.classList.add('logo-visible');
+                } else {
+                    header.classList.remove('logo-visible');
+                }
+            }
+            
+            window.addEventListener('scroll', handleScroll);
+            handleScroll(); // Check initial state
         });
     </script>
 </body>
