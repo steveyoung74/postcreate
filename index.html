@@ -180,6 +180,79 @@
             color: var(--soft-ivory);
             font-size: 24px;
             cursor: pointer;
+            padding: 8px;
+            z-index: 101;
+        }
+        
+        /* Mobile Menu */
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--midnight-void);
+            z-index: 200;
+            display: flex;
+            flex-direction: column;
+            padding: 20px 24px;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+        }
+        
+        .mobile-menu.open {
+            transform: translateX(0);
+        }
+        
+        .mobile-menu-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 48px;
+        }
+        
+        .mobile-menu-header .logo {
+            opacity: 1;
+            transform: none;
+        }
+        
+        .mobile-menu-close {
+            background: none;
+            border: none;
+            color: var(--soft-ivory);
+            font-size: 28px;
+            cursor: pointer;
+            padding: 8px;
+        }
+        
+        .mobile-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .mobile-nav a {
+            color: var(--soft-ivory);
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: 500;
+            padding: 16px 0;
+            border-bottom: 1px solid var(--border);
+            transition: color 0.2s;
+        }
+        
+        .mobile-nav a:hover {
+            color: var(--resonant-coral);
+        }
+        
+        .mobile-nav-cta {
+            background: var(--resonant-coral) !important;
+            color: white !important;
+            padding: 16px 24px !important;
+            border-radius: 8px;
+            text-align: center;
+            margin-top: 16px;
+            border: none !important;
         }
         
         /* Hero Section */
@@ -1006,8 +1079,28 @@
             <a href="#reviews">Reviews</a>
             <a href="evoke.html" class="nav-cta">Start free trial</a>
         </nav>
-        <button class="mobile-menu-btn">☰</button>
+        <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
     </header>
+    
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <div class="mobile-menu-header">
+            <a href="/" class="logo">
+                <div class="logo-icon">
+                    <img src="Evoke_Dark_Logo_mark.png" alt="Evoke">
+                </div>
+                Evoke
+            </a>
+            <button class="mobile-menu-close" id="mobileMenuClose">✕</button>
+        </div>
+        <nav class="mobile-nav">
+            <a href="#how">How it works</a>
+            <a href="#use-cases">Use cases</a>
+            <a href="#features">Features</a>
+            <a href="#reviews">Reviews</a>
+            <a href="evoke.html" class="mobile-nav-cta">Start free trial</a>
+        </nav>
+    </div>
 
     <!-- Hero -->
     <section class="hero">
@@ -1015,7 +1108,7 @@
             <div class="hero-content">
                 <!-- Large Hero Logo -->
                 <div class="hero-logo">
-                    <img src="Evoke_Dark_Logo.png" alt="Evoke">
+                    <img src="Evoke_Large_Dk.png" alt="Evoke">
                 </div>
                 <h1>Turn your voice into share-ready posts</h1>
                 <p class="hero-subtitle">Speak your thoughts about shows and movies. Get polished text and stunning graphics. Share everywhere.</p>
@@ -1428,6 +1521,29 @@
             
             window.addEventListener('scroll', handleScroll);
             handleScroll(); // Check initial state
+            
+            // Mobile menu
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const mobileMenu = document.getElementById('mobileMenu');
+            const mobileMenuClose = document.getElementById('mobileMenuClose');
+            
+            mobileMenuBtn?.addEventListener('click', () => {
+                mobileMenu.classList.add('open');
+                document.body.style.overflow = 'hidden';
+            });
+            
+            mobileMenuClose?.addEventListener('click', () => {
+                mobileMenu.classList.remove('open');
+                document.body.style.overflow = '';
+            });
+            
+            // Close menu when clicking a link
+            mobileMenu?.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.remove('open');
+                    document.body.style.overflow = '';
+                });
+            });
         });
     </script>
 </body>
