@@ -109,15 +109,15 @@
             display: block;
         }
         
-        /* Hero Logo - large centered */
+        /* Hero Logo - large left-aligned */
         .hero-logo {
-            margin-bottom: 32px;
+            margin-bottom: 48px;
             animation: heroLogoIn 0.8s ease-out forwards;
             opacity: 0;
         }
         
         .hero-logo img {
-            height: 80px;
+            height: 120px;
             width: auto;
         }
         
@@ -188,10 +188,14 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
-            align-items: center;
-            text-align: center;
             padding: 120px 24px 80px;
             position: relative;
+        }
+        
+        .hero-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
         }
         
         /* Gradient orbs */
@@ -224,7 +228,8 @@
         .hero-content {
             position: relative;
             z-index: 1;
-            max-width: 800px;
+            max-width: 720px;
+            text-align: left;
         }
         
         .hero h1 {
@@ -243,8 +248,6 @@
             color: var(--text-muted);
             margin-bottom: 16px;
             max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
             animation: heroContentIn 0.7s ease-out 0.35s forwards;
             opacity: 0;
         }
@@ -869,6 +872,14 @@
                 padding: 100px 20px 60px;
             }
             
+            .hero-content {
+                text-align: center;
+            }
+            
+            .hero-logo img {
+                height: 80px;
+            }
+            
             .hero::before,
             .hero::after {
                 width: 250px;
@@ -946,16 +957,18 @@
 
     <!-- Hero -->
     <section class="hero">
-        <div class="hero-content">
-            <!-- Large Hero Logo -->
-            <div class="hero-logo">
-                <img src="Evoke_Dark_Logo.png" alt="Evoke">
+        <div class="hero-container">
+            <div class="hero-content">
+                <!-- Large Hero Logo -->
+                <div class="hero-logo">
+                    <img src="Evoke_Dark_Logo.png" alt="Evoke">
+                </div>
+                <h1>Turn your voice into share-ready posts</h1>
+                <p class="hero-subtitle">Speak your thoughts about shows and movies. Get polished text and stunning graphics. Share everywhere.</p>
+                <p class="hero-tagline">Your words, amplified.</p>
+                <a href="evoke.html" class="hero-cta">Start your free trial</a>
+                <p class="hero-pricing">3 days free, then £6.99/month. Cancel anytime.</p>
             </div>
-            <h1>Turn your voice into share-ready posts</h1>
-            <p class="hero-subtitle">Speak your thoughts about shows and movies. Get polished text and stunning graphics. Share everywhere.</p>
-            <p class="hero-tagline">Your words, amplified.</p>
-            <a href="evoke.html" class="hero-cta">Start your free trial</a>
-            <p class="hero-pricing">3 days free, then £6.99/month. Cancel anytime.</p>
         </div>
     </section>
 
