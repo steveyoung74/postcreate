@@ -3613,10 +3613,13 @@
             },
             
             async signOut() {
+                console.log('Auth.signOut called');
                 if (!supabaseClient) throw new Error('Auth not available offline');
                 const { error } = await supabaseClient.auth.signOut();
+                console.log('Supabase signOut result:', error);
                 if (error) throw error;
                 // Redirect to landing page after sign out
+                console.log('Redirecting to index.html');
                 window.location.href = 'index.html';
             },
             
@@ -5157,9 +5160,14 @@
         
         async function handleSignOut() {
             try {
+                console.log('Sign out clicked');
+                // Close profile panel first
+                elements.profilePanel.classList.remove('open');
+                
                 await Auth.signOut();
-                showToast('Signed out', 'success');
+                // signOut already redirects to index.html
             } catch (error) {
+                console.error('Sign out error:', error);
                 showToast('Error signing out', 'error');
             }
         }
@@ -5173,7 +5181,7 @@
         elements.authGoogleBtn.addEventListener('click', handleGoogleSignIn);
         elements.authAppleBtn?.addEventListener('click', handleAppleSignIn);
         elements.authFacebookBtn?.addEventListener('click', handleFacebookSignIn);
-        elements.signOutBtn.addEventListener('click', handleSignOut);
+        elements.signOutBtn?.addEventListener('click', handleSignOut);
         elements.authToggleLink.addEventListener('click', () => {
             showAuthModal(state.authMode === 'signin' ? 'signup' : 'signin');
         });
