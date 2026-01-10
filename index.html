@@ -111,14 +111,26 @@
         
         /* Hero Logo - large left-aligned */
         .hero-logo {
+            display: flex;
+            align-items: center;
+            gap: 16px;
             margin-bottom: 48px;
             animation: heroLogoIn 0.8s ease-out forwards;
             opacity: 0;
         }
         
         .hero-logo img {
-            height: 280px;
+            height: 180px;
             width: auto;
+        }
+        
+        .hero-logo-text {
+            font-family: 'General Sans', sans-serif;
+            font-size: 140px;
+            font-weight: 600;
+            color: var(--soft-ivory);
+            letter-spacing: -0.02em;
+            line-height: 1;
         }
         
         @keyframes heroLogoIn {
@@ -1000,7 +1012,15 @@
             }
             
             .hero-logo img {
-                height: 140px;
+                height: 80px;
+            }
+            
+            .hero-logo-text {
+                font-size: 64px;
+            }
+            
+            .hero-logo {
+                gap: 8px;
             }
             
             .community-card {
@@ -1108,7 +1128,8 @@
             <div class="hero-content">
                 <!-- Large Hero Logo -->
                 <div class="hero-logo">
-                    <img src="Evoke_Large_Dk.png" alt="Evoke">
+                    <img src="Evoke_Mark_Dk.png" alt="">
+                    <span class="hero-logo-text">Evoke</span>
                 </div>
                 <h1>Turn your voice into share-ready posts</h1>
                 <p class="hero-subtitle">Speak your thoughts about shows and movies. Get polished text and stunning graphics. Share everywhere.</p>
