@@ -2109,26 +2109,27 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 16px;
-        }
-        
-        .style-preview-text {
-            font-weight: 600;
-            font-size: 16px;
-            text-align: center;
+            gap: 14px;
         }
         
         .style-preview-swatches {
             display: flex;
-            gap: 8px;
+            gap: 6px;
         }
         
         .style-swatch {
-            width: 32px;
-            height: 32px;
+            width: 36px;
+            height: 36px;
             border-radius: 8px;
-            border: 2px solid rgba(255,255,255,0.2);
+            border: 2px solid rgba(255,255,255,0.15);
             transition: all 0.3s;
+        }
+        
+        .style-preview-desc {
+            font-size: 13px;
+            color: rgba(255,255,255,0.85);
+            text-align: center;
+            line-height: 1.4;
         }
         
         /* About Modal */
@@ -3246,12 +3247,14 @@
                 <div class="style-preview" id="stylePreview">
                     <div class="style-preview-label">Preview</div>
                     <div class="style-preview-box" id="stylePreviewBox">
-                        <div class="style-preview-text">Your words, amplified</div>
                         <div class="style-preview-swatches" id="styleSwatches">
                             <div class="style-swatch" id="swatch1"></div>
                             <div class="style-swatch" id="swatch2"></div>
                             <div class="style-swatch" id="swatch3"></div>
+                            <div class="style-swatch" id="swatch4"></div>
+                            <div class="style-swatch" id="swatch5"></div>
                         </div>
+                        <div class="style-preview-desc" id="stylePreviewDesc">Spiced Latte: Soft amber lighting, hygge atmosphere</div>
                     </div>
                 </div>
             </div>
@@ -3270,7 +3273,7 @@
                     <img src="Evoke_Large_Dk_2_burst.png" alt="Evoke">
                 </div>
                 <div class="about-tagline">Call your thoughts into the world.</div>
-                <div class="about-version">Version 0.9.6</div>
+                <div class="about-version">Version 0.9.7</div>
             </div>
             
             <div class="about-section">
@@ -3281,6 +3284,10 @@
             <div class="about-section">
                 <div class="about-section-title">What's New</div>
                 <div class="about-changelog">
+                    <div class="changelog-item">
+                        <span class="changelog-version">v0.9.7</span>
+                        <span class="changelog-text">25 color palettes with live preview, enhanced settings UI</span>
+                    </div>
                     <div class="changelog-item">
                         <span class="changelog-version">v0.9.6</span>
                         <span class="changelog-text">Improved settings UI, policy page navigation, updated branding</span>
@@ -3476,7 +3483,7 @@
         // CONFIG
         // ============================================
         const CONFIG = {
-            version: '0.9.6',
+            version: '0.9.7',
             webhookUrl: 'https://steveyoung.app.n8n.cloud/webhook/postcreate',
             maxRecordingTime: 60,
             supabaseUrl: 'https://oiahkbvqyfjumnqsefxw.supabase.co',
@@ -3513,18 +3520,163 @@
                 curious: { name: 'Curious', prompt: 'Write with a sense of wonder and questioning. Explore ideas openly, invite discussion.' },
                 passionate: { name: 'Passionate', prompt: 'Write with intense feeling and conviction. Express strong emotions and heartfelt opinions.' }
             },
-            // Preview colors for the style mixer
-            previewStyles: {
-                cozy: { bg: 'linear-gradient(135deg, #2d1f1f, #1a1515)', color: '#FFB347', swatches: ['#2d1f1f', '#FFB347', '#8B4513'] },
-                bold: { bg: 'linear-gradient(135deg, #1a1a2e, #16213e)', color: '#FF4F5E', swatches: ['#1a1a2e', '#FF4F5E', '#16213e'] },
-                elegant: { bg: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', color: '#D4AF37', swatches: ['#1a1a1a', '#D4AF37', '#2d2d2d'] },
-                playful: { bg: 'linear-gradient(135deg, #1f2d1f, #152115)', color: '#7FFF00', swatches: ['#1f2d1f', '#7FFF00', '#152115'] },
-                dark: { bg: 'linear-gradient(135deg, #0a0a0f, #1a1a2e)', color: '#9B59B6', swatches: ['#0a0a0f', '#9B59B6', '#1a1a2e'] },
-                warm: { accent: '#FF6B35', swatch: '#FF6B35' },
-                cool: { accent: '#4ECDC4', swatch: '#4ECDC4' },
-                neon: { accent: '#FF006E', swatch: '#FF006E' },
-                muted: { accent: '#B8A9C9', swatch: '#B8A9C9' },
-                mono: { accent: '#FFFFFF', swatch: '#FFFFFF' }
+            // Preview palettes for all mood + color combinations
+            palettes: {
+                // COZY combinations
+                'cozy-warm': { 
+                    name: 'Spiced Latte', 
+                    colors: ['#C65D3B', '#D99E32', '#F7F0E3', '#4A3B32', '#E8CCB8'],
+                    bg: 'linear-gradient(135deg, #4A3B32, #2d1f1f)',
+                    vibe: 'Soft amber lighting, hygge atmosphere'
+                },
+                'cozy-cool': { 
+                    name: 'Rainy Window', 
+                    colors: ['#6C7A89', '#BDC3C7', '#8FBC8F', '#2C3E50', '#ECF0F1'],
+                    bg: 'linear-gradient(135deg, #2C3E50, #1a2530)',
+                    vibe: 'Overcast lighting, serene blues and greens'
+                },
+                'cozy-neon': { 
+                    name: 'Lofi Glow', 
+                    colors: ['#9B59B6', '#FFCCBC', '#A2D9CE', '#211830', '#F1948A'],
+                    bg: 'linear-gradient(135deg, #211830, #1a1020)',
+                    vibe: 'Bedroom pop aesthetic, dreamy glow'
+                },
+                'cozy-muted': { 
+                    name: 'Cottagecore', 
+                    colors: ['#6B8E23', '#BC8F8F', '#F5F5DC', '#B57EDC', '#8B8589'],
+                    bg: 'linear-gradient(135deg, #3d3d30, #2a2a20)',
+                    vibe: 'Desaturated vintage, gentle nostalgia'
+                },
+                'cozy-mono': { 
+                    name: 'Old Book', 
+                    colors: ['#704214', '#F3E5AB', '#3E2723', '#D2B48C', '#FAF9F6'],
+                    bg: 'linear-gradient(135deg, #3E2723, #2a1a15)',
+                    vibe: 'Sepia tones, timeless warmth'
+                },
+                // BOLD combinations
+                'bold-warm': { 
+                    name: 'Solar Flare', 
+                    colors: ['#FF0000', '#FFEB3B', '#FF9800', '#800000', '#FFFFFF'],
+                    bg: 'linear-gradient(135deg, #800000, #4a0000)',
+                    vibe: 'High saturation, energetic summer vibes'
+                },
+                'bold-cool': { 
+                    name: 'Deep Freeze', 
+                    colors: ['#007BFF', '#0047AB', '#00FFFF', '#F0F8FF', '#191970'],
+                    bg: 'linear-gradient(135deg, #191970, #0a0a40)',
+                    vibe: 'Icy sharpness, futuristic cool tones'
+                },
+                'bold-neon': { 
+                    name: 'Cyber Attack', 
+                    colors: ['#76FF03', '#FF4081', '#00E5FF', '#000000', '#FFFF00'],
+                    bg: 'linear-gradient(135deg, #000000, #1a1a1a)',
+                    vibe: 'Glitch art aesthetic, rave style'
+                },
+                'bold-muted': { 
+                    name: 'Mid-Century Modern', 
+                    colors: ['#E1AD01', '#008080', '#CC5500', '#5D4037', '#36454F'],
+                    bg: 'linear-gradient(135deg, #36454F, #1a2025)',
+                    vibe: 'Retro pop, 1960s poster design'
+                },
+                'bold-mono': { 
+                    name: 'Ink & Paper', 
+                    colors: ['#000000', '#FFFFFF', '#333333', '#CCCCCC', '#FF0000'],
+                    bg: 'linear-gradient(135deg, #1a1a1a, #000000)',
+                    vibe: 'Graphic novel style, noir contrast'
+                },
+                // ELEGANT combinations
+                'elegant-warm': { 
+                    name: 'Golden Hour', 
+                    colors: ['#F7E7CE', '#D4AF37', '#CD7F32', '#FFFFF0', '#3E2723'],
+                    bg: 'linear-gradient(135deg, #3E2723, #1a1512)',
+                    vibe: 'Luxurious metallic, sunset glow'
+                },
+                'elegant-cool': { 
+                    name: 'Sapphire Night', 
+                    colors: ['#4169E1', '#C0C0C0', '#E5E4E2', '#000080', '#008080'],
+                    bg: 'linear-gradient(135deg, #000080, #000040)',
+                    vibe: 'Jewel tones, regal atmosphere'
+                },
+                'elegant-neon': { 
+                    name: 'Tokyo Luxury', 
+                    colors: ['#E0B0FF', '#1A1A2E', '#00FFFF', '#FF00FF', '#000000'],
+                    bg: 'linear-gradient(135deg, #1A1A2E, #0a0a15)',
+                    vibe: 'Cinematic city lights, mysterious chic'
+                },
+                'elegant-muted': { 
+                    name: 'Cashmere', 
+                    colors: ['#E0B0FF', '#C5B358', '#708090', '#C2B280', '#DE5D83'],
+                    bg: 'linear-gradient(135deg, #4a4550, #2a2530)',
+                    vibe: 'Soft luxury, understated pastels'
+                },
+                'elegant-mono': { 
+                    name: 'Marble Statue', 
+                    colors: ['#F2F3F4', '#D3D3D3', '#36454F', '#708090', '#C0C0C0'],
+                    bg: 'linear-gradient(135deg, #36454F, #1a2025)',
+                    vibe: 'Classical minimalism, polished stone'
+                },
+                // PLAYFUL combinations
+                'playful-warm': { 
+                    name: 'Fruit Salad', 
+                    colors: ['#FC6C85', '#FF8243', '#FFE135', '#32CD32', '#FFFFFF'],
+                    bg: 'linear-gradient(135deg, #4a2030, #2a1520)',
+                    vibe: 'Tropical pop, joyful energy'
+                },
+                'playful-cool': { 
+                    name: 'Pool Party', 
+                    colors: ['#00FFFF', '#C8A2C8', '#98FF98', '#87CEEB', '#800080'],
+                    bg: 'linear-gradient(135deg, #2a3040, #1a2030)',
+                    vibe: 'Pastel goth, cool sweetness'
+                },
+                'playful-neon': { 
+                    name: 'Arcade Floor', 
+                    colors: ['#FF6EC7', '#6F00FF', '#CCFF00', '#00B7EB', '#111111'],
+                    bg: 'linear-gradient(135deg, #111111, #0a0a0a)',
+                    vibe: 'Retro 90s, vibrant chaos'
+                },
+                'playful-muted': { 
+                    name: 'Wes Anderson', 
+                    colors: ['#F3CFC6', '#7FB5B5', '#FFFF99', '#E2725B', '#C04000'],
+                    bg: 'linear-gradient(135deg, #4a3a35, #2a2520)',
+                    vibe: 'Quirky cinema, pastel storybook'
+                },
+                'playful-mono': { 
+                    name: 'Blueprints', 
+                    colors: ['#0000FF', '#FFFFFF', '#6699CC', '#00008B', '#F0F8FF'],
+                    bg: 'linear-gradient(135deg, #00008B, #000050)',
+                    vibe: 'Doodles, sketch style'
+                },
+                // DARK combinations
+                'dark-warm': { 
+                    name: 'Embers', 
+                    colors: ['#CC5500', '#36454F', '#DC143C', '#B2BEB5', '#654321'],
+                    bg: 'linear-gradient(135deg, #1a1210, #0a0805)',
+                    vibe: 'Firelight in darkness, gothic romance'
+                },
+                'dark-cool': { 
+                    name: 'Abyss', 
+                    colors: ['#000000', '#004040', '#2E0854', '#4682B4', '#2F4F4F'],
+                    bg: 'linear-gradient(135deg, #0a1015, #000508)',
+                    vibe: 'Deep ocean, cosmic horror'
+                },
+                'dark-neon': { 
+                    name: 'Retrowave Noir', 
+                    colors: ['#0A0A0A', '#FF007F', '#00FFFF', '#FF4500', '#808080'],
+                    bg: 'linear-gradient(135deg, #0A0A0A, #000000)',
+                    vibe: 'Outrun style, synthwave'
+                },
+                'dark-muted': { 
+                    name: 'Deep Forest', 
+                    colors: ['#01796F', '#4A5D23', '#556B2F', '#708090', '#1A2421'],
+                    bg: 'linear-gradient(135deg, #1A2421, #0a1210)',
+                    vibe: 'Twilight woods, grim fairytale'
+                },
+                'dark-mono': { 
+                    name: 'Film Noir', 
+                    colors: ['#000000', '#252525', '#71797E', '#C0C0C0', '#FFFFFF'],
+                    bg: 'linear-gradient(135deg, #1a1a1a, #000000)',
+                    vibe: 'Cinematic lighting, detective mystery'
+                }
             }
         };
 
@@ -4149,10 +4301,12 @@
             colorPills: document.getElementById('colorPills'),
             styleToggle: document.getElementById('styleToggle'),
             stylePreviewBox: document.getElementById('stylePreviewBox'),
-            stylePreviewText: document.querySelector('.style-preview-text'),
+            stylePreviewDesc: document.getElementById('stylePreviewDesc'),
             styleSwatch1: document.getElementById('swatch1'),
             styleSwatch2: document.getElementById('swatch2'),
             styleSwatch3: document.getElementById('swatch3'),
+            styleSwatch4: document.getElementById('swatch4'),
+            styleSwatch5: document.getElementById('swatch5'),
             styleIndicator: document.getElementById('styleIndicator'),
             
             // Discover
@@ -4525,6 +4679,10 @@
             const graphicColorsConfig = CONFIG.graphicColors[state.graphicColors];
             const voiceToneConfig = CONFIG.voiceTones[state.voiceTone];
             
+            // Get full palette data for the mood+color combination
+            const paletteKey = `${state.graphicMood}-${state.graphicColors}`;
+            const palette = CONFIG.palettes[paletteKey];
+            
             try {
                 // Step 1: Call webhook
                 updateLoadingState('Enhancing your post…', 'Creating your content');
@@ -4546,7 +4704,11 @@
                         graphicMood: state.graphicMood,
                         graphicMoodPrompt: graphicMoodConfig.prompt,
                         graphicColors: state.graphicColors,
-                        graphicColorsPrompt: graphicColorsConfig.prompt
+                        graphicColorsPrompt: graphicColorsConfig.prompt,
+                        // Full palette data for Recraft
+                        paletteName: palette?.name || 'Default',
+                        paletteColors: palette?.colors || ['#FF4F5E', '#F3F3EE', '#0E0F14', '#7A6CFF', '#2DE2E6'],
+                        paletteVibe: palette?.vibe || 'Modern, clean typography'
                     })
                 });
                 
@@ -5389,18 +5551,23 @@
         function updateStylePreview() {
             const mood = state.graphicMood;
             const colors = state.graphicColors;
-            const moodStyle = CONFIG.previewStyles[mood];
-            const colorStyle = CONFIG.previewStyles[colors];
+            const paletteKey = `${mood}-${colors}`;
+            const palette = CONFIG.palettes[paletteKey];
             
-            // Update background and text color
-            elements.stylePreviewBox.style.background = moodStyle.bg;
-            elements.stylePreviewText.style.color = colorStyle.accent || moodStyle.color;
-            
-            // Update swatches - mood colors + accent
-            const swatches = moodStyle.swatches || ['#1a1a1a', '#2d2d2d', '#3a3a3a'];
-            elements.styleSwatch1.style.background = swatches[0];
-            elements.styleSwatch2.style.background = colorStyle.swatch || moodStyle.color;
-            elements.styleSwatch3.style.background = swatches[2];
+            if (palette) {
+                // Update background
+                elements.stylePreviewBox.style.background = palette.bg;
+                
+                // Update swatches
+                elements.styleSwatch1.style.background = palette.colors[0];
+                elements.styleSwatch2.style.background = palette.colors[1];
+                elements.styleSwatch3.style.background = palette.colors[2];
+                elements.styleSwatch4.style.background = palette.colors[3];
+                elements.styleSwatch5.style.background = palette.colors[4];
+                
+                // Update combined description: "Embers: Firelight in darkness, gothic romance"
+                elements.stylePreviewDesc.textContent = `${palette.name}: ${palette.vibe}`;
+            }
         }
         
         // Update style indicator in recording modal
@@ -5424,12 +5591,14 @@
         // Update recording box style based on custom mode
         function updateRecordingBoxStyle() {
             if (state.graphicMode === 'custom') {
-                const moodStyle = CONFIG.previewStyles[state.graphicMood];
-                const colorStyle = CONFIG.previewStyles[state.graphicColors];
-                elements.recordingBox.style.background = moodStyle.bg;
-                // Subtle accent color glow
-                const accentColor = colorStyle.accent || moodStyle.color;
-                elements.recordingBox.style.boxShadow = `0 0 40px ${accentColor}40`;
+                const paletteKey = `${state.graphicMood}-${state.graphicColors}`;
+                const palette = CONFIG.palettes[paletteKey];
+                if (palette) {
+                    elements.recordingBox.style.background = palette.bg;
+                    // Subtle accent color glow using second palette color
+                    const accentColor = palette.colors[1];
+                    elements.recordingBox.style.boxShadow = `0 0 40px ${accentColor}40`;
+                }
             } else {
                 // Default coral gradient for auto mode
                 elements.recordingBox.style.background = 'var(--accent)';
