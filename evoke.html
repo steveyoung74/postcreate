@@ -890,15 +890,20 @@
         
         .discover-card {
             background: var(--bg-card);
+            border: 1px solid var(--border);
             border-radius: 16px;
             overflow: hidden;
             cursor: pointer;
-            transition: transform 0.2s;
+            transition: transform 0.2s, border-color 0.2s;
             min-width: 0;
         }
         
         .discover-card:active {
             transform: scale(0.98);
+        }
+        
+        .discover-card:hover {
+            border-color: rgba(122, 108, 255, 0.4);
         }
         
         .discover-card-image {
