@@ -270,20 +270,21 @@
             border: 1px solid rgba(255, 79, 94, 0.3);
             border-radius: 12px;
             padding: 16px;
-            margin-bottom: 20px;
+            margin-top: 20px;
+            margin-bottom: 0;
             text-align: center;
         }
         
         .auth-trial-info h4 {
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 600;
             color: var(--text-primary);
-            margin-bottom: 8px;
+            margin: 0 0 6px 0;
             text-wrap: balance;
         }
         
         .auth-trial-info p {
-            font-size: 14px;
+            font-size: 13px;
             color: var(--text-secondary);
             margin: 0;
             text-wrap: balance;
@@ -833,17 +834,22 @@
         }
         
         .discover-header {
-            margin-bottom: 20px;
+            margin-bottom: 24px;
+            padding-top: 40px;
+            text-align: center;
         }
         
         .discover-subtitle {
-            font-size: 14px;
-            color: var(--text-muted);
-            margin-bottom: 16px;
+            font-family: 'Inter', sans-serif;
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 24px;
+            text-wrap: balance;
         }
         
         .discover-tabs {
-            display: flex;
+            display: inline-flex;
             gap: 8px;
         }
         
@@ -2650,7 +2656,7 @@
                     </div>
                     
                     <div class="discover-header">
-                        <div class="discover-subtitle">See what the community is watching</div>
+                        <div class="discover-subtitle">See what the community is posting</div>
                         <div class="discover-tabs">
                             <button class="discover-tab active" data-filter="all">All</button>
                             <button class="discover-tab" data-filter="liked">Liked</button>
@@ -3123,11 +3129,6 @@
             <div class="auth-title" id="authTitle">Start your free trial</div>
             <div class="auth-subtitle" id="authSubtitle">Create posts that stand out. No credit card required.</div>
             
-            <div class="auth-trial-info" id="authTrialInfo">
-                <h4>3 days free, then <span class="price">£6.99/month</span></h4>
-                <p>Cancel anytime. Unlimited posts during your trial.</p>
-            </div>
-            
             <div class="auth-error" id="authError"></div>
             <div class="auth-success" id="authSuccess"></div>
             
@@ -3157,6 +3158,11 @@
                 <input type="password" class="auth-input" id="authPassword" placeholder="Password" required>
                 <button type="submit" class="auth-btn" id="authSubmitBtn">Start Free Trial</button>
             </form>
+            
+            <div class="auth-trial-info" id="authTrialInfo">
+                <h4>3 days free, then <span class="price">£6.99/month</span></h4>
+                <p>Cancel anytime. Unlimited posts during your trial.</p>
+            </div>
             
             <div class="auth-toggle" id="authToggle">
                 Already have an account? <a id="authToggleLink">Sign in</a>
