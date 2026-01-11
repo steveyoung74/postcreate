@@ -105,6 +105,50 @@
             color: var(--text-muted);
             font-size: 14px;
         }
+        
+        .header-nav {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            margin-left: auto;
+        }
+        
+        .header-nav a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.2s;
+        }
+        
+        .header-nav a:hover,
+        .header-nav a.active {
+            color: var(--soft-ivory);
+        }
+        
+        .header-nav .app-link {
+            background: var(--resonant-coral);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: 500;
+        }
+        
+        .header-nav .app-link:hover {
+            opacity: 0.9;
+        }
+        
+        @media (max-width: 600px) {
+            .header {
+                flex-wrap: wrap;
+                gap: 12px;
+                padding: 16px;
+            }
+            .header-nav {
+                width: 100%;
+                justify-content: center;
+                gap: 16px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -113,11 +157,17 @@
             <img src="Evoke_Large_Dk_2_burst.png" alt="">
             Evoke
         </a>
+        <nav class="header-nav">
+            <a href="support.html">Support</a>
+            <a href="privacy.html" class="active">Privacy</a>
+            <a href="terms.html">Terms</a>
+            <a href="evoke.html" class="app-link">Open App</a>
+        </nav>
     </header>
     
     <main class="container">
         <h1>Privacy Policy</h1>
-        <p class="last-updated">Last updated: January 7, 2025</p>
+        <p class="last-updated">Last updated: January 11, 2026</p>
         
         <p>Evoke ("we", "our", or "us") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, and safeguard your information when you use our application.</p>
         
@@ -172,7 +222,7 @@
     </main>
     
     <footer class="footer">
-        <p>© 2025 Evoke. All rights reserved.</p>
+        <p>© 2026 Evoke. All rights reserved.</p>
     </footer>
 </body>
 </html><
