@@ -789,10 +789,10 @@
         
         /* Use Cases */
         .use-cases-grid {
-            max-width: 1100px;
+            max-width: 900px;
             margin: 0 auto;
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            grid-template-columns: repeat(2, 1fr);
             gap: 24px;
         }
         
@@ -800,19 +800,26 @@
             background: var(--bg-card);
             border: 1px solid var(--border);
             border-radius: 20px;
-            padding: 32px;
+            padding: 28px;
+        }
+        
+        .use-case-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
         }
         
         .use-case-icon {
-            font-size: 32px;
-            margin-bottom: 16px;
+            font-size: 28px;
+            line-height: 1;
         }
         
         .use-case-card h3 {
             font-family: 'General Sans', sans-serif;
-            font-size: 20px;
+            font-size: 18px;
             font-weight: 600;
-            margin-bottom: 8px;
+            margin: 0;
         }
         
         .use-case-tags {
@@ -833,6 +840,7 @@
         .use-case-card p {
             color: var(--text-muted);
             font-size: 14px;
+            margin: 0;
         }
         
         /* Reviews */
@@ -1069,11 +1077,14 @@
                 gap: 16px;
                 text-align: center;
             }
+            
+            .use-cases-grid {
+                grid-template-columns: 1fr;
+            }
         }
         
         @media (max-width: 480px) {
             .features-grid,
-            .use-cases-grid,
             .reviews-grid {
                 grid-template-columns: 1fr;
             }
@@ -1186,12 +1197,14 @@
     <section class="section" id="use-cases">
         <div class="section-label">Use cases</div>
         <h2 class="section-title">For every kind of recommendation</h2>
-        <p class="section-subtitle">Whether you just finished a binge or discovered a hidden gem, Evoke has you covered.</p>
+        <p class="section-subtitle">Evoke automatically detects your intent and adjusts the style of your post to match.</p>
         
         <div class="use-cases-grid">
             <div class="use-case-card">
-                <div class="use-case-icon">⚡</div>
-                <h3>Quick Recommendations</h3>
+                <div class="use-case-header">
+                    <div class="use-case-icon">⚡</div>
+                    <h3>Quick Recommendations</h3>
+                </div>
                 <div class="use-case-tags">
                     <span class="use-case-tag">fast</span>
                     <span class="use-case-tag">punchy</span>
@@ -1200,8 +1213,10 @@
                 <p>Perfect for those "you HAVE to watch this" moments. Short, energetic posts that grab attention.</p>
             </div>
             <div class="use-case-card">
-                <div class="use-case-icon">📝</div>
-                <h3>Full Reviews</h3>
+                <div class="use-case-header">
+                    <div class="use-case-icon">📝</div>
+                    <h3>Full Reviews</h3>
+                </div>
                 <div class="use-case-tags">
                     <span class="use-case-tag">detailed</span>
                     <span class="use-case-tag">structured</span>
@@ -1210,8 +1225,10 @@
                 <p>Share your complete thoughts with what you loved, who should watch it, and why. No spoilers.</p>
             </div>
             <div class="use-case-card">
-                <div class="use-case-icon">🔥</div>
-                <h3>Binge Reports</h3>
+                <div class="use-case-header">
+                    <div class="use-case-icon">🔥</div>
+                    <h3>Binge Reports</h3>
+                </div>
                 <div class="use-case-tags">
                     <span class="use-case-tag">just finished</span>
                     <span class="use-case-tag">emotions</span>
@@ -1220,8 +1237,10 @@
                 <p>"Just finished and I need to talk about it!" Capture that immediate post-binge energy.</p>
             </div>
             <div class="use-case-card">
-                <div class="use-case-icon">💎</div>
-                <h3>Hidden Gems</h3>
+                <div class="use-case-header">
+                    <div class="use-case-icon">💎</div>
+                    <h3>Hidden Gems</h3>
+                </div>
                 <div class="use-case-tags">
                     <span class="use-case-tag">underseen</span>
                     <span class="use-case-tag">underrated</span>
