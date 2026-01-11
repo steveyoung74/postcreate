@@ -1978,21 +1978,29 @@
         
         .rewrite-levels {
             display: flex;
+            flex-direction: column;
             gap: 8px;
         }
         
         .rewrite-level {
-            flex: 1;
-            padding: 12px;
+            padding: 14px 16px;
             background: var(--bg-elevated);
             border: 2px solid var(--border);
-            border-radius: 10px;
-            text-align: center;
+            border-radius: 12px;
             cursor: pointer;
-            font-size: 14px;
-            font-weight: 500;
             transition: all 0.2s;
+        }
+        
+        .rewrite-level-title {
+            font-size: 15px;
+            font-weight: 600;
             color: var(--text-primary);
+            margin-bottom: 2px;
+        }
+        
+        .rewrite-level-desc {
+            font-size: 13px;
+            color: var(--text-muted);
         }
         
         .rewrite-level:hover {
@@ -2002,6 +2010,9 @@
         .rewrite-level.selected {
             border-color: var(--accent);
             background: rgba(255, 79, 94, 0.1);
+        }
+        
+        .rewrite-level.selected .rewrite-level-title {
             color: var(--accent);
         }
         
@@ -2082,23 +2093,41 @@
             padding: 16px;
             background: var(--bg-elevated);
             border-radius: 12px;
-            text-align: center;
         }
         
         .style-preview-label {
             font-size: 12px;
             color: var(--text-muted);
-            margin-bottom: 8px;
+            margin-bottom: 12px;
+            text-align: center;
         }
         
         .style-preview-box {
-            height: 80px;
-            border-radius: 8px;
+            border-radius: 12px;
+            padding: 20px;
+            transition: all 0.3s;
             display: flex;
+            flex-direction: column;
             align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 18px;
+            gap: 16px;
+        }
+        
+        .style-preview-text {
+            font-weight: 600;
+            font-size: 16px;
+            text-align: center;
+        }
+        
+        .style-preview-swatches {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .style-swatch {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            border: 2px solid rgba(255,255,255,0.2);
             transition: all 0.3s;
         }
         
@@ -3165,9 +3194,18 @@
                 <div class="settings-section-desc">How much should we polish your words?</div>
                 
                 <div class="rewrite-levels">
-                    <div class="rewrite-level" data-level="light">Light</div>
-                    <div class="rewrite-level selected" data-level="medium">Medium</div>
-                    <div class="rewrite-level" data-level="heavy">Heavy</div>
+                    <div class="rewrite-level" data-level="light">
+                        <div class="rewrite-level-title">Light</div>
+                        <div class="rewrite-level-desc">Fix grammar, keep your exact words</div>
+                    </div>
+                    <div class="rewrite-level selected" data-level="medium">
+                        <div class="rewrite-level-title">Medium</div>
+                        <div class="rewrite-level-desc">Polish and enhance, keep your voice</div>
+                    </div>
+                    <div class="rewrite-level" data-level="heavy">
+                        <div class="rewrite-level-title">Heavy</div>
+                        <div class="rewrite-level-desc">Fully reimagine for max engagement</div>
+                    </div>
                 </div>
             </div>
             
@@ -3208,7 +3246,12 @@
                 <div class="style-preview" id="stylePreview">
                     <div class="style-preview-label">Preview</div>
                     <div class="style-preview-box" id="stylePreviewBox">
-                        OBSESSED
+                        <div class="style-preview-text">Your words, amplified</div>
+                        <div class="style-preview-swatches" id="styleSwatches">
+                            <div class="style-swatch" id="swatch1"></div>
+                            <div class="style-swatch" id="swatch2"></div>
+                            <div class="style-swatch" id="swatch3"></div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -3227,7 +3270,7 @@
                     <img src="Evoke_Large_Dk_2_burst.png" alt="Evoke">
                 </div>
                 <div class="about-tagline">Call your thoughts into the world.</div>
-                <div class="about-version">Version 0.9.5</div>
+                <div class="about-version">Version 0.9.6</div>
             </div>
             
             <div class="about-section">
@@ -3238,6 +3281,10 @@
             <div class="about-section">
                 <div class="about-section-title">What's New</div>
                 <div class="about-changelog">
+                    <div class="changelog-item">
+                        <span class="changelog-version">v0.9.6</span>
+                        <span class="changelog-text">Improved settings UI, policy page navigation, updated branding</span>
+                    </div>
                     <div class="changelog-item">
                         <span class="changelog-version">v0.9.5</span>
                         <span class="changelog-text">Feedback system, custom domain (getevoke.co.uk), subscription setup</span>
@@ -3429,7 +3476,7 @@
         // CONFIG
         // ============================================
         const CONFIG = {
-            version: '0.9.5',
+            version: '0.9.6',
             webhookUrl: 'https://steveyoung.app.n8n.cloud/webhook/postcreate',
             maxRecordingTime: 60,
             supabaseUrl: 'https://oiahkbvqyfjumnqsefxw.supabase.co',
@@ -3468,16 +3515,16 @@
             },
             // Preview colors for the style mixer
             previewStyles: {
-                cozy: { bg: 'linear-gradient(135deg, #2d1f1f, #1a1515)', color: '#FFB347' },
-                bold: { bg: 'linear-gradient(135deg, #1a1a2e, #16213e)', color: '#FF4F5E' },
-                elegant: { bg: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', color: '#D4AF37' },
-                playful: { bg: 'linear-gradient(135deg, #1f2d1f, #152115)', color: '#7FFF00' },
-                dark: { bg: 'linear-gradient(135deg, #0a0a0f, #1a1a2e)', color: '#9B59B6' },
-                warm: { accent: '#FF6B35' },
-                cool: { accent: '#4ECDC4' },
-                neon: { accent: '#FF006E' },
-                muted: { accent: '#B8A9C9' },
-                mono: { accent: '#FFFFFF' }
+                cozy: { bg: 'linear-gradient(135deg, #2d1f1f, #1a1515)', color: '#FFB347', swatches: ['#2d1f1f', '#FFB347', '#8B4513'] },
+                bold: { bg: 'linear-gradient(135deg, #1a1a2e, #16213e)', color: '#FF4F5E', swatches: ['#1a1a2e', '#FF4F5E', '#16213e'] },
+                elegant: { bg: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', color: '#D4AF37', swatches: ['#1a1a1a', '#D4AF37', '#2d2d2d'] },
+                playful: { bg: 'linear-gradient(135deg, #1f2d1f, #152115)', color: '#7FFF00', swatches: ['#1f2d1f', '#7FFF00', '#152115'] },
+                dark: { bg: 'linear-gradient(135deg, #0a0a0f, #1a1a2e)', color: '#9B59B6', swatches: ['#0a0a0f', '#9B59B6', '#1a1a2e'] },
+                warm: { accent: '#FF6B35', swatch: '#FF6B35' },
+                cool: { accent: '#4ECDC4', swatch: '#4ECDC4' },
+                neon: { accent: '#FF006E', swatch: '#FF006E' },
+                muted: { accent: '#B8A9C9', swatch: '#B8A9C9' },
+                mono: { accent: '#FFFFFF', swatch: '#FFFFFF' }
             }
         };
 
@@ -4102,6 +4149,10 @@
             colorPills: document.getElementById('colorPills'),
             styleToggle: document.getElementById('styleToggle'),
             stylePreviewBox: document.getElementById('stylePreviewBox'),
+            stylePreviewText: document.querySelector('.style-preview-text'),
+            styleSwatch1: document.getElementById('swatch1'),
+            styleSwatch2: document.getElementById('swatch2'),
+            styleSwatch3: document.getElementById('swatch3'),
             styleIndicator: document.getElementById('styleIndicator'),
             
             // Discover
@@ -5341,8 +5392,15 @@
             const moodStyle = CONFIG.previewStyles[mood];
             const colorStyle = CONFIG.previewStyles[colors];
             
+            // Update background and text color
             elements.stylePreviewBox.style.background = moodStyle.bg;
-            elements.stylePreviewBox.style.color = colorStyle.accent || moodStyle.color;
+            elements.stylePreviewText.style.color = colorStyle.accent || moodStyle.color;
+            
+            // Update swatches - mood colors + accent
+            const swatches = moodStyle.swatches || ['#1a1a1a', '#2d2d2d', '#3a3a3a'];
+            elements.styleSwatch1.style.background = swatches[0];
+            elements.styleSwatch2.style.background = colorStyle.swatch || moodStyle.color;
+            elements.styleSwatch3.style.background = swatches[2];
         }
         
         // Update style indicator in recording modal
