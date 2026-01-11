@@ -96,32 +96,26 @@
             justify-content: center;
         }
         
-        .auth-header {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            margin-bottom: 8px;
-        }
-        
         .auth-logo {
-            width: 48px;
-            height: 48px;
+            width: 80px;
+            height: 80px;
             display: flex;
             align-items: center;
             justify-content: center;
-            flex-shrink: 0;
+            margin: 0 auto 24px;
         }
         
         .auth-logo svg,
         .auth-logo img {
-            width: 48px;
-            height: 48px;
+            width: 80px;
+            height: 80px;
         }
         
         .auth-title {
             font-size: 24px;
             font-weight: 700;
+            text-align: center;
+            margin-bottom: 8px;
             text-wrap: balance;
         }
         
@@ -3139,12 +3133,11 @@
         <div class="auth-container">
             <button class="auth-close" id="authClose">✕</button>
             
-            <div class="auth-header">
-                <div class="auth-logo evoke-logo">
-                    <img src="Evoke_Large_Dk_2_burst.png" alt="Evoke">
-                </div>
-                <div class="auth-title" id="authTitle">Start your free trial</div>
+            <div class="auth-logo evoke-logo">
+                <img src="Evoke_Large_Dk_2_burst.png" alt="Evoke">
             </div>
+            
+            <div class="auth-title" id="authTitle">Start your free trial</div>
             <div class="auth-subtitle" id="authSubtitle">Create posts that stand out. No credit card required.</div>
             
             <div class="auth-error" id="authError"></div>
