@@ -458,9 +458,31 @@
             margin-bottom: 8px;
         }
         
+        .stat-value.stat-primary {
+            font-size: 64px;
+        }
+        
+        .stat-value.stat-secondary {
+            font-size: 44px;
+        }
+        
         .stat-label {
             font-size: 16px;
             color: var(--text-muted);
+        }
+        
+        .community-link {
+            color: var(--soft-ivory);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        
+        .community-link:hover {
+            color: var(--resonant-coral);
+        }
+        
+        .community-link strong {
+            color: inherit;
         }
         
         /* How it works */
@@ -1051,6 +1073,14 @@
                 font-size: 40px;
             }
             
+            .stat-value.stat-primary {
+                font-size: 48px;
+            }
+            
+            .stat-value.stat-secondary {
+                font-size: 36px;
+            }
+            
             .section {
                 padding: 60px 20px;
             }
@@ -1163,15 +1193,15 @@
             <div class="hero-right">
                 <div class="community-card">
                     <p class="community-intro">
-                        Created especially for <strong>Netflix Recommendations</strong>, the largest entertainment community on Facebook
+                        Created especially for <a href="https://www.facebook.com/groups/613870175328566" target="_blank" class="community-link"><strong>Netflix Recommendations</strong></a>, the largest entertainment community on Facebook
                     </p>
                     <div class="stats-grid">
                         <div class="stat">
-                            <div class="stat-value">5.2M+</div>
+                            <div class="stat-value stat-primary">5.3M+</div>
                             <div class="stat-label">Community members</div>
                         </div>
                         <div class="stat">
-                            <div class="stat-value">Millions</div>
+                            <div class="stat-value stat-secondary">Millions</div>
                             <div class="stat-label">of views per day</div>
                         </div>
                     </div>
