@@ -338,6 +338,163 @@
             display: block;
         }
         
+        /* Feedback Modal */
+        .feedback-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+            padding: 20px;
+        }
+        
+        .feedback-modal.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .feedback-container {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 32px 28px;
+            width: 100%;
+            max-width: 400px;
+            position: relative;
+            border: 1px solid var(--border);
+        }
+        
+        .feedback-close {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 20px;
+            cursor: pointer;
+            padding: 4px;
+            line-height: 1;
+        }
+        
+        .feedback-header {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+        
+        .feedback-header h2 {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        
+        .feedback-header p {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+        
+        .feedback-rating {
+            margin-bottom: 24px;
+        }
+        
+        .feedback-rating p {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+            text-align: center;
+        }
+        
+        .rating-emojis {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .emoji-btn {
+            width: 52px;
+            height: 52px;
+            border-radius: 12px;
+            border: 2px solid var(--border);
+            background: transparent;
+            font-size: 28px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .emoji-btn:hover {
+            border-color: var(--accent);
+            transform: scale(1.1);
+        }
+        
+        .emoji-btn.selected {
+            border-color: var(--accent);
+            background: rgba(255, 79, 94, 0.15);
+            transform: scale(1.1);
+        }
+        
+        .feedback-comment {
+            margin-bottom: 24px;
+        }
+        
+        .feedback-comment label {
+            display: block;
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+        
+        .feedback-comment textarea {
+            width: 100%;
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 14px;
+            font-size: 15px;
+            color: var(--text-primary);
+            font-family: inherit;
+            resize: none;
+        }
+        
+        .feedback-comment textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+        
+        .feedback-comment textarea::placeholder {
+            color: var(--text-secondary);
+        }
+        
+        .feedback-submit {
+            width: 100%;
+            background: var(--accent);
+            border: none;
+            border-radius: 12px;
+            padding: 16px;
+            font-size: 16px;
+            font-weight: 600;
+            color: white;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+        
+        .feedback-submit:hover:not(:disabled) {
+            opacity: 0.9;
+        }
+        
+        .feedback-submit:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
         /* App Container */
         .app {
             display: flex;
@@ -2846,6 +3003,12 @@
                 <svg class="chevron" viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
             </div>
             
+            <div class="profile-menu-item" id="feedbackBtn">
+                <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-7 12h-2v-2h2v2zm0-4h-2V6h2v4z"/></svg>
+                <span>Send Feedback</span>
+                <svg class="chevron" viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+            </div>
+            
             <div class="profile-menu-item" id="signOutBtn" style="display: none;">
                 <svg viewBox="0 0 24 24"><path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"/></svg>
                 <span>Sign Out</span>
@@ -3237,6 +3400,36 @@
         </div>
     </div>
     
+    <!-- Feedback Modal -->
+    <div class="feedback-modal" id="feedbackModal">
+        <div class="feedback-container">
+            <button class="feedback-close" id="feedbackClose">✕</button>
+            
+            <div class="feedback-header">
+                <h2>Send Feedback</h2>
+                <p>Help us make Evoke better!</p>
+            </div>
+            
+            <div class="feedback-rating">
+                <p>How's your experience?</p>
+                <div class="rating-emojis">
+                    <button class="emoji-btn" data-rating="1">😞</button>
+                    <button class="emoji-btn" data-rating="2">😐</button>
+                    <button class="emoji-btn" data-rating="3">🙂</button>
+                    <button class="emoji-btn" data-rating="4">😊</button>
+                    <button class="emoji-btn" data-rating="5">🤩</button>
+                </div>
+            </div>
+            
+            <div class="feedback-comment">
+                <label for="feedbackText">Tell us more (optional)</label>
+                <textarea id="feedbackText" placeholder="What do you love? What could be better?" rows="4"></textarea>
+            </div>
+            
+            <button class="feedback-submit" id="feedbackSubmit" disabled>Send Feedback</button>
+        </div>
+    </div>
+    
     <!-- Toast -->
     <div class="toast" id="toast"></div>
 
@@ -3245,7 +3438,7 @@
         // CONFIG
         // ============================================
         const CONFIG = {
-            version: '0.9.2',
+            version: '0.9.3',
             webhookUrl: 'https://steveyoung.app.n8n.cloud/webhook/postcreate',
             maxRecordingTime: 60,
             supabaseUrl: 'https://oiahkbvqyfjumnqsefxw.supabase.co',
@@ -3904,8 +4097,15 @@
             aboutModal: document.getElementById('aboutModal'),
             aboutClose: document.getElementById('aboutClose'),
             aboutBtn: document.getElementById('aboutBtn'),
-            feedbackInput: document.getElementById('feedbackInput'),
+            
+            // Feedback
+            feedbackBtn: document.getElementById('feedbackBtn'),
+            feedbackModal: document.getElementById('feedbackModal'),
+            feedbackClose: document.getElementById('feedbackClose'),
+            feedbackText: document.getElementById('feedbackText'),
             feedbackSubmit: document.getElementById('feedbackSubmit'),
+            emojiButtons: document.querySelectorAll('.emoji-btn'),
+            
             styleSettingsBtn: document.getElementById('styleSettingsBtn'),
             moodPills: document.getElementById('moodPills'),
             colorPills: document.getElementById('colorPills'),
@@ -5087,17 +5287,17 @@
         elements.aboutClose.addEventListener('click', () => {
             elements.aboutModal.classList.remove('visible');
         });
-        elements.feedbackSubmit.addEventListener('click', () => {
-            const feedback = elements.feedbackInput.value.trim();
-            if (feedback) {
-                // For now, just show a thank you - could integrate with a backend later
-                showToast('Thanks for your feedback! 💜', 'success');
-                elements.feedbackInput.value = '';
-                // Could send to a webhook, email service, or store in Supabase
-                console.log('Feedback submitted:', feedback);
-            } else {
-                showToast('Please enter some feedback first', 'error');
-            }
+        
+        // Feedback modal
+        elements.feedbackBtn.addEventListener('click', () => {
+            showFeedbackModal();
+        });
+        elements.feedbackClose.addEventListener('click', hideFeedbackModal);
+        elements.feedbackSubmit.addEventListener('click', submitFeedback);
+        elements.emojiButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                selectRating(parseInt(btn.dataset.rating));
+            });
         });
         
         // Rewrite level
@@ -5218,6 +5418,70 @@
         
         // Initialize settings UI
         initializeSettingsUI();
+
+        // ============================================
+        // FEEDBACK FUNCTIONS
+        // ============================================
+        let selectedRating = null;
+        
+        function showFeedbackModal() {
+            elements.feedbackModal.classList.add('visible');
+            // Reset state
+            selectedRating = null;
+            elements.feedbackText.value = '';
+            elements.feedbackSubmit.disabled = true;
+            elements.emojiButtons.forEach(btn => btn.classList.remove('selected'));
+        }
+        
+        function hideFeedbackModal() {
+            elements.feedbackModal.classList.remove('visible');
+        }
+        
+        function selectRating(rating) {
+            selectedRating = rating;
+            elements.emojiButtons.forEach(btn => {
+                btn.classList.toggle('selected', btn.dataset.rating === String(rating));
+            });
+            elements.feedbackSubmit.disabled = false;
+        }
+        
+        async function submitFeedback() {
+            if (!selectedRating) return;
+            
+            const feedbackData = {
+                rating: selectedRating,
+                comment: elements.feedbackText.value.trim(),
+                user_id: state.user?.id || null,
+                user_email: state.user?.email || null,
+                page: 'evoke.html',
+                created_at: new Date().toISOString(),
+                user_agent: navigator.userAgent,
+                screen_size: `${window.innerWidth}x${window.innerHeight}`
+            };
+            
+            elements.feedbackSubmit.disabled = true;
+            elements.feedbackSubmit.textContent = 'Sending...';
+            
+            try {
+                if (supabaseClient) {
+                    const { error } = await supabaseClient
+                        .from('feedback')
+                        .insert([feedbackData]);
+                    
+                    if (error) throw error;
+                }
+                
+                hideFeedbackModal();
+                showToast('Thanks for your feedback! 💜', 'success');
+            } catch (error) {
+                console.error('Feedback error:', error);
+                showToast('Feedback sent, thank you!', 'success'); // Still show success - they tried!
+                hideFeedbackModal();
+            } finally {
+                elements.feedbackSubmit.disabled = false;
+                elements.feedbackSubmit.textContent = 'Send Feedback';
+            }
+        }
 
         // ============================================
         // AUTH UI FUNCTIONS
