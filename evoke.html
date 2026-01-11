@@ -5283,12 +5283,16 @@
         
         // Feedback modal
         elements.feedbackBtn.addEventListener('click', () => {
+            console.log('Feedback button clicked');
             showFeedbackModal();
         });
         elements.feedbackClose.addEventListener('click', hideFeedbackModal);
         elements.feedbackSubmit.addEventListener('click', submitFeedback);
+        console.log('Setting up emoji buttons, count:', elements.emojiButtons.length);
         elements.emojiButtons.forEach(btn => {
+            console.log('Adding listener to emoji:', btn.dataset.rating);
             btn.addEventListener('click', () => {
+                console.log('Emoji clicked:', btn.dataset.rating);
                 selectRating(parseInt(btn.dataset.rating));
             });
         });
@@ -5431,11 +5435,15 @@
         }
         
         function selectRating(rating) {
+            console.log('selectRating called with:', rating);
             selectedRating = rating;
+            console.log('emojiButtons:', elements.emojiButtons);
             elements.emojiButtons.forEach(btn => {
                 btn.classList.toggle('selected', btn.dataset.rating === String(rating));
             });
+            console.log('feedbackSubmit element:', elements.feedbackSubmit);
             elements.feedbackSubmit.disabled = false;
+            console.log('feedbackSubmit.disabled after:', elements.feedbackSubmit.disabled);
         }
         
         async function submitFeedback() {
