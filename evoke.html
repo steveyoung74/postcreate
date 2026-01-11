@@ -2164,6 +2164,30 @@
             color: var(--text-secondary);
         }
         
+        .profile-subscription-badge {
+            display: inline-block;
+            margin-top: 12px;
+            padding: 6px 14px;
+            background: linear-gradient(135deg, rgba(255, 79, 94, 0.2), rgba(122, 108, 255, 0.2));
+            border: 1px solid rgba(255, 79, 94, 0.3);
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .profile-subscription-badge.active {
+            background: linear-gradient(135deg, rgba(45, 226, 230, 0.2), rgba(122, 108, 255, 0.2));
+            border-color: rgba(45, 226, 230, 0.4);
+            color: var(--neon-whisper);
+        }
+        
+        .profile-subscription-badge.trialing {
+            background: linear-gradient(135deg, rgba(255, 79, 94, 0.2), rgba(122, 108, 255, 0.2));
+            border-color: rgba(255, 79, 94, 0.4);
+            color: var(--resonant-coral);
+        }
+        
         .profile-stats {
             display: flex;
             gap: 12px;
@@ -2794,17 +2818,20 @@
                 </div>
                 <div class="profile-name" id="profileUserName">User</div>
                 <div class="profile-email" id="profileUserEmail">user@example.com</div>
+                <div class="profile-subscription-badge" id="subscriptionBadge">No subscription</div>
             </div>
             
             <div class="profile-stats">
                 <div class="profile-stat">
                     <div class="profile-stat-value" id="postCount">0</div>
-                    <div class="profile-stat-label">Evoke</div>
+                    <div class="profile-stat-label">Posts</div>
                 </div>
-                <div class="profile-stat">
-                    <div class="profile-stat-value" id="tokenCount">50</div>
-                    <div class="profile-stat-label">Remaining</div>
-                </div>
+            </div>
+            
+            <div class="profile-menu-item" id="manageSubscriptionBtn" style="display: none;">
+                <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/></svg>
+                <span>Manage Subscription</span>
+                <svg class="chevron" viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
             </div>
             
             <div class="profile-menu-item" id="styleSettingsBtn">
@@ -3181,19 +3208,53 @@
         </div>
     </div>
     
+    <!-- Paywall Modal -->
+    <div class="auth-modal" id="paywallModal">
+        <div class="auth-container">
+            <button class="auth-close" id="paywallClose">✕</button>
+            
+            <div class="auth-logo evoke-logo">
+                <img src="Evoke_Large_Dk_2_burst.png" alt="Evoke">
+            </div>
+            
+            <div class="auth-title">Upgrade to Evoke Pro</div>
+            <div class="auth-subtitle">Your trial has ended. Subscribe to keep creating amazing posts.</div>
+            
+            <div class="auth-social-buttons">
+                <button class="auth-btn" id="paywallSubscribeBtn" style="margin-top: 0;">
+                    Subscribe Now
+                </button>
+            </div>
+            
+            <div class="auth-trial-info">
+                <h4>Just <span class="price">£6.99/month</span></h4>
+                <p>Unlimited posts. Cancel anytime.</p>
+            </div>
+            
+            <div class="auth-toggle">
+                <a id="paywallRestoreBtn" style="cursor: pointer;">Already subscribed? Restore purchase</a>
+            </div>
+        </div>
+    </div>
+    
     <!-- Toast -->
     <div class="toast" id="toast"></div>
 
-    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
         // ============================================
         // CONFIG
         // ============================================
         const CONFIG = {
-            version: '0.9.0',
+            version: '0.9.1',
             webhookUrl: 'https://steveyoung.app.n8n.cloud/webhook/postcreate',
             maxRecordingTime: 60,
             supabaseUrl: 'https://oiahkbvqyfjumnqsefxw.supabase.co',
             supabaseKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9pYWhrYnZxeWZqdW1ucXNlZnh3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjY4MTgxNzUsImV4cCI6MjA4MjM5NDE3NX0.0z0aWrJo1PwUstbOQ2Z_540y00XzboCvnzmjelzzqWs',
+            // Lemon Squeezy Configuration
+            lemonSqueezy: {
+                storeSlug: 'evoke', // Your store slug (e.g., evoke.lemonsqueezy.com)
+                variantId: 'YOUR_VARIANT_ID', // Replace with your actual variant ID
+            },
             rewriteLevels: {
                 light: 'Clean up grammar only, keep original voice',
                 medium: 'Improve flow and engagement while keeping core message',
@@ -3274,7 +3335,14 @@
             user: null,
             authMode: 'signin', // 'signin' or 'signup'
             likedPosts: JSON.parse(localStorage.getItem('evoke_liked_posts') || '[]'),
-            countryCode: null
+            countryCode: null,
+            // Subscription state
+            subscription: {
+                status: 'none', // none, trialing, active, past_due, cancelled, expired
+                trialEndsAt: null,
+                subscriptionEndsAt: null,
+                customerId: null
+            }
         };
         
         // Country code to flag emoji converter
@@ -3687,41 +3755,94 @@
                 }
             },
             
-            // Check if user is in trial period
-            isInTrial(user) {
-                if (!user) return false;
-                const trialStart = user.user_metadata?.trial_start || user.created_at;
-                if (!trialStart) return false;
+            // Load subscription status from Supabase profiles
+            async loadSubscriptionStatus() {
+                if (!state.user || !supabaseClient) return;
                 
-                const trialEnd = new Date(trialStart);
-                trialEnd.setDate(trialEnd.getDate() + 3); // 3 day trial
-                return new Date() < trialEnd;
-            },
-            
-            // Check if user has active subscription (placeholder for Stripe integration)
-            hasActiveSubscription(user) {
-                if (!user) return false;
-                // For now, return true - integrate with Stripe later
-                return user.user_metadata?.subscription_active || true;
+                try {
+                    const { data: profile, error } = await supabaseClient
+                        .from('profiles')
+                        .select('subscription_status, trial_ends_at, subscription_ends_at, customer_id')
+                        .eq('id', state.user.id)
+                        .single();
+                    
+                    if (error) {
+                        console.log('No profile found, user needs to subscribe');
+                        state.subscription = { status: 'none', trialEndsAt: null, subscriptionEndsAt: null, customerId: null };
+                        return;
+                    }
+                    
+                    state.subscription = {
+                        status: profile.subscription_status || 'none',
+                        trialEndsAt: profile.trial_ends_at,
+                        subscriptionEndsAt: profile.subscription_ends_at,
+                        customerId: profile.customer_id
+                    };
+                    
+                    console.log('Subscription status loaded:', state.subscription);
+                } catch (e) {
+                    console.error('Error loading subscription:', e);
+                }
             },
             
             // Check if user can create posts
-            canCreatePosts(user) {
-                if (!user) return false;
-                return this.isInTrial(user) || this.hasActiveSubscription(user);
+            canCreatePosts() {
+                const status = state.subscription.status;
+                
+                // Allow if trialing or active
+                if (status === 'trialing' || status === 'active') {
+                    return true;
+                }
+                
+                // Allow if cancelled but not yet expired
+                if (status === 'cancelled' && state.subscription.subscriptionEndsAt) {
+                    return new Date(state.subscription.subscriptionEndsAt) > new Date();
+                }
+                
+                return false;
             },
             
-            // Get trial days remaining
-            getTrialDaysRemaining(user) {
-                if (!user) return 0;
-                const trialStart = user.user_metadata?.trial_start || user.created_at;
-                if (!trialStart) return 0;
+            // Get subscription status text for UI
+            getSubscriptionStatusText() {
+                const status = state.subscription.status;
                 
-                const trialEnd = new Date(trialStart);
-                trialEnd.setDate(trialEnd.getDate() + 3);
-                const now = new Date();
-                const remaining = Math.ceil((trialEnd - now) / (1000 * 60 * 60 * 24));
-                return Math.max(0, remaining);
+                switch (status) {
+                    case 'trialing':
+                        if (state.subscription.trialEndsAt) {
+                            const days = Math.ceil((new Date(state.subscription.trialEndsAt) - new Date()) / (1000 * 60 * 60 * 24));
+                            return `Trial: ${days} day${days !== 1 ? 's' : ''} left`;
+                        }
+                        return 'Trial active';
+                    case 'active':
+                        return 'Pro (Active)';
+                    case 'past_due':
+                        return 'Payment issue';
+                    case 'cancelled':
+                        return 'Cancelled';
+                    case 'expired':
+                        return 'Expired';
+                    default:
+                        return 'No subscription';
+                }
+            },
+            
+            // Redirect to Lemon Squeezy checkout
+            redirectToCheckout() {
+                if (!state.user) {
+                    showAuthModal('signup');
+                    return;
+                }
+                
+                const email = encodeURIComponent(state.user.email);
+                const userId = encodeURIComponent(state.user.id);
+                const checkoutUrl = `https://${CONFIG.lemonSqueezy.storeSlug}.lemonsqueezy.com/checkout/buy/${CONFIG.lemonSqueezy.variantId}?checkout[email]=${email}&checkout[custom][user_id]=${userId}`;
+                
+                window.location.href = checkoutUrl;
+            },
+            
+            // Open Lemon Squeezy customer portal
+            openCustomerPortal() {
+                window.open(`https://${CONFIG.lemonSqueezy.storeSlug}.lemonsqueezy.com/billing`, '_blank');
             }
         };
 
@@ -3835,13 +3956,20 @@
             showAuthBtn: document.getElementById('showAuthBtn'),
             signOutBtn: document.getElementById('signOutBtn'),
             
+            // Paywall
+            paywallModal: document.getElementById('paywallModal'),
+            paywallClose: document.getElementById('paywallClose'),
+            paywallSubscribeBtn: document.getElementById('paywallSubscribeBtn'),
+            paywallRestoreBtn: document.getElementById('paywallRestoreBtn'),
+            
             // Profile
             profileLoggedOut: document.getElementById('profileLoggedOut'),
             profileLoggedIn: document.getElementById('profileLoggedIn'),
             profileAvatarImg: document.getElementById('profileAvatarImg'),
             profileUserName: document.getElementById('profileUserName'),
             profileUserEmail: document.getElementById('profileUserEmail'),
-            tokenCount: document.getElementById('tokenCount')
+            subscriptionBadge: document.getElementById('subscriptionBadge'),
+            manageSubscriptionBtn: document.getElementById('manageSubscriptionBtn')
         };
 
         // ============================================
@@ -4042,6 +4170,18 @@
         
         // Legacy function name for compatibility
         async function startRecording() {
+            // Check if user is logged in
+            if (!state.user) {
+                showAuthModal('signup');
+                return;
+            }
+            
+            // Check subscription status
+            if (!Auth.canCreatePosts()) {
+                showPaywallModal();
+                return;
+            }
+            
             showRecordingSetup();
         }
 
@@ -5096,6 +5236,14 @@
             elements.authModal.classList.remove('visible');
         }
         
+        function showPaywallModal() {
+            elements.paywallModal.classList.add('visible');
+        }
+        
+        function hidePaywallModal() {
+            elements.paywallModal.classList.remove('visible');
+        }
+        
         function updateAuthModalUI() {
             if (state.authMode === 'signin') {
                 elements.authTitle.textContent = 'Welcome Back';
@@ -5139,6 +5287,24 @@
                 const name = state.user.user_metadata?.full_name || email.split('@')[0];
                 elements.profileUserName.textContent = name;
                 elements.profileUserEmail.textContent = email;
+                
+                // Update subscription badge
+                const status = state.subscription.status;
+                const badgeText = Auth.getSubscriptionStatusText();
+                elements.subscriptionBadge.textContent = badgeText;
+                elements.subscriptionBadge.className = 'profile-subscription-badge';
+                if (status === 'active') {
+                    elements.subscriptionBadge.classList.add('active');
+                } else if (status === 'trialing') {
+                    elements.subscriptionBadge.classList.add('trialing');
+                }
+                
+                // Show/hide manage subscription button
+                if (status === 'active' || status === 'trialing' || status === 'cancelled') {
+                    elements.manageSubscriptionBtn.style.display = 'flex';
+                } else {
+                    elements.manageSubscriptionBtn.style.display = 'none';
+                }
                 
                 // Set avatars (header and profile panel)
                 const avatarUrl = state.user.user_metadata?.avatar_url || state.user.user_metadata?.picture;
@@ -5239,6 +5405,28 @@
             showAuthModal(state.authMode === 'signin' ? 'signup' : 'signin');
         });
         
+        // Paywall event listeners
+        elements.paywallClose?.addEventListener('click', hidePaywallModal);
+        elements.paywallSubscribeBtn?.addEventListener('click', () => {
+            hidePaywallModal();
+            Auth.redirectToCheckout();
+        });
+        elements.paywallRestoreBtn?.addEventListener('click', async () => {
+            // Refresh subscription status from database
+            await Auth.loadSubscriptionStatus();
+            if (Auth.canCreatePosts()) {
+                hidePaywallModal();
+                showToast('Subscription restored!');
+            } else {
+                showToast('No active subscription found');
+            }
+        });
+        
+        // Manage subscription button
+        elements.manageSubscriptionBtn?.addEventListener('click', () => {
+            Auth.openCustomerPortal();
+        });
+        
         async function handleAppleSignIn() {
             try {
                 await Auth.signInWithApple();
@@ -5277,6 +5465,9 @@
                     state.user = session.user;
                     updateProfileUI();
                     
+                    // Load subscription status
+                    await Auth.loadSubscriptionStatus();
+                    
                     // Migrate local posts to cloud
                     await Storage.migrateLocalToCloud();
                 }
@@ -5288,10 +5479,22 @@
                         updateProfileUI();
                         
                         if (event === 'SIGNED_IN') {
+                            // Load subscription status for new sign-ins
+                            await Auth.loadSubscriptionStatus();
+                            
                             await Storage.migrateLocalToCloud();
                             await renderGallery();
+                            
+                            // Check if this is a new user who needs to subscribe
+                            if (state.subscription.status === 'none') {
+                                // New user - redirect to checkout after a short delay
+                                setTimeout(() => {
+                                    Auth.redirectToCheckout();
+                                }, 500);
+                            }
                         } else if (event === 'SIGNED_OUT') {
                             state.posts = [];
+                            state.subscription = { status: 'none', trialEndsAt: null, subscriptionEndsAt: null, customerId: null };
                             await renderGallery();
                         }
                     });
@@ -5304,14 +5507,4 @@
                 loadDiscoverFeed();
                 startNewPostsChecker();
             } catch (e) {
-                console.error('Init error:', e);
-                // Still try to load posts even if auth fails
-                await renderGallery();
-            }
-        }
-        
-        // Start the app
-        init();
-    </script>
-</body>
-</html>
+                console.err
