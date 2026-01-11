@@ -711,7 +711,7 @@
             background: var(--bg-card);
             border: 1px solid var(--border);
             border-radius: 20px;
-            padding: 32px;
+            padding: 28px;
             transition: border-color 0.2s, transform 0.2s;
         }
         
@@ -729,31 +729,39 @@
             font-weight: 700;
             padding: 4px 8px;
             border-radius: 4px;
-            margin-bottom: 16px;
+            margin-bottom: 12px;
+        }
+        
+        .feature-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 12px;
         }
         
         .feature-icon {
-            width: 48px;
-            height: 48px;
+            width: 44px;
+            height: 44px;
             background: var(--bg-secondary);
             border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 20px;
-            font-size: 24px;
+            font-size: 22px;
+            flex-shrink: 0;
         }
         
         .feature-card h3 {
             font-family: 'General Sans', sans-serif;
-            font-size: 20px;
+            font-size: 18px;
             font-weight: 600;
-            margin-bottom: 8px;
+            margin: 0;
         }
         
         .feature-card p {
             color: var(--text-muted);
-            font-size: 15px;
+            font-size: 14px;
+            margin: 0;
         }
         
         /* Visual Styles Section */
@@ -1280,33 +1288,45 @@
         
         <div class="features-grid">
             <div class="feature-card">
-                <div class="feature-icon">🎤</div>
-                <h3>Voice-first</h3>
+                <div class="feature-header">
+                    <div class="feature-icon">🎤</div>
+                    <h3>Voice-first</h3>
+                </div>
                 <p>Just talk naturally. No typing, no writer's block. Your authentic voice, polished.</p>
             </div>
             <div class="feature-card">
-                <div class="feature-icon">🎨</div>
-                <h3>Auto-generated graphics</h3>
+                <div class="feature-header">
+                    <div class="feature-icon">🎨</div>
+                    <h3>Auto-generated graphics</h3>
+                </div>
                 <p>Every post gets a unique, scroll-stopping typographic image that matches the mood.</p>
             </div>
             <div class="feature-card new">
-                <div class="feature-icon">🧭</div>
-                <h3>Community Discover</h3>
+                <div class="feature-header">
+                    <div class="feature-icon">🧭</div>
+                    <h3>Community Discover</h3>
+                </div>
                 <p>See what others in the community are watching and get inspired by their recommendations.</p>
             </div>
             <div class="feature-card new">
-                <div class="feature-icon">❤️</div>
-                <h3>Like & save posts</h3>
+                <div class="feature-header">
+                    <div class="feature-icon">❤️</div>
+                    <h3>Like & save posts</h3>
+                </div>
                 <p>Save recommendations you love to a personal collection for later.</p>
             </div>
             <div class="feature-card">
-                <div class="feature-icon">☁️</div>
-                <h3>Cloud sync</h3>
+                <div class="feature-header">
+                    <div class="feature-icon">☁️</div>
+                    <h3>Cloud sync</h3>
+                </div>
                 <p>Your posts are saved securely and accessible whenever you need them.</p>
             </div>
             <div class="feature-card">
-                <div class="feature-icon">🌙</div>
-                <h3>Dark mode</h3>
+                <div class="feature-header">
+                    <div class="feature-icon">🌙</div>
+                    <h3>Dark mode</h3>
+                </div>
                 <p>Beautiful dark interface that's easy on the eyes for late-night browsing.</p>
             </div>
         </div>
