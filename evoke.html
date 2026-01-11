@@ -6,7 +6,7 @@
     <title>Evoke v0.9.0</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         * {
@@ -363,24 +363,24 @@
         .logo {
             display: flex;
             align-items: center;
-            gap: 10px;
-            font-size: 20px;
-            font-weight: 700;
+            gap: 6px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 24px;
+            font-weight: 400;
         }
         
         .logo-icon {
-            width: 32px;
-            height: 32px;
-            background: var(--accent);
-            border-radius: 8px;
+            width: 44px;
+            height: 44px;
             display: flex;
             align-items: center;
             justify-content: center;
         }
         
-        .logo-icon svg {
-            width: 22px;
-            height: 22px;
+        .logo-icon img {
+            width: 44px;
+            height: 44px;
+            object-fit: contain;
         }
         
         .evoke-logo {
@@ -390,19 +390,7 @@
             border: none !important;
             outline: none !important;
             box-shadow: none !important;
-            width: 40px;
-            height: 40px;
             overflow: visible;
-        }
-        
-        .evoke-logo svg,
-        .evoke-logo img {
-            width: 40px;
-            height: 40px;
-            object-fit: contain;
-            border: none;
-            outline: none;
-            display: block;
         }
         
         .version-badge {
@@ -841,25 +829,18 @@
         }
         
         .discover-header {
-            margin-bottom: 16px;
-        }
-        
-        .discover-title {
-            font-size: 24px;
-            font-weight: 700;
-            margin-bottom: 6px;
-            padding-top: 16px;
+            margin-bottom: 20px;
         }
         
         .discover-subtitle {
             font-size: 14px;
             color: var(--text-muted);
+            margin-bottom: 16px;
         }
         
         .discover-tabs {
             display: flex;
             gap: 8px;
-            margin-top: 16px;
         }
         
         .discover-tab {
@@ -886,8 +867,8 @@
         }
         
         .discover-feed {
-            display: flex;
-            flex-direction: column;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
             gap: 16px;
         }
         
@@ -910,14 +891,14 @@
         }
         
         .discover-card-content {
-            padding: 16px;
+            padding: 12px;
         }
         
         .discover-card-title {
-            font-size: 17px;
+            font-size: 15px;
             font-weight: 600;
             color: var(--text-primary);
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
         
         .discover-card-text {
@@ -2291,23 +2272,25 @@
             /* Enhanced Header for Desktop */
             .header {
                 padding: 12px 40px;
+                max-width: 1280px;
+                margin: 0 auto;
             }
             
             .header-nav {
                 display: flex;
                 align-items: center;
-                gap: 8px;
-                margin-left: 32px;
+                gap: 0;
+                margin-left: 40px;
             }
             
             .header-nav-item {
                 display: flex;
                 align-items: center;
                 gap: 6px;
-                padding: 8px 16px;
+                padding: 10px 24px;
                 background: transparent;
                 border: none;
-                border-radius: 8px;
+                border-bottom: 2px solid transparent;
                 color: var(--text-muted);
                 font-size: 14px;
                 font-weight: 500;
@@ -2316,13 +2299,12 @@
             }
             
             .header-nav-item:hover {
-                background: var(--bg-elevated);
                 color: var(--text-secondary);
             }
             
             .header-nav-item.active {
-                background: var(--bg-elevated);
                 color: var(--text-primary);
+                border-bottom-color: var(--resonant-coral);
             }
             
             .header-nav-item svg {
@@ -2421,7 +2403,7 @@
             }
             
             .discover-container {
-                max-width: 600px;
+                max-width: 1200px;
                 margin: 0 auto;
                 padding: 16px 40px;
                 padding-top: 16px;
@@ -2429,12 +2411,25 @@
             }
             
             .discover-feed {
-                gap: 20px;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 24px;
             }
             
             .discover-card-image {
-                aspect-ratio: 16/9;
-                max-height: 340px;
+                aspect-ratio: 1;
+            }
+            
+            .discover-card-content {
+                padding: 16px;
+            }
+            
+            .discover-card-title {
+                font-size: 16px;
+            }
+            
+            .discover-card-text {
+                font-size: 13px;
+                -webkit-line-clamp: 2;
             }
             
             /* Empty state desktop */
@@ -2539,7 +2534,7 @@
         <aside class="left-sidebar">
             <div class="sidebar-logo">
                 <div class="sidebar-logo-icon evoke-logo">
-                    <img src="Evoke_Dark_Logo_mark.png" alt="Evoke">
+                    <img src="Evoke_Large_Dk_2_burst.png" alt="Evoke">
                 </div>
             </div>
             
@@ -2566,18 +2561,18 @@
         <header class="header">
             <div class="logo">
                 <div class="logo-icon evoke-logo">
-                    <img src="Evoke_Dark_Logo_mark.png" alt="Evoke">
+                    <img src="Evoke_Large_Dk_2_burst.png" alt="">
                 </div>
                 Evoke <span class="version-badge">v0.9.0</span>
             </div>
             
             <!-- Desktop Nav -->
             <nav class="header-nav">
-                <button class="header-nav-item active" data-tab="home">
+                <button class="header-nav-item" data-tab="home">
                     <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
                     My Evoke
                 </button>
-                <button class="header-nav-item" data-tab="discover">
+                <button class="header-nav-item active" data-tab="discover">
                     <svg viewBox="0 0 24 24"><path d="M12 10.9c-.61 0-1.1.49-1.1 1.1s.49 1.1 1.1 1.1c.61 0 1.1-.49 1.1-1.1s-.49-1.1-1.1-1.1zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm2.19 12.19L6 18l3.81-8.19L18 6l-3.81 8.19z"/></svg>
                     Discover
                 </button>
@@ -2592,7 +2587,7 @@
         <!-- Main Content -->
         <main class="main-content">
             <!-- Home Tab -->
-            <div class="tab-content active" id="homeTab">
+            <div class="tab-content" id="homeTab">
                 <!-- Desktop Create Header -->
                 <div class="desktop-create-header">
                     <div class="desktop-create-box">
@@ -2633,7 +2628,7 @@
             </div>
             
             <!-- Discover Tab -->
-            <div class="tab-content" id="discoverTab">
+            <div class="tab-content active" id="discoverTab">
                 <div class="discover-container" id="discoverContainer">
                     <div class="pull-to-refresh" id="pullToRefresh">
                         <div class="refresh-spinner">
@@ -2643,7 +2638,6 @@
                     </div>
                     
                     <div class="discover-header">
-                        <div class="discover-title">Discover</div>
                         <div class="discover-subtitle">See what the community is watching</div>
                         <div class="discover-tabs">
                             <button class="discover-tab active" data-filter="all">All</button>
@@ -2987,7 +2981,7 @@
         <div class="about-content">
             <div class="about-hero">
                 <div class="about-logo">
-                    <img src="Evoke_Dark_Logo_mark.png" alt="Evoke">
+                    <img src="Evoke_Large_Dk_2_burst.png" alt="Evoke">
                 </div>
                 <div class="about-tagline">Call your thoughts into the world.</div>
                 <div class="about-version">Version 0.9.0</div>
@@ -3081,7 +3075,7 @@
             <button class="auth-close" id="authClose">✕</button>
             
             <div class="auth-logo evoke-logo">
-                <img src="Evoke_Dark_Logo_mark.png" alt="Evoke">
+                <img src="Evoke_Large_Dk_2_burst.png" alt="Evoke">
             </div>
             
             <div class="auth-title" id="authTitle">Start your free trial</div>
@@ -3205,7 +3199,7 @@
         const savedSettings = JSON.parse(localStorage.getItem('evoke_settings') || '{}');
         
         const state = {
-            currentTab: 'home',
+            currentTab: 'discover',
             isRecording: false,
             isPaused: false,
             rewriteLevel: savedSettings.rewriteLevel || 'medium',
@@ -5246,6 +5240,10 @@
                 
                 // Load posts
                 await renderGallery();
+                
+                // Load discover feed (now default tab)
+                loadDiscoverFeed();
+                startNewPostsChecker();
             } catch (e) {
                 console.error('Init error:', e);
                 // Still try to load posts even if auth fails
