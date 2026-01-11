@@ -284,14 +284,15 @@
             display: grid;
             grid-template-columns: 1.2fr 1fr;
             gap: 80px;
-            align-items: center;
+            align-items: start;
         }
         
         .hero-right {
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
+            justify-content: flex-start;
+            padding-top: 268px; /* Align with headline (logo height 220px + margin 48px) */
         }
         
         /* Gradient orbs */
@@ -337,6 +338,11 @@
             letter-spacing: -0.02em;
             animation: heroContentIn 0.7s ease-out 0.2s forwards;
             opacity: 0;
+        }
+        
+        .hero-headline-light {
+            font-weight: 400;
+            color: var(--evoke-violet);
         }
         
         .hero-subtitle {
@@ -1040,6 +1046,7 @@
             
             .hero-right {
                 align-items: center;
+                padding-top: 0;
             }
             
             .hero-logo img {
@@ -1182,7 +1189,7 @@
                     <img src="Evoke_Large_Dk_2_burst.png" alt="">
                     <span class="hero-logo-text">Evoke</span>
                 </div>
-                <h1>Turn your voice into share-ready posts</h1>
+                <h1><span class="hero-headline-light">Turn your voice into</span> share-ready posts</h1>
                 <p class="hero-subtitle">Speak your thoughts about shows and movies. Get polished text and stunning graphics. Share everywhere.</p>
                 <p class="hero-tagline">Your words, amplified.</p>
                 <a href="evoke.html" class="hero-cta">Start your free trial</a>
