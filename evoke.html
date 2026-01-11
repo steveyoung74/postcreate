@@ -2062,44 +2062,63 @@
             color: var(--accent);
         }
         
+        .style-mode-toggle {
+            margin-bottom: 20px;
+        }
+        
         .style-toggle {
             display: flex;
             background: var(--bg-elevated);
-            border-radius: 10px;
+            border-radius: 12px;
             padding: 4px;
             gap: 4px;
         }
         
         .style-toggle-option {
             flex: 1;
-            padding: 10px 12px;
+            padding: 12px 16px;
             border: none;
             background: transparent;
-            border-radius: 8px;
-            font-size: 13px;
-            font-weight: 500;
+            border-radius: 10px;
             cursor: pointer;
             transition: all 0.2s;
+            text-align: center;
+        }
+        
+        .style-toggle-option .toggle-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
             color: var(--text-secondary);
+            margin-bottom: 2px;
+        }
+        
+        .style-toggle-option .toggle-desc {
+            display: block;
+            font-size: 11px;
+            color: var(--text-muted);
         }
         
         .style-toggle-option.selected {
             background: linear-gradient(135deg, var(--resonant-coral), var(--evoke-violet));
+        }
+        
+        .style-toggle-option.selected .toggle-label,
+        .style-toggle-option.selected .toggle-desc {
             color: white;
         }
         
-        .style-preview {
-            margin-top: 20px;
-            padding: 16px;
-            background: var(--bg-elevated);
-            border-radius: 12px;
+        .palette-options {
+            transition: all 0.3s ease;
         }
         
-        .style-preview-label {
-            font-size: 12px;
-            color: var(--text-muted);
-            margin-bottom: 12px;
-            text-align: center;
+        .palette-options.disabled {
+            opacity: 0.4;
+            pointer-events: none;
+        }
+        
+        .style-preview {
+            margin-top: 16px;
         }
         
         .style-preview-box {
@@ -3212,49 +3231,55 @@
             
             <div class="settings-section style-mixer-section">
                 <div class="settings-section-title">Graphic Style</div>
-                <div class="settings-section-desc">Customize how your graphics look</div>
+                <div class="settings-section-desc">Choose how your graphics are styled</div>
                 
-                <div class="style-mixer-row">
-                    <div class="style-mixer-label">Mood</div>
-                    <div class="style-pills" id="moodPills">
-                        <div class="style-pill selected" data-mood="cozy">☕ Cozy</div>
-                        <div class="style-pill" data-mood="bold">💥 Bold</div>
-                        <div class="style-pill" data-mood="elegant">✨ Elegant</div>
-                        <div class="style-pill" data-mood="playful">🎈 Playful</div>
-                        <div class="style-pill" data-mood="dark">🌙 Dark</div>
-                    </div>
-                </div>
-                
-                <div class="style-mixer-row">
-                    <div class="style-mixer-label">Colors</div>
-                    <div class="style-pills" id="colorPills">
-                        <div class="style-pill selected" data-colors="warm">🔥 Warm</div>
-                        <div class="style-pill" data-colors="cool">❄️ Cool</div>
-                        <div class="style-pill" data-colors="neon">⚡ Neon</div>
-                        <div class="style-pill" data-colors="muted">🌫️ Muted</div>
-                        <div class="style-pill" data-colors="mono">◐ Mono</div>
-                    </div>
-                </div>
-                
-                <div class="style-mixer-row">
-                    <div class="style-mixer-label">When creating graphics...</div>
+                <div class="style-mode-toggle">
                     <div class="style-toggle" id="styleToggle">
-                        <button class="style-toggle-option selected" data-mode="auto">Match content</button>
-                        <button class="style-toggle-option" data-mode="custom">Always my style</button>
+                        <button class="style-toggle-option selected" data-mode="auto">
+                            <span class="toggle-label">Auto</span>
+                            <span class="toggle-desc">Matches your content</span>
+                        </button>
+                        <button class="style-toggle-option" data-mode="custom">
+                            <span class="toggle-label">My Palette</span>
+                            <span class="toggle-desc">Always use my style</span>
+                        </button>
                     </div>
                 </div>
                 
-                <div class="style-preview" id="stylePreview">
-                    <div class="style-preview-label">Preview</div>
-                    <div class="style-preview-box" id="stylePreviewBox">
-                        <div class="style-preview-swatches" id="styleSwatches">
-                            <div class="style-swatch" id="swatch1"></div>
-                            <div class="style-swatch" id="swatch2"></div>
-                            <div class="style-swatch" id="swatch3"></div>
-                            <div class="style-swatch" id="swatch4"></div>
-                            <div class="style-swatch" id="swatch5"></div>
+                <div class="palette-options" id="paletteOptions">
+                    <div class="style-mixer-row">
+                        <div class="style-mixer-label">Mood</div>
+                        <div class="style-pills" id="moodPills">
+                            <div class="style-pill selected" data-mood="cozy">☕ Cozy</div>
+                            <div class="style-pill" data-mood="bold">💥 Bold</div>
+                            <div class="style-pill" data-mood="elegant">✨ Elegant</div>
+                            <div class="style-pill" data-mood="playful">🎈 Playful</div>
+                            <div class="style-pill" data-mood="dark">🌙 Dark</div>
                         </div>
-                        <div class="style-preview-desc" id="stylePreviewDesc">Spiced Latte: Soft amber lighting, hygge atmosphere</div>
+                    </div>
+                    
+                    <div class="style-mixer-row">
+                        <div class="style-mixer-label">Colors</div>
+                        <div class="style-pills" id="colorPills">
+                            <div class="style-pill selected" data-colors="warm">🔥 Warm</div>
+                            <div class="style-pill" data-colors="cool">❄️ Cool</div>
+                            <div class="style-pill" data-colors="neon">⚡ Neon</div>
+                            <div class="style-pill" data-colors="muted">🌫️ Muted</div>
+                            <div class="style-pill" data-colors="mono">◐ Mono</div>
+                        </div>
+                    </div>
+                    
+                    <div class="style-preview" id="stylePreview">
+                        <div class="style-preview-box" id="stylePreviewBox">
+                            <div class="style-preview-swatches" id="styleSwatches">
+                                <div class="style-swatch" id="swatch1"></div>
+                                <div class="style-swatch" id="swatch2"></div>
+                                <div class="style-swatch" id="swatch3"></div>
+                                <div class="style-swatch" id="swatch4"></div>
+                                <div class="style-swatch" id="swatch5"></div>
+                            </div>
+                            <div class="style-preview-desc" id="stylePreviewDesc">Spiced Latte: Soft amber lighting, hygge atmosphere</div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -3273,7 +3298,7 @@
                     <img src="Evoke_Large_Dk_2_burst.png" alt="Evoke">
                 </div>
                 <div class="about-tagline">Call your thoughts into the world.</div>
-                <div class="about-version">Version 0.9.7</div>
+                <div class="about-version">Version 0.9.8</div>
             </div>
             
             <div class="about-section">
@@ -3483,7 +3508,7 @@
         // CONFIG
         // ============================================
         const CONFIG = {
-            version: '0.9.7',
+            version: '0.9.8',
             webhookUrl: 'https://steveyoung.app.n8n.cloud/webhook/postcreate',
             maxRecordingTime: 60,
             supabaseUrl: 'https://oiahkbvqyfjumnqsefxw.supabase.co',
@@ -4300,6 +4325,7 @@
             moodPills: document.getElementById('moodPills'),
             colorPills: document.getElementById('colorPills'),
             styleToggle: document.getElementById('styleToggle'),
+            paletteOptions: document.getElementById('paletteOptions'),
             stylePreviewBox: document.getElementById('stylePreviewBox'),
             stylePreviewDesc: document.getElementById('stylePreviewDesc'),
             styleSwatch1: document.getElementById('swatch1'),
@@ -5542,10 +5568,20 @@
                 document.querySelectorAll('#styleToggle .style-toggle-option').forEach(o => o.classList.remove('selected'));
                 option.classList.add('selected');
                 state.graphicMode = option.dataset.mode;
+                updatePaletteOptionsState();
                 saveSettings();
                 updateStyleIndicator();
             });
         });
+        
+        // Toggle palette options visibility based on mode
+        function updatePaletteOptionsState() {
+            if (state.graphicMode === 'auto') {
+                elements.paletteOptions.classList.add('disabled');
+            } else {
+                elements.paletteOptions.classList.remove('disabled');
+            }
+        }
         
         // Update style preview box
         function updateStylePreview() {
@@ -5627,6 +5663,9 @@
             document.querySelectorAll('#styleToggle .style-toggle-option').forEach(el => {
                 el.classList.toggle('selected', el.dataset.mode === state.graphicMode);
             });
+            
+            // Set palette options state based on mode
+            updatePaletteOptionsState();
             
             updateStylePreview();
             updateStyleIndicator();
