@@ -5518,4 +5518,14 @@
                 loadDiscoverFeed();
                 startNewPostsChecker();
             } catch (e) {
-                console.err
+                console.error('Init error:', e);
+                // Still try to load posts even if auth fails
+                await renderGallery();
+            }
+        }
+        
+        // Start the app
+        init();
+    </script>
+</body>
+</html>
