@@ -3245,7 +3245,7 @@
         // CONFIG
         // ============================================
         const CONFIG = {
-            version: '0.9.1',
+            version: '0.9.2',
             webhookUrl: 'https://steveyoung.app.n8n.cloud/webhook/postcreate',
             maxRecordingTime: 60,
             supabaseUrl: 'https://oiahkbvqyfjumnqsefxw.supabase.co',
@@ -5470,6 +5470,16 @@
                     
                     // Migrate local posts to cloud
                     await Storage.migrateLocalToCloud();
+                } else {
+                    // No session - show auth modal once after a short delay
+                    // User can dismiss and browse Discover, will see it again when clicking mic
+                    const hasSeenWelcome = sessionStorage.getItem('evoke_seen_welcome');
+                    if (!hasSeenWelcome) {
+                        setTimeout(() => {
+                            showAuthModal('signup');
+                            sessionStorage.setItem('evoke_seen_welcome', 'true');
+                        }, 800);
+                    }
                 }
                 
                 // Listen for auth changes (only if Supabase is available)
@@ -5495,6 +5505,7 @@
                         } else if (event === 'SIGNED_OUT') {
                             state.posts = [];
                             state.subscription = { status: 'none', trialEndsAt: null, subscriptionEndsAt: null, customerId: null };
+                            sessionStorage.removeItem('evoke_seen_welcome');
                             await renderGallery();
                         }
                     });
