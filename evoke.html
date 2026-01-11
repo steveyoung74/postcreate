@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Evoke v0.9.0</title>
+    <title>Evoke — Your words, amplified</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -898,31 +898,27 @@
             margin: 0 0 24px;
         }
         
-        .empty-cta {
-            background: linear-gradient(135deg, var(--resonant-coral), var(--evoke-violet));
-            color: white;
-            border: none;
-            padding: 14px 28px;
-            border-radius: 12px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            box-shadow: 0 10px 30px rgba(255, 79, 94, 0.3);
-            transition: transform 0.2s, box-shadow 0.2s;
+        .empty-arrow {
+            color: var(--accent);
+            animation: bounce 2s infinite;
+            margin-top: 16px;
         }
         
-        .empty-cta:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 15px 40px rgba(255, 79, 94, 0.4);
+        .empty-arrow svg {
+            width: 40px;
+            height: 40px;
         }
         
-        .empty-cta svg {
-            width: 20px;
-            height: 20px;
-            fill: white;
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(10px);
+            }
+            60% {
+                transform: translateY(5px);
+            }
         }
         
         /* Bottom Navigation */
@@ -2964,7 +2960,7 @@
                 <button class="sidebar-nav-item active" data-tab="home" title="Home">
                     <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
                 </button>
-                <button class="sidebar-nav-item create-item" id="sidebarCreateBtn" title="Call it out">
+                <button class="sidebar-nav-item create-item" id="sidebarCreateBtn" title="Create post">
                     <svg viewBox="0 0 24 24"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/><path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/></svg>
                 </button>
                 <button class="sidebar-nav-item" data-tab="discover" title="Discover">
@@ -3036,12 +3032,11 @@
                         <div class="empty-icon">
                             <svg viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
                         </div>
-                        <h2>Call your thoughts into the world.</h2>
-                        <p>Tap the mic and share your thoughts about a show. We'll make them shine.</p>
-                        <button class="empty-cta" id="emptyCreateBtn">
-                            <svg viewBox="0 0 24 24"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/><path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/></svg>
-                            Call it out
-                        </button>
+                        <h2>Your words, amplified.</h2>
+                        <p>Tap the mic below and share your thoughts. We'll make them shine.</p>
+                        <div class="empty-arrow">
+                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z" transform="rotate(90 12 12)"/></svg>
+                        </div>
                     </div>
                     
                     <!-- Gallery Grid (shown when posts exist) -->
@@ -3474,7 +3469,7 @@
                 <div class="about-logo">
                     <img src="Evoke_Large_Dk_2_burst.png" alt="Evoke">
                 </div>
-                <div class="about-tagline">Call your thoughts into the world.</div>
+                <div class="about-tagline">Your words, amplified.</div>
                 <div class="about-version">Version 0.9.9</div>
             </div>
             
@@ -4512,7 +4507,6 @@
             // Gallery
             emptyState: document.getElementById('emptyState'),
             galleryGrid: document.getElementById('galleryGrid'),
-            emptyCreateBtn: document.getElementById('emptyCreateBtn'),
             postCount: document.getElementById('postCount'),
             
             // Create
@@ -5703,7 +5697,6 @@
         
         // Create buttons (all variations)
         elements.floatingRecordBtn.addEventListener('click', startRecording);
-        elements.emptyCreateBtn.addEventListener('click', startRecording);
         document.getElementById('desktopCreateBtn')?.addEventListener('click', startRecording);
         document.getElementById('sidebarCreateBtn')?.addEventListener('click', startRecording);
         
