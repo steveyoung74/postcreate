@@ -878,6 +878,7 @@
             overflow: hidden;
             cursor: pointer;
             transition: transform 0.2s;
+            min-width: 0;
         }
         
         .discover-card:active {
@@ -2518,11 +2519,19 @@
             .gallery-grid {
                 grid-template-columns: repeat(4, 1fr);
             }
+            
+            .discover-feed {
+                grid-template-columns: repeat(4, 1fr);
+            }
         }
         
         /* Extra large (1600px and up) */
         @media (min-width: 1600px) {
             .gallery-grid {
+                grid-template-columns: repeat(5, 1fr);
+            }
+            
+            .discover-feed {
                 grid-template-columns: repeat(5, 1fr);
             }
         }
@@ -2652,6 +2661,13 @@
                             <div class="skeleton-content">
                                 <div class="skeleton-title"></div>
                                 <div class="skeleton-text"></div>
+                                <div class="skeleton-meta"></div>
+                            </div>
+                        </div>
+                        <div class="skeleton-card">
+                            <div class="skeleton-image"></div>
+                            <div class="skeleton-content">
+                                <div class="skeleton-title"></div>
                                 <div class="skeleton-text"></div>
                                 <div class="skeleton-meta"></div>
                             </div>
@@ -2661,6 +2677,29 @@
                             <div class="skeleton-content">
                                 <div class="skeleton-title"></div>
                                 <div class="skeleton-text"></div>
+                                <div class="skeleton-meta"></div>
+                            </div>
+                        </div>
+                        <div class="skeleton-card">
+                            <div class="skeleton-image"></div>
+                            <div class="skeleton-content">
+                                <div class="skeleton-title"></div>
+                                <div class="skeleton-text"></div>
+                                <div class="skeleton-meta"></div>
+                            </div>
+                        </div>
+                        <div class="skeleton-card">
+                            <div class="skeleton-image"></div>
+                            <div class="skeleton-content">
+                                <div class="skeleton-title"></div>
+                                <div class="skeleton-text"></div>
+                                <div class="skeleton-meta"></div>
+                            </div>
+                        </div>
+                        <div class="skeleton-card">
+                            <div class="skeleton-image"></div>
+                            <div class="skeleton-content">
+                                <div class="skeleton-title"></div>
                                 <div class="skeleton-text"></div>
                                 <div class="skeleton-meta"></div>
                             </div>
@@ -4512,7 +4551,7 @@
         async function loadDiscoverFeed(showSkeletons = true) {
             // Show skeletons while loading (only on initial load, not refresh)
             if (showSkeletons) {
-                elements.discoverSkeletons.style.display = 'flex';
+                elements.discoverSkeletons.style.display = 'grid';
                 elements.discoverFeed.style.display = 'none';
                 elements.discoverEmpty.style.display = 'none';
             }
@@ -4533,7 +4572,7 @@
                 lastKnownPostId = allPublicPosts[0].id;
             }
             
-            elements.discoverFeed.style.display = 'flex';
+            elements.discoverFeed.style.display = 'grid';
             elements.discoverEmpty.style.display = 'none';
             
             // Render cards based on current filter
