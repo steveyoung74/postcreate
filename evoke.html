@@ -2359,6 +2359,32 @@
             fill: var(--text-muted);
         }
         
+        .profile-legal-links {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+            padding: 20px 16px;
+            margin-top: 16px;
+            border-top: 1px solid var(--border);
+            font-size: 13px;
+        }
+        
+        .profile-legal-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        
+        .profile-legal-links a:hover {
+            color: var(--accent);
+        }
+        
+        .profile-legal-links span {
+            color: var(--text-muted);
+            opacity: 0.5;
+        }
+        
         /* Toast */
         .toast {
             display: none;
@@ -2974,6 +3000,14 @@
                 <span>Sign Out</span>
                 <svg class="chevron" viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
             </div>
+            
+            <div class="profile-legal-links">
+                <a href="support.html" target="_blank">Support</a>
+                <span>•</span>
+                <a href="privacy.html" target="_blank">Privacy</a>
+                <span>•</span>
+                <a href="terms.html" target="_blank">Terms</a>
+            </div>
         </div>
     </div>
     
@@ -3193,7 +3227,7 @@
                     <img src="Evoke_Large_Dk_2_burst.png" alt="Evoke">
                 </div>
                 <div class="about-tagline">Call your thoughts into the world.</div>
-                <div class="about-version">Version 0.9.0</div>
+                <div class="about-version">Version 0.9.5</div>
             </div>
             
             <div class="about-section">
@@ -3205,32 +3239,28 @@
                 <div class="about-section-title">What's New</div>
                 <div class="about-changelog">
                     <div class="changelog-item">
+                        <span class="changelog-version">v0.9.5</span>
+                        <span class="changelog-text">Feedback system, custom domain (getevoke.co.uk), subscription setup</span>
+                    </div>
+                    <div class="changelog-item">
                         <span class="changelog-version">v0.9</span>
-                        <span class="changelog-text">Tone selector for personalized posts, country flags, flexible content types</span>
+                        <span class="changelog-text">Tone selector, country flags, Discover feed redesign, new branding</span>
                     </div>
                     <div class="changelog-item">
                         <span class="changelog-version">v0.8</span>
-                        <span class="changelog-text">Multi-provider auth, free trial system, brand refresh</span>
+                        <span class="changelog-text">Multi-provider auth (Google, Facebook), free trial system</span>
                     </div>
                     <div class="changelog-item">
                         <span class="changelog-version">v0.7</span>
-                        <span class="changelog-text">Rebrand to Evoke, improved error handling, dynamic showcase</span>
+                        <span class="changelog-text">Rebrand to Evoke, improved error handling, landing page</span>
                     </div>
                     <div class="changelog-item">
                         <span class="changelog-version">v0.5</span>
-                        <span class="changelog-text">Discover feed, community sharing, trending topics, likes & copy</span>
-                    </div>
-                    <div class="changelog-item">
-                        <span class="changelog-version">v0.4</span>
-                        <span class="changelog-text">Cloud sync, Google sign-in, post gallery with filters</span>
+                        <span class="changelog-text">Discover feed, community sharing, likes & copy</span>
                     </div>
                     <div class="changelog-item">
                         <span class="changelog-version">v0.3</span>
                         <span class="changelog-text">AI-generated graphics, 14 visual style archetypes</span>
-                    </div>
-                    <div class="changelog-item">
-                        <span class="changelog-version">v0.2</span>
-                        <span class="changelog-text">Voice recording, live transcription, AI enhancement</span>
                     </div>
                 </div>
             </div>
@@ -3240,11 +3270,7 @@
                 <div class="about-roadmap">
                     <div class="roadmap-item">
                         <span class="roadmap-badge soon">Next</span>
-                        <span>Token system & premium features</span>
-                    </div>
-                    <div class="roadmap-item">
-                        <span class="roadmap-badge">Planned</span>
-                        <span>Share to Facebook, Twitter, Instagram</span>
+                        <span>Regional pricing for global users</span>
                     </div>
                     <div class="roadmap-item">
                         <span class="roadmap-badge">Planned</span>
@@ -3252,13 +3278,25 @@
                     </div>
                     <div class="roadmap-item">
                         <span class="roadmap-badge">Planned</span>
-                        <span>Video clips & animated graphics</span>
+                        <span>Trending shows & inspiration feed</span>
+                    </div>
+                    <div class="roadmap-item">
+                        <span class="roadmap-badge">Planned</span>
+                        <span>Style customization presets</span>
                     </div>
                 </div>
             </div>
             
             <div class="about-footer">
-                Made with ❤️ for entertainment lovers
+                <div class="about-links">
+                    <a href="support.html" target="_blank">Support</a>
+                    <span>•</span>
+                    <a href="privacy.html" target="_blank">Privacy</a>
+                    <span>•</span>
+                    <a href="terms.html" target="_blank">Terms</a>
+                </div>
+                <p>Made with ❤️ for entertainment lovers</p>
+                <p class="about-copyright">© 2025 Evoke. All rights reserved.</p>
             </div>
         </div>
     </div>
@@ -3391,7 +3429,7 @@
         // CONFIG
         // ============================================
         const CONFIG = {
-            version: '0.9.4',
+            version: '0.9.5',
             webhookUrl: 'https://steveyoung.app.n8n.cloud/webhook/postcreate',
             maxRecordingTime: 60,
             supabaseUrl: 'https://oiahkbvqyfjumnqsefxw.supabase.co',
