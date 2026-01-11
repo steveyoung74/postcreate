@@ -495,6 +495,194 @@
             cursor: not-allowed;
         }
         
+        /* Usage Warning Modal */
+        .usage-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+            padding: 20px;
+        }
+        
+        .usage-modal.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .usage-container {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 32px 28px;
+            width: 100%;
+            max-width: 420px;
+            position: relative;
+            border: 1px solid var(--border);
+        }
+        
+        .usage-close {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 20px;
+            cursor: pointer;
+            padding: 4px;
+            line-height: 1;
+        }
+        
+        .usage-header {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+        
+        .usage-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+        
+        .usage-header h2 {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        
+        .usage-header p {
+            color: var(--text-secondary);
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        
+        .usage-meter {
+            background: var(--bg-primary);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 20px;
+        }
+        
+        .usage-meter-bar {
+            height: 8px;
+            background: var(--bg-elevated);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 12px;
+        }
+        
+        .usage-meter-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--resonant-coral), var(--evoke-violet));
+            border-radius: 4px;
+            transition: width 0.3s;
+        }
+        
+        .usage-meter-fill.warning {
+            background: linear-gradient(90deg, #F59E0B, #EF4444);
+        }
+        
+        .usage-meter-fill.critical {
+            background: #EF4444;
+        }
+        
+        .usage-meter-text {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+        
+        .usage-meter-count {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .usage-renewal {
+            text-align: center;
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 24px;
+        }
+        
+        .bundle-options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .bundle-option {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--bg-primary);
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 14px 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .bundle-option:hover {
+            border-color: var(--accent);
+            background: rgba(255, 79, 94, 0.05);
+        }
+        
+        .bundle-option.popular {
+            border-color: var(--evoke-violet);
+            background: rgba(122, 108, 255, 0.1);
+        }
+        
+        .bundle-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .bundle-amount {
+            font-weight: 700;
+            font-size: 16px;
+        }
+        
+        .bundle-tag {
+            background: var(--evoke-violet);
+            color: white;
+            font-size: 10px;
+            font-weight: 600;
+            padding: 3px 8px;
+            border-radius: 20px;
+            text-transform: uppercase;
+        }
+        
+        .bundle-price {
+            font-weight: 600;
+            color: var(--accent);
+        }
+        
+        .usage-continue {
+            width: 100%;
+            background: transparent;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 14px;
+            font-size: 14px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .usage-continue:hover {
+            border-color: var(--text-muted);
+            color: var(--text-primary);
+        }
+        
         /* App Container */
         .app {
             display: flex;
@@ -3298,7 +3486,7 @@
                     <img src="Evoke_Large_Dk_2_burst.png" alt="Evoke">
                 </div>
                 <div class="about-tagline">Call your thoughts into the world.</div>
-                <div class="about-version">Version 0.9.8</div>
+                <div class="about-version">Version 0.9.9</div>
             </div>
             
             <div class="about-section">
@@ -3310,16 +3498,20 @@
                 <div class="about-section-title">What's New</div>
                 <div class="about-changelog">
                     <div class="changelog-item">
+                        <span class="changelog-version">v0.9.9</span>
+                        <span class="changelog-text">Fair usage policy, post bundles, usage tracking UI</span>
+                    </div>
+                    <div class="changelog-item">
+                        <span class="changelog-version">v0.9.8</span>
+                        <span class="changelog-text">Improved style mode toggle, clearer Auto vs My Palette UX</span>
+                    </div>
+                    <div class="changelog-item">
                         <span class="changelog-version">v0.9.7</span>
                         <span class="changelog-text">25 color palettes with live preview, enhanced settings UI</span>
                     </div>
                     <div class="changelog-item">
                         <span class="changelog-version">v0.9.6</span>
                         <span class="changelog-text">Improved settings UI, policy page navigation, updated branding</span>
-                    </div>
-                    <div class="changelog-item">
-                        <span class="changelog-version">v0.9.5</span>
-                        <span class="changelog-text">Feedback system, custom domain (getevoke.co.uk), subscription setup</span>
                     </div>
                     <div class="changelog-item">
                         <span class="changelog-version">v0.9</span>
@@ -3500,6 +3692,57 @@
         </div>
     </div>
     
+    <!-- Usage Warning Modal -->
+    <div class="usage-modal" id="usageModal">
+        <div class="usage-container">
+            <button class="usage-close" id="usageClose">✕</button>
+            
+            <div class="usage-header">
+                <div class="usage-icon" id="usageIcon">⚡</div>
+                <h2 id="usageTitle">Running Low on Posts</h2>
+                <p id="usageSubtitle">You've used most of your monthly posts. Need more?</p>
+            </div>
+            
+            <div class="usage-meter">
+                <div class="usage-meter-bar">
+                    <div class="usage-meter-fill warning" id="usageMeterFill" style="width: 80%"></div>
+                </div>
+                <div class="usage-meter-text">
+                    <span><span class="usage-meter-count" id="usageCount">120</span> of <span id="usageLimit">150</span> posts used</span>
+                    <span id="usagePercent">80%</span>
+                </div>
+            </div>
+            
+            <div class="usage-renewal" id="usageRenewal">
+                Resets in <strong>12 days</strong> on Feb 23
+            </div>
+            
+            <div class="bundle-options">
+                <div class="bundle-option" data-bundle="20" data-price="1.99">
+                    <div class="bundle-info">
+                        <span class="bundle-amount">20 posts</span>
+                    </div>
+                    <span class="bundle-price">£1.99</span>
+                </div>
+                <div class="bundle-option popular" data-bundle="50" data-price="3.99">
+                    <div class="bundle-info">
+                        <span class="bundle-amount">50 posts</span>
+                        <span class="bundle-tag">Best Value</span>
+                    </div>
+                    <span class="bundle-price">£3.99</span>
+                </div>
+                <div class="bundle-option" data-bundle="100" data-price="6.99">
+                    <div class="bundle-info">
+                        <span class="bundle-amount">100 posts</span>
+                    </div>
+                    <span class="bundle-price">£6.99</span>
+                </div>
+            </div>
+            
+            <button class="usage-continue" id="usageContinue">Continue without buying</button>
+        </div>
+    </div>
+    
     <!-- Toast -->
     <div class="toast" id="toast"></div>
 
@@ -3508,7 +3751,7 @@
         // CONFIG
         // ============================================
         const CONFIG = {
-            version: '0.9.8',
+            version: '0.9.9',
             webhookUrl: 'https://steveyoung.app.n8n.cloud/webhook/postcreate',
             maxRecordingTime: 60,
             supabaseUrl: 'https://oiahkbvqyfjumnqsefxw.supabase.co',
@@ -3750,6 +3993,20 @@
                 trialEndsAt: null,
                 subscriptionEndsAt: null,
                 customerId: null
+            },
+            // Usage tracking
+            usage: {
+                monthlyLimit: 150, // Default to standard tier, updated based on subscription
+                postsUsed: 0,
+                bundleCredits: 0,
+                renewalDate: null,
+                shownWarning80: false, // Don't show 80% warning more than once per session
+                tier: 'standard' // 'standard' (150) or 'regional' (50)
+            },
+            // Usage limits by tier
+            usageLimits: {
+                standard: 150,
+                regional: 50
             }
         };
         
@@ -4320,6 +4577,20 @@
             feedbackText: document.getElementById('feedbackText'),
             feedbackSubmit: document.getElementById('feedbackSubmit'),
             emojiButtons: document.querySelectorAll('.emoji-btn'),
+            
+            // Usage/Bundles
+            usageModal: document.getElementById('usageModal'),
+            usageClose: document.getElementById('usageClose'),
+            usageIcon: document.getElementById('usageIcon'),
+            usageTitle: document.getElementById('usageTitle'),
+            usageSubtitle: document.getElementById('usageSubtitle'),
+            usageMeterFill: document.getElementById('usageMeterFill'),
+            usageCount: document.getElementById('usageCount'),
+            usageLimit: document.getElementById('usageLimit'),
+            usagePercent: document.getElementById('usagePercent'),
+            usageRenewal: document.getElementById('usageRenewal'),
+            usageContinue: document.getElementById('usageContinue'),
+            bundleOptions: document.querySelectorAll('.bundle-option'),
             
             styleSettingsBtn: document.getElementById('styleSettingsBtn'),
             moodPills: document.getElementById('moodPills'),
@@ -5737,6 +6008,98 @@
                 elements.feedbackSubmit.textContent = 'Send Feedback';
             }
         }
+
+        // ============================================
+        // USAGE & BUNDLE FUNCTIONS
+        // ============================================
+        function showUsageModal(isLimitReached = false) {
+            const usage = state.usage;
+            const percentUsed = Math.round((usage.postsUsed / usage.monthlyLimit) * 100);
+            
+            // Update icon and text based on whether limit is reached
+            if (isLimitReached) {
+                elements.usageIcon.textContent = '🚫';
+                elements.usageTitle.textContent = 'Monthly Limit Reached';
+                elements.usageSubtitle.textContent = 'You\'ve used all your posts this month. Get more to keep creating!';
+                elements.usageMeterFill.className = 'usage-meter-fill critical';
+                elements.usageContinue.style.display = 'none';
+            } else {
+                elements.usageIcon.textContent = '⚡';
+                elements.usageTitle.textContent = 'Running Low on Posts';
+                elements.usageSubtitle.textContent = 'You\'ve used most of your monthly posts. Need more?';
+                elements.usageMeterFill.className = 'usage-meter-fill warning';
+                elements.usageContinue.style.display = 'block';
+            }
+            
+            // Update meter
+            elements.usageMeterFill.style.width = `${Math.min(percentUsed, 100)}%`;
+            elements.usageCount.textContent = usage.postsUsed;
+            elements.usageLimit.textContent = usage.monthlyLimit;
+            elements.usagePercent.textContent = `${percentUsed}%`;
+            
+            // Update renewal date
+            if (usage.renewalDate) {
+                const renewal = new Date(usage.renewalDate);
+                const now = new Date();
+                const daysUntil = Math.ceil((renewal - now) / (1000 * 60 * 60 * 24));
+                const renewalFormatted = renewal.toLocaleDateString('en-GB', { month: 'short', day: 'numeric' });
+                elements.usageRenewal.innerHTML = `Resets in <strong>${daysUntil} days</strong> on ${renewalFormatted}`;
+            } else {
+                elements.usageRenewal.innerHTML = 'Resets on your next billing date';
+            }
+            
+            elements.usageModal.classList.add('visible');
+        }
+        
+        function hideUsageModal() {
+            elements.usageModal.classList.remove('visible');
+        }
+        
+        function checkUsageBeforePost() {
+            const usage = state.usage;
+            const totalAvailable = usage.monthlyLimit + usage.bundleCredits;
+            const percentUsed = Math.round((usage.postsUsed / usage.monthlyLimit) * 100);
+            
+            // Check if completely out of posts (monthly + bundles)
+            if (usage.postsUsed >= totalAvailable) {
+                showUsageModal(true);
+                return false;
+            }
+            
+            // Check if at 80% warning threshold (only show once per session)
+            if (percentUsed >= 80 && !usage.shownWarning80 && usage.postsUsed < totalAvailable) {
+                usage.shownWarning80 = true;
+                showUsageModal(false);
+                return false; // Still blocks, but they can dismiss
+            }
+            
+            return true; // OK to proceed
+        }
+        
+        async function purchaseBundle(amount, price) {
+            // TODO: Integrate with Lemon Squeezy one-time purchase
+            // For now, show a placeholder
+            console.log(`Purchase bundle: ${amount} posts for £${price}`);
+            
+            // Lemon Squeezy checkout URL would be opened here
+            // Example: window.open(`https://evoke.lemonsqueezy.com/checkout/buy/${variantId}`, '_blank');
+            
+            showToast('Bundle purchases coming soon!', 'info');
+            hideUsageModal();
+        }
+        
+        // Bundle option click handlers
+        elements.bundleOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                const amount = option.dataset.bundle;
+                const price = option.dataset.price;
+                purchaseBundle(amount, price);
+            });
+        });
+        
+        // Usage modal close handlers
+        elements.usageClose.addEventListener('click', hideUsageModal);
+        elements.usageContinue.addEventListener('click', hideUsageModal);
 
         // ============================================
         // AUTH UI FUNCTIONS
