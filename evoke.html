@@ -643,8 +643,8 @@
             bottom: 100px;
             left: 50%;
             transform: translateX(-50%);
-            width: 64px;
-            height: 64px;
+            width: 72px;
+            height: 72px;
             border-radius: 50%;
             background: linear-gradient(135deg, var(--resonant-coral), var(--evoke-violet));
             border: none;
@@ -652,14 +652,20 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 24px rgba(255, 79, 94, 0.5);
+            box-shadow: 
+                0 0 0 12px rgba(14, 15, 20, 0.9),
+                0 0 0 13px rgba(255, 79, 94, 0.3),
+                0 4px 24px rgba(0, 0, 0, 0.5);
             z-index: 101;
             transition: transform 0.2s, box-shadow 0.2s;
         }
         
         .floating-record-btn:hover {
             transform: translateX(-50%) scale(1.05);
-            box-shadow: 0 6px 30px rgba(255, 79, 94, 0.6);
+            box-shadow: 
+                0 0 0 12px rgba(14, 15, 20, 0.9),
+                0 0 0 13px rgba(255, 79, 94, 0.4),
+                0 6px 30px rgba(0, 0, 0, 0.6);
         }
         
         .floating-record-btn:active {
@@ -667,8 +673,8 @@
         }
         
         .floating-record-btn svg {
-            width: 30px;
-            height: 30px;
+            width: 32px;
+            height: 32px;
             fill: white;
         }
         
@@ -835,7 +841,7 @@
         
         .discover-header {
             margin-bottom: 24px;
-            padding-top: 40px;
+            padding-top: 16px;
             text-align: center;
         }
         
