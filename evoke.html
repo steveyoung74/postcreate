@@ -826,15 +826,20 @@
         
         .gallery-item {
             position: relative;
-            border-radius: 12px;
+            border-radius: 16px;
             overflow: hidden;
             background: var(--bg-card);
+            border: 1px solid var(--border);
             cursor: pointer;
-            transition: transform 0.2s;
+            transition: transform 0.2s, border-color 0.2s;
         }
         
         .gallery-item:active {
             transform: scale(0.98);
+        }
+        
+        .gallery-item:hover {
+            border-color: rgba(122, 108, 255, 0.4);
         }
         
         .gallery-item img {
