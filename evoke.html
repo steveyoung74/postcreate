@@ -2236,46 +2236,6 @@
             color: var(--text-secondary);
         }
         
-        .feedback-input {
-            width: 100%;
-            min-height: 100px;
-            padding: 12px;
-            background: var(--bg-elevated);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            color: var(--text-primary);
-            font-family: inherit;
-            font-size: 14px;
-            resize: vertical;
-            margin: 12px 0;
-        }
-        
-        .feedback-input:focus {
-            outline: none;
-            border-color: var(--accent);
-        }
-        
-        .feedback-input::placeholder {
-            color: var(--text-muted);
-        }
-        
-        .feedback-submit {
-            width: 100%;
-            padding: 14px;
-            background: var(--accent);
-            color: white;
-            border: none;
-            border-radius: 10px;
-            font-size: 15px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        
-        .feedback-submit:hover {
-            background: var(--accent-hover);
-        }
-        
         .about-footer {
             text-align: center;
             padding: 30px 0;
@@ -3431,7 +3391,7 @@
         // CONFIG
         // ============================================
         const CONFIG = {
-            version: '0.9.3',
+            version: '0.9.4',
             webhookUrl: 'https://steveyoung.app.n8n.cloud/webhook/postcreate',
             maxRecordingTime: 60,
             supabaseUrl: 'https://oiahkbvqyfjumnqsefxw.supabase.co',
@@ -5282,17 +5242,11 @@
         });
         
         // Feedback modal
-        elements.feedbackBtn.addEventListener('click', () => {
-            console.log('Feedback button clicked');
-            showFeedbackModal();
-        });
+        elements.feedbackBtn.addEventListener('click', showFeedbackModal);
         elements.feedbackClose.addEventListener('click', hideFeedbackModal);
         elements.feedbackSubmit.addEventListener('click', submitFeedback);
-        console.log('Setting up emoji buttons, count:', elements.emojiButtons.length);
         elements.emojiButtons.forEach(btn => {
-            console.log('Adding listener to emoji:', btn.dataset.rating);
             btn.addEventListener('click', () => {
-                console.log('Emoji clicked:', btn.dataset.rating);
                 selectRating(parseInt(btn.dataset.rating));
             });
         });
@@ -5435,15 +5389,11 @@
         }
         
         function selectRating(rating) {
-            console.log('selectRating called with:', rating);
             selectedRating = rating;
-            console.log('emojiButtons:', elements.emojiButtons);
             elements.emojiButtons.forEach(btn => {
                 btn.classList.toggle('selected', btn.dataset.rating === String(rating));
             });
-            console.log('feedbackSubmit element:', elements.feedbackSubmit);
             elements.feedbackSubmit.disabled = false;
-            console.log('feedbackSubmit.disabled after:', elements.feedbackSubmit.disabled);
         }
         
         async function submitFeedback() {
