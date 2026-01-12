@@ -1916,10 +1916,6 @@
             box-shadow: 0 4px 20px rgba(255, 79, 94, 0.3);
         }
         
-        .submit-text-btn:active {
-            transform: scale(0.98);
-        }
-        
         .submit-text-btn:disabled {
             opacity: 0.5;
             cursor: not-allowed;
@@ -1932,15 +1928,10 @@
             fill: currentColor;
         }
         
-        /* Hide voice elements when in type mode */
         .recording-setup.type-mode .start-recording-btn {
             display: none;
         }
-        
-        .recording-setup.type-mode .text-input-area {
-            display: flex;
-        }
-        
+
         /* Pre-recording setup state */
         .recording-setup {
             padding: 20px;
@@ -3330,7 +3321,7 @@
                     <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
                 </div>
                 <div class="profile-name" id="profileUserName">User</div>
-                <div class="profile-email" id="profileUserEmail"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="592c2a3c2b193c21383429353c773a3634">[email&#160;protected]</a></div>
+                <div class="profile-email" id="profileUserEmail"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="9feaecfaeddffae7fef2eff3fab1fcf0f2">[email&#160;protected]</a></div>
                 <div class="profile-subscription-badge" id="subscriptionBadge">No subscription</div>
             </div>
             
@@ -5980,7 +5971,6 @@
             
             elements.textCharCount.textContent = `${count} / ${maxLength}`;
             
-            // Update character count styling
             elements.textCharCount.classList.remove('warning', 'error');
             if (count > maxLength * 0.9) {
                 elements.textCharCount.classList.add('error');
@@ -5988,7 +5978,6 @@
                 elements.textCharCount.classList.add('warning');
             }
             
-            // Enable/disable submit button
             elements.submitTextBtn.disabled = count < 10 || count > maxLength;
         });
         
