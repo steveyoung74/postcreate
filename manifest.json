@@ -1,7 +1,7 @@
 {
   "name": "Evoke — Your words, amplified",
   "short_name": "Evoke",
-  "start_url": "/evoke.html",
+  "start_url": "evoke.html",
   "display": "standalone",
   "background_color": "#0E0F14",
   "theme_color": "#0E0F14",
