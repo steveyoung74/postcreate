@@ -3920,8 +3920,9 @@
             supabaseKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9pYWhrYnZxeWZqdW1ucXNlZnh3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjY4MTgxNzUsImV4cCI6MjA4MjM5NDE3NX0.0z0aWrJo1PwUstbOQ2Z_540y00XzboCvnzmjelzzqWs',
             // Lemon Squeezy Configuration
             lemonSqueezy: {
-                storeSlug: 'evoke', // Your store slug (e.g., evoke.lemonsqueezy.com)
-                variantId: 'YOUR_VARIANT_ID', // Replace with your actual variant ID
+                storeSlug: 'evokepro',
+                variantStandard: 'be2bd7bf-7434-4638-aa73-49b9cf05fa91',
+                variantLite: '4b1f8c2e-7921-475d-9202-0d73c343fe30',
             },
             rewriteLevels: {
                 light: 'Clean up grammar only, keep original voice',
@@ -4587,26 +4588,35 @@
                 if (!state.user || !supabaseClient) return;
                 
                 try {
-                    const { data: profile, error } = await supabaseClient
-                        .from('profiles')
-                        .select('subscription_status, trial_ends_at, subscription_ends_at, customer_id')
-                        .eq('id', state.user.id)
+                    const { data: subscription, error } = await supabaseClient
+                        .from('subscriptions')
+                        .select('*')
+                        .eq('user_id', state.user.id)
                         .single();
                     
-                    if (error) {
-                        console.log('No profile found, user needs to subscribe');
-                        state.subscription = { status: 'none', trialEndsAt: null, subscriptionEndsAt: null, customerId: null };
+                    if (error || !subscription) {
+                        state.subscription = { 
+                            status: 'none', 
+                            plan: 'none',
+                            postLimit: 0,
+                            postsUsed: 0
+                        };
                         return;
                     }
                     
                     state.subscription = {
-                        status: profile.subscription_status || 'none',
-                        trialEndsAt: profile.trial_ends_at,
-                        subscriptionEndsAt: profile.subscription_ends_at,
-                        customerId: profile.customer_id
+                        status: subscription.status || 'none',
+                        plan: subscription.plan || 'none',
+                        postLimit: subscription.post_limit || 0,
+                        postsUsed: subscription.posts_used || 0,
+                        currentPeriodEnd: subscription.current_period_end,
+                        cancelAtPeriodEnd: subscription.cancel_at_period_end
                     };
                     
-                    console.log('Subscription status loaded:', state.subscription);
+                    // Update monthly limit based on plan
+                    state.usage.monthlyLimit = subscription.post_limit || 0;
+                    
+                    console.log('Subscription loaded:', state.subscription);
                 } catch (e) {
                     console.error('Error loading subscription:', e);
                 }
@@ -4654,7 +4664,7 @@
             },
             
             // Redirect to Lemon Squeezy checkout
-            redirectToCheckout() {
+            redirectToCheckout(plan = 'standard') {
                 if (!state.user) {
                     showAuthModal('signup');
                     return;
@@ -4662,9 +4672,12 @@
                 
                 const email = encodeURIComponent(state.user.email);
                 const userId = encodeURIComponent(state.user.id);
-                const checkoutUrl = `https://${CONFIG.lemonSqueezy.storeSlug}.lemonsqueezy.com/checkout/buy/${CONFIG.lemonSqueezy.variantId}?checkout[email]=${email}&checkout[custom][user_id]=${userId}`;
+                const variantId = plan === 'lite' 
+                    ? CONFIG.lemonSqueezy.variantLite 
+                    : CONFIG.lemonSqueezy.variantStandard;
+                const checkoutUrl = `https://${CONFIG.lemonSqueezy.storeSlug}.lemonsqueezy.com/buy/${variantId}?checkout[email]=${email}&checkout[custom][user_id]=${userId}`;
                 
-                window.location.href = checkoutUrl;
+                window.open(checkoutUrl, '_blank');
             },
             
             // Open Lemon Squeezy customer portal
