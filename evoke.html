@@ -1931,7 +1931,129 @@
         .recording-setup.type-mode .start-recording-btn {
             display: none;
         }
-
+/* Input mode toggle (Voice/Type) */
+        .input-mode-toggle {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 24px;
+        }
+        
+        .input-mode-btn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 20px;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--text-secondary);
+            border-radius: 20px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .input-mode-btn svg {
+            width: 18px;
+            height: 18px;
+            fill: currentColor;
+        }
+        
+        .input-mode-btn.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: white;
+        }
+        
+        .input-mode-btn:not(.active):hover {
+            border-color: var(--text-secondary);
+            color: var(--text-primary);
+        }
+        
+        .text-input-area {
+            display: none;
+            flex-direction: column;
+            gap: 16px;
+        }
+        
+        .text-input-area.visible {
+            display: flex;
+        }
+        
+        .text-input-field {
+            width: 100%;
+            min-height: 120px;
+            max-height: 200px;
+            padding: 16px;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            color: var(--text-primary);
+            font-size: 16px;
+            font-family: inherit;
+            resize: vertical;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        
+        .text-input-field::placeholder {
+            color: var(--text-muted);
+        }
+        
+        .text-input-field:focus {
+            border-color: var(--accent);
+        }
+        
+        .text-input-char-count {
+            text-align: right;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+        
+        .text-input-char-count.warning {
+            color: #f59e0b;
+        }
+        
+        .text-input-char-count.error {
+            color: var(--accent);
+        }
+        
+        .submit-text-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 16px 32px;
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-secondary) 100%);
+            border: none;
+            border-radius: 30px;
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .submit-text-btn:hover {
+            transform: scale(1.02);
+            box-shadow: 0 4px 20px rgba(255, 79, 94, 0.3);
+        }
+        
+        .submit-text-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .submit-text-btn svg {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+        }
+        
+        .recording-setup.type-mode .start-recording-btn {
+            display: none;
+        }
         /* Pre-recording setup state */
         .recording-setup {
             padding: 20px;
@@ -3464,7 +3586,6 @@
             <div class="recording-setup-title">What's on your mind?</div>
             <div class="recording-setup-subtitle">Share a thought, recommendation, review, or anything you want to post.</div>
             
-            <!-- Input mode toggle -->
             <div class="input-mode-toggle">
                 <button class="input-mode-btn active" id="voiceModeBtn" data-mode="voice">
                     <svg viewBox="0 0 24 24"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/><path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/></svg>
@@ -3488,7 +3609,6 @@
                 </div>
             </div>
             
-            <!-- Text input area (hidden by default) -->
             <div class="text-input-area" id="textInputArea">
                 <textarea 
                     class="text-input-field" 
@@ -4690,7 +4810,13 @@
             stopBtn: document.getElementById('stopBtn'),
             pauseBtn: document.getElementById('pauseBtn'),
             resetBtn: document.getElementById('resetBtn'),
-            
+            // Input mode (voice/type)
+            voiceModeBtn: document.getElementById('voiceModeBtn'),
+            typeModeBtn: document.getElementById('typeModeBtn'),
+            textInputArea: document.getElementById('textInputArea'),
+            textInputField: document.getElementById('textInputField'),
+            textCharCount: document.getElementById('textCharCount'),
+            submitTextBtn: document.getElementById('submitTextBtn'),
             // Input mode (voice/type)
             voiceModeBtn: document.getElementById('voiceModeBtn'),
             typeModeBtn: document.getElementById('typeModeBtn'),
@@ -5279,7 +5405,26 @@
             hideLoading();
             showToast('Cancelled', 'success');
         });
-        
+        // Submit typed post (uses same pipeline as voice)
+        async function submitTypedPost(text) {
+            // Close the recording modal
+            elements.recordingModal.classList.remove('visible');
+            
+            // Clear the text input
+            elements.textInputField.value = '';
+            elements.textCharCount.textContent = '0 / 1000';
+            elements.submitTextBtn.disabled = true;
+            
+            // Reset to voice mode for next time
+            elements.voiceModeBtn.classList.add('active');
+            elements.typeModeBtn.classList.remove('active');
+            elements.recordingSetup.classList.remove('type-mode');
+            elements.textInputArea.classList.remove('visible');
+            elements.startRecordingBtn.style.display = '';
+            
+            // Use the same enhance pipeline as voice
+            await enhancePost(text);
+        }
         // Submit typed post (uses same pipeline as voice)
         async function submitTypedPost(text) {
             // Close the recording modal
@@ -5944,7 +6089,59 @@
         
         // Start recording button (after tone selection)
         elements.startRecordingBtn.addEventListener('click', beginRecording);
+        // Input mode toggle (Voice / Type)
+        elements.voiceModeBtn.addEventListener('click', () => {
+            elements.voiceModeBtn.classList.add('active');
+            elements.typeModeBtn.classList.remove('active');
+            elements.recordingSetup.classList.remove('type-mode');
+            elements.textInputArea.classList.remove('visible');
+            elements.startRecordingBtn.style.display = '';
+        });
         
+        elements.typeModeBtn.addEventListener('click', () => {
+            elements.typeModeBtn.classList.add('active');
+            elements.voiceModeBtn.classList.remove('active');
+            elements.recordingSetup.classList.add('type-mode');
+            elements.textInputArea.classList.add('visible');
+            elements.startRecordingBtn.style.display = 'none';
+            elements.textInputField.focus();
+        });
+        
+        // Text input character count and validation
+        elements.textInputField.addEventListener('input', () => {
+            const text = elements.textInputField.value;
+            const count = text.length;
+            const maxLength = 1000;
+            
+            elements.textCharCount.textContent = `${count} / ${maxLength}`;
+            
+            elements.textCharCount.classList.remove('warning', 'error');
+            if (count > maxLength * 0.9) {
+                elements.textCharCount.classList.add('error');
+            } else if (count > maxLength * 0.75) {
+                elements.textCharCount.classList.add('warning');
+            }
+            
+            elements.submitTextBtn.disabled = count < 10 || count > maxLength;
+        });
+        
+        // Submit text button
+        elements.submitTextBtn.addEventListener('click', () => {
+            const text = elements.textInputField.value.trim();
+            if (text.length >= 10) {
+                submitTypedPost(text);
+            }
+        });
+        
+        // Allow Ctrl+Enter to submit
+        elements.textInputField.addEventListener('keydown', (e) => {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+                const text = elements.textInputField.value.trim();
+                if (text.length >= 10) {
+                    submitTypedPost(text);
+                }
+            }
+        });
         // Input mode toggle (Voice / Type)
         elements.voiceModeBtn.addEventListener('click', () => {
             elements.voiceModeBtn.classList.add('active');
